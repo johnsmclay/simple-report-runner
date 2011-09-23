@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+	DocumentRoot /srv/mil-bi/www/
+	ServerName bidev.middil.com
+	ExpiresActive On
+	ExpiresDefault "now"
+
+	<Directory /srv/mil-bi/www/>
+	        Options Indexes FollowSymLinks MultiViews
+	        AllowOverride All
+	        Order allow,deny
+        	allow from all
+	</Directory>
+
+</VirtualHost>
