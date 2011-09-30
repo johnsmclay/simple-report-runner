@@ -8,7 +8,12 @@ class Gale extends CI_Controller {
 	}
 	
 	public function index() {
-		$this->load->view('gale_view');
+		// Allows you to name an individual JavaScript file to be loaded for this page.
+		// Just provide the name of the file, without the .js extension. Then create the 
+		// file in the 'assets/javascript' folder located in the root of the codeIgniter folder
+		$view_data['javascript'] = 'gale';
+		
+		$this->load->view('gale_view',$view_data);
 	}
 	
 	// Gale Report Generator ----

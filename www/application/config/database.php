@@ -58,6 +58,7 @@ $db['pglms']['stricton'] = FALSE;
 $db['pglms']['port'] = 3306;
 
 
+// Gale database connection
 $db['gale']['hostname'] = '10.64.3.83';
 $db['gale']['username'] = 'reporter';
 $db['gale']['password'] = 'pr8tREdUcez2wAyA8PA5';
@@ -74,6 +75,24 @@ $db['gale']['swap_pre'] = '';
 $db['gale']['autoinit'] = TRUE;
 $db['gale']['stricton'] = FALSE;
 $db['gale']['port'] = 3306;
+
+// Temporary PGLMS connection until ip problem is resolved
+$db['temp']['hostname'] = '10.5.0.126';
+$db['temp']['username'] = 'reporter';
+$db['temp']['password'] = 'pr8tREdUcez2wAyA8PA5';
+$db['temp']['database'] = 'pglms2010';
+$db['temp']['dbdriver'] = 'mysql';
+$db['temp']['dbprefix'] = '';
+$db['temp']['pconnect'] = TRUE;
+$db['temp']['db_debug'] = TRUE;
+$db['temp']['cache_on'] = FALSE;
+$db['temp']['cachedir'] = '';
+$db['temp']['char_set'] = 'utf8';
+$db['temp']['dbcollat'] = 'utf8_general_ci';
+$db['temp']['swap_pre'] = '';
+$db['temp']['autoinit'] = TRUE;
+$db['temp']['stricton'] = FALSE;
+$db['temp']['port'] = 3316;
 
 
 /* End of file database.php */

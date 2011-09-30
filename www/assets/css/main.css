@@ -185,4 +185,40 @@ time, mark, audio, video {
 				#teacherSelection {
 					
 				}
+				
+			/* Custom Reports */
+				.inputElement {
+					position: relative;
+					margin: 15px 0;
+				}
+				.description {
+					display: inline-block;
+					padding: 5px;
+					margin-left: 12px;
+					background-color: #DEDEDE;
+					border: 1px solid #8C8C8C;
+					-moz-border-radius: 5px;
+					border-radius: 5px;
+					font-size: .872em;
+				}
+				
+				.descriptionTextarea {
+					display: inline-block;
+					padding: 5px;
+					background-color: #DEDEDE;
+					border: 1px solid #8C8C8C;
+					-moz-border-radius: 5px;
+					border-radius: 5px;
+					font-size: .872em;
+				}
+				
+				.textLabel {
+					display: block;
+				}
+				
+				.inputError {
+/*					background: #FF9583;*/
+					color: #FF0000;
+				}
+				
 	

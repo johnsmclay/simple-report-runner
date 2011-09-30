@@ -1,5 +1,5 @@
 <IfModule mod_rewrite.c>
-	RewriteEngine On
+    RewriteEngine On
     RewriteBase /reports/
     
 	#Removes access to the system folder by users.
