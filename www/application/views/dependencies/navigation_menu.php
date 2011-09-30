@@ -13,6 +13,9 @@
 						<a href="<?=site_url("gale");?>">Gale</a>
 					</li>
 					<li>
+						<a href="<?=site_url("select_report");?>">Select Report</a>
+					</li>
+					<li>
 						<a href="<?=site_url("customreport");?>">Custom Reports</a>
 					</li>
 					

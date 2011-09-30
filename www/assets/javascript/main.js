@@ -22,7 +22,8 @@ $(document).ready(function()
 	// Various methods for adjusting date values in text fields,
 	// each method returns an object consisting of a beginDate(String) and an endDate(String)
 	// @type Object
-	var shiftDates = {
+	var shiftDates = 
+	{
 		// To obtain the correct month with a 0 indexed offset for the date methods
 		monthsArray	: ['01','02','03','04','05','06','07','08','09','10','11','12'],
 		// Returns the days in a given month provided with the month and year NOTE: months are 0 indexed i.e. 0=January and 11=December

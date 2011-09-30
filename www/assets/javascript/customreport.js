@@ -2,6 +2,7 @@
 $(function() 
 {
 	
+	$('#reportForm').hide();
 	// EVENT LISTENERS
 	$('#reportForm').submit(function() 
 	{
@@ -18,6 +19,37 @@ $(function()
 		return false;
 		
 	});
+	
+	$('#reportList li').each(function() 
+	{
+		$(this).hover(function() 
+		{
+			$(this).stop(false,true).animate(
+				{
+					marginLeft	: "10px",
+					marginRight	: "-10px",
+					borderRight : "3px solid #000000",
+					borderLeft : "3px solid #000000"
+				}, 200);
+		}, function ()
+		{
+			$(this).stop(false,true).animate(
+				{
+					marginLeft	: "0",
+					marginRight	: "0",
+					border		: "none"
+				}, 200);
+		});
+		
+		$(this).click(function() 
+		{
+			$('#reportForm #report').text('You clicked : ' + $(this).children().first().attr('id'));
+			console.log($(this).children().first().attr('id'));
+			$('#reportList').hide(500);
+			$('#reportForm').show(500);
+		});
+	});
+	
 	
 	function validateFields(form) 
 	{

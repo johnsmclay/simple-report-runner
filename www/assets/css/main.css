@@ -221,4 +221,29 @@ time, mark, audio, video {
 					color: #FF0000;
 				}
 				
+			/* Select Report */
+				ul#reportList li {
+					height: 24px;
+					list-style: none;
+					line-height: 24px;
+				}
+				
+				ul#reportList li.even a {
+					background-color: #ABABAB;
+					display: block;
+					padding-left: 20px;
+				}
+				
+				ul#reportList li.odd a {
+					background-color: #E2E2E2;
+					display: block;
+					padding-left: 20px;
+				}
+				
+				ul#reportList li a:hover {
+					cursor: pointer;
+					border-right:4px solid #454545;
+					border-left:4px solid #454545;
+				}
+				
 	

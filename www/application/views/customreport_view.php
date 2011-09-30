@@ -16,7 +16,23 @@
 					<div id="createReports" class="section">
 						<h2>Report Elements</h2>
 						
+						<ul id="reportList">
+							<?php
+							for ($i=1;$i<16;$i++) 
+							{
+								if ($i%2 == 0)
+								{
+									echo '<li class="even"><a id="item' . $i . '">Item '. $i . '</a></li>';
+								}
+									else
+										{
+											echo '<li class="odd"><a id="item' . $i . '">Item '. $i . '</a></li>';
+										}
+							}
+							?>
+						</ul>
 						<form id="reportForm" method="post">
+						<h3 id="report"></h3>
 						<?
 						foreach ($report_vars AS $input) 
 						{
