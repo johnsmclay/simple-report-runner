@@ -7,9 +7,12 @@ $(document).ready(function()
 	var filename = url.substring(url.lastIndexOf('/')+1);
 	
 	// Set up buttons to use jQuery UI
-	$('#dateButtons').css('display','none');
-	$('input:button, input:submit').button();
-	$('#dateButtons').show();
+	if($('#dateButtons').length > 0)
+	{
+		$('#dateButtons').css('display','none');
+		$('input:button, input:submit').button();
+		$('#dateButtons').show();
+	}
 	
 	// ---------------------------------//
 	//									//
@@ -247,18 +250,18 @@ $(document).ready(function()
 	// 		ALL Event Listeners		//
 	//								//
 	// -----------------------------//
-	$("#getReportbtn").click(function()
-	{
-		switch (filename) 
-		{
+	// $("#getReportbtn").click(function()
+	// {
+		// switch (filename) 
+		// {
 			// case 'enrollments':
 				// enrollmentsFunction();
 				// break;
-			case 'gale':
-				galeFunction();
-				break;
-		}
-	});
+			// case 'gale':
+				// galeFunction();
+				// break;
+		// }
+	// });
 	
 	// Get subschools from parent ID
 	if ($('#schoolList').length > 0 && $('#subSchoolList').length > 0) 

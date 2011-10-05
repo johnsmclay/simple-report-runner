@@ -173,40 +173,43 @@ time, mark, audio, video {
 					margin: 20px 0 0 20px;
 				}
 				
-				#enrollmentSelection #dateButtons {
-					margin: 0;
+				#dynamicForm #reportForm #dateButtonsGroup div {
+					margin: 10px 0;
+				}
+
+				#dynamicForm #reportForm #dateButtonsGroup div .dateButton {
+					margin-right: 10px;
 				}
 				
-				#enrollmentSelection #dateButtons {
+				/*#enrollmentSelection #dateButtons {
 					margin-top: 20px;
-				}
+				}*/
 				
 			/* Teacher Section */
 				#teacherSelection {
 					
 				}
 				
-			/* Custom Reports */
-				.inputElement {
+			/* Custom Reports (dynamic form) */
+				/*.inputElement {
 					position: relative;
 					margin: 15px 0;
-				}
+				}*/
 				.description {
 					display: inline-block;
+					text-align: left;
 					padding: 5px;
 					margin-left: 12px;
-					background-color: #DEDEDE;
-					border: 1px solid #8C8C8C;
+/*					background-color: #DEDEDE;*/
 					-moz-border-radius: 5px;
 					border-radius: 5px;
-					font-size: .872em;
+					font-size: .9em;
 				}
 				
 				.descriptionTextarea {
 					display: inline-block;
 					padding: 5px;
-					background-color: #DEDEDE;
-					border: 1px solid #8C8C8C;
+/*					background-color: #DEDEDE;*/
 					-moz-border-radius: 5px;
 					border-radius: 5px;
 					font-size: .872em;
@@ -217,33 +220,80 @@ time, mark, audio, video {
 				}
 				
 				.inputError {
-/*					background: #FF9583;*/
 					color: #FF0000;
 				}
 				
 			/* Select Report */
-				ul#reportList li {
+				#formElements ul#reportList li.categoryHeading {
+					font-size: 1.5em;
+					font-weight: bold;
+					width: 195px;
+					padding: 3px 0 3px 10px;
+					cursor: pointer;
+					list-style-type: none;
+				}
+				ul#reportList li ul li {
 					height: 24px;
+					font-size: .8em;
+					font-weight: normal;
 					list-style: none;
 					line-height: 24px;
+					width: 100%;
+					overflow: visible;
 				}
 				
-				ul#reportList li.even a {
+				ul#reportList li ul li.even a {
 					background-color: #ABABAB;
 					display: block;
 					padding-left: 20px;
 				}
 				
-				ul#reportList li.odd a {
+				ul#reportList li ul li.odd a {
 					background-color: #E2E2E2;
 					display: block;
 					padding-left: 20px;
 				}
 				
-				ul#reportList li a:hover {
+				ul#reportList li ul li a:hover {
 					cursor: pointer;
 					border-right:4px solid #454545;
 					border-left:4px solid #454545;
 				}
 				
-	
+				input.shrinkButton {
+					font-size: .95em;
+				}
+				
+				form#reportForm fieldset{
+					margin-bottom: 10px;
+				}
+				form#reportForm legend {
+					padding: 20px 0;
+					font-weight: bold;
+					display: block;
+					font-size: 1.5em;
+				}
+				form#reportForm label {
+					display: inline-block;
+					line-height: 1.8;
+					vertical-align: top;
+				}
+				form#reportForm fieldset ul {
+					margin: 0;
+					padding: 0;
+				}
+				form#reportForm fieldset li {
+					list-style: none;
+					padding: 5px;
+					margin: 0;
+				}
+				form#reportForm label {
+					width: 120px;
+				}
+				form#reportForm fieldset li select {
+					width: 260px;
+				}
+				form#reportForm fieldset ul li input#submitReportBtn {
+					position: relative;
+					left: 20px;
+				}

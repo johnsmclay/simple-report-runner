@@ -3,7 +3,7 @@ class Enrollments extends CI_Controller {
 		
 	function __construct() {
 		parent::__construct();
-		$this->load->database();
+		$this->load->database('temp');
 		$this->load->model('Enrollment_model');
 	}
 		

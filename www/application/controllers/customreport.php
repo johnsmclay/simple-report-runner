@@ -7,41 +7,26 @@ class Customreport extends CI_Controller {
 	}
 	
 	function index() {
-		$report_vars = array();
-		$report_vars[] = array(
-			'variable_type' => 'INT(11)',
-			'text_identifier' => 'test',
-			'default_value' => 23,
-			'display_name' => 'Testin this',
-			'description' => 'testing button stuff',
-			'options' => array(
-				12 => 'option 1', 23 => 'option 2', 244 => 'option 3'
-			)
-		);
-		$report_vars[] = array(
-			'variable_type' => 'INT(10)',
-			'text_identifier' => 'varcharacters',
-			'default_value' => 'crapTAstic',
-			'display_name' => 'Crappy Name',
-			'description' => 'testing crappy stuff',
-		);
-		$report_vars[] = array(
-			'variable_type' => 'VARCHAR(15)',
-			'text_identifier' => 'varcharacters',
-			'default_value' => 'WTF?',
-			'display_name' => 'Deez Nutz',
-			'description' => 'testing crappy stuff',
-		);
-		$report_vars[] = array(
-			'variable_type' => 'DATETIME',
-			'text_identifier' => 'dates[]',
-			'default_value' => 'WTF?',
-			'display_name' => 'Deez Nutz',
-			'description' => 'testing crappy stuff',
-		);
+		$db1 = $this->load->database('local',TRUE);
 		
+		$reportListQuery = 
+			'
+			SELECT
+				report.id as id,
+				report.display_name,
+				(SELECT rc.title FROM report_category rc WHERE rc.id = report.category_id) AS category
+			FROM 
+				report
+			';
+		$reportListResult = $db1->query($reportListQuery);
+		foreach($reportListResult->result_array() AS $row) {
+			$reportList[$row['category']][] = array(
+				'id' 			=> $row['id'],
+				'display_name' 	=> $row['display_name']
+			);
+		}
 		
-		$view_data['report_vars'] = $report_vars;
+		$view_data['reportList'] = $reportList;
 		
 		// Allows you to name an individual JavaScript file to be loaded for this page.
 		// Just provide the name of the file, without the .js extension. Then create the 
@@ -50,8 +35,56 @@ class Customreport extends CI_Controller {
 		$this->load->view('customreport_view',$view_data);
 	}
 
-	function test() {
-		$this->show($_POST);
+	
+	function buildForm() 
+	{
+		$db1 = $this->load->database('local',TRUE);
+		$db2 = $this->load->database('temp',TRUE);
+		
+		$reportId = $_POST['report_id'];
+		
+		$reportVarsQuery = 
+			"
+			SELECT
+				*
+			FROM
+				report_variable
+			WHERE
+				report_id = {$_POST['report_id']}
+			";
+			
+		$reportVarsResult = $db1->query($reportVarsQuery);
+		foreach($reportVarsResult->result_array() AS $row) 
+		{
+			if (! empty($row['options_query']))
+			{
+				$optionsResult = $db2->query($row['options_query']);
+				foreach($optionsResult->result_array() AS $optRow)
+				{
+					$options[$optRow['id']] = $optRow['description'];
+				}
+			}
+				else
+				{
+					$options = NULL;
+				}
+			$report_vars[] = array(
+				'text_identifier' 	=> $row['text_identifier'],
+				'variable_type' 	=> $row['variable_type'],
+				'default_value'		=> $row['default_value'],
+				'display_name'		=> $row['display_name'],
+				'description'		=> $row['description'],
+				'options'			=> $options
+			);
+		}
+
+		$view_data['report_vars'] = $report_vars;
+		
+		$this->load->view('dynamic_form_view',$view_data);
+	}
+
+	function test($exit=false) {
+		$this->show($_POST,$exit);
 	}
 	
 	
