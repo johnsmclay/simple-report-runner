@@ -5,3 +5,5 @@
 5. chmod -R 777 ./www/application/logs
 6. copy ./www/application/config/config.php.example ./www/application/config/config.php
 7. modify the logging threshold and base URL in ./www/application/config/config.php to match your needs
+8. copy www/index.php.example www/index.php
+9. modify the environment in www/index.php to fit your needs
