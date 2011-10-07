@@ -7,139 +7,74 @@
 		{
 			parent::__construct();
 			$this->load->helper('form');
+			$this->load->model('custom_report_model','model');
 		}
 
 		function index()
 		{
-			$db1 = $this->load->database('application',TRUE);
-
-			$reportListQuery = '
-			SELECT
-				report.id as id,
-				report.display_name,
-				(SELECT rc.title FROM report_category rc WHERE rc.id = report.category_id) AS category
-			FROM 
-				report
-			';
-			$reportListResult = $db1->query($reportListQuery);
-			foreach ($reportListResult->result_array() AS $row)
-			{
-				$reportList[$row['category']][] = array(
-					'id' => $row['id'],
-					'display_name' => $row['display_name']
-				);
-			}
-			$reportListResult->free_result();
-
+			// Get the list of all reports
+			$reportList = $this->model->getReportList();
+			
+			// Add it to the view data
 			$view_data['reportList'] = $reportList;
 
 			// Allows you to name an individual JavaScript file to be loaded for this page.
 			// Just provide the name of the file, without the .js extension. Then create the
 			// file in the 'assets/javascript' folder located in the root of the codeIgniter folder
 			$view_data['javascript'] = 'customreport';
+			
 			$this->load->view('customreport_view', $view_data);
 		}
 
-		// buildForm
-		//
-		// Called via AJAX request, it is sent an integer representing
-		// the report ID of the requested report. After querying the DB
-		// for the associated variables for that report ID it returns an
-		// array of report variables which is then used in the view to
-		// dynamiccaly build out the for for the report.
+		/** buildForm
+		 *
+		 * Called via AJAX request, it is sent an integer representing
+		 * the report ID of the requested report. After querying the DB
+		 * for the associated variables for that report ID it returns an
+		 * array of report variables which is then used in the view to
+		 * dynamiccaly build out the for for the report.
+		 * 
+		 * @return mixed Outputs the HTML to the browser for the view that has been called
+		 */ 
 		function buildForm()
 		{
-			$db1 = $this->load->database('application', TRUE);
-			$db2 = $this->load->database('pglms', TRUE);
-
+			// ID passed via ajax call
 			$reportId = $_POST['report_id'];
+			
+			// Retrieve all the report variables	
+			$report_vars = $this->model->getReportVars($reportId);
 
-			// Get the report variables for the given report ID
-			$reportVarsQuery = "
-			SELECT
-				*
-			FROM
-				report_variable
-			WHERE
-				report_id = {$_POST['report_id']}
-			";
-
-			$reportVarsResult = $db1->query($reportVarsQuery);
-			foreach ($reportVarsResult->result_array() AS $row)
-			{
-				if ( !empty($row['options_query']))
-				{
-					$optionsResult = $db2->query($row['options_query']);
-					foreach ($optionsResult->result_array() AS $optRow)
-					{
-						$options[$optRow['id']] = $optRow['description'];
-					}
-					$optionsResult->free_result();
-				}
-					else
-					{
-						$options = NULL;
-					}
-				$report_vars[] = array(
-					'text_identifier' => $row['text_identifier'],
-					'variable_type' => $row['variable_type'],
-					'default_value' => $row['default_value'],
-					'display_name' => $row['display_name'],
-					'description' => $row['description'],
-					'options' => $options
-				);
-			}
-			$reportVarsResult->free_result();
-
+			// Load the variables into the view data array
 			$view_data['report_vars'] = $report_vars;
+			
 			// Pass back the report id so it can be used when the form is submitted
 			// in order to target the correct report via a hidden input value where
 			// where the id is stored.
 			$view_data['report_id'] = $reportId;
 
+			// Calling the load view method in this instance will immediately
+			// send back the view (HTML) to the ajax method that called this function
 			$this->load->view('dynamic_form_view', $view_data);
 		}
 
-		//processReport
-		//
-		// Called via AJAX, recieves $_POST variables to be used in  the report query.
+		/**
+		 * processReport
+		 *
+		 * Called via AJAX, recieves $_POST variables to be used in  the report query.
+		 * 
+		 * @return mixed Echo's out the json encoded url for an iFrame src attribute in the view
+		 */ 
 		function processReport()
 		{
-			$db1 = $this->load->database('application', TRUE);
-			$db2 = $this->load->database('pglms', TRUE);
 
-			$id = $_POST['reportID'];
+			$reportId = $_POST['reportID'];
 
-			// Get the report data
-			$getReportDataQuery = "
-			SELECT
-				report_data
-			FROM
-				report
-			WHERE
-				id = " . $id;
-
-			$getReportResult = $db1->query($getReportDataQuery);
-			foreach ($getReportResult->result_array() AS $row)
-			{
-				$reportQuery = $row['report_data'];
-			}
-			$getReportResult->free_result();
+			// Get the query to be run
+			$reportQuery = $this->model->getReportData($reportId);
 
 			// Get all of the report variables to loop through them and use them
 			// to match the terms in the query to be replaced
-			$getReportVarsQuery = "
-			SELECT
-				text_identifier,
-				variable_type
-			FROM
-				report_variable
-			WHERE
-				report_id = " . $id;
-
-			$getReportVarsResult = $db1->query($getReportVarsQuery);
-			$reportVars = $getReportVarsResult->result_array();
-			$getReportResult->free_result();
+			$reportVars = $this->model->getReportVars($reportId,false);
 
 			// Loop through the report variables and replace the matching
 			// string in the report query with the appropriate $_POST variable value.
@@ -159,18 +94,9 @@
 						}
 			}
 
-			$result = $db2->query($reportQuery);
-			$setHeaderRow = false;
-			$resultsArray = $result->result_array();
-			$result->free_result();
+			// Run the report query and get the results
+			$resultsArray = $this->model->runReportQuery($reportQuery);
 			
-			// Get the database fields from the array keys whcih are used for the
-			// CSV files column headers row.
-			$headerRow = array_keys($resultsArray[0]);
-			
-			// attach header row to beginning of array
-			array_unshift($resultsArray, $headerRow);
-
 			// Create the csv file
 			$this->outputCSV($resultsArray);
 
@@ -186,6 +112,8 @@
 		 * 
 		 * Creates the CSV file when passed an array of information retrieved
 		 * via the report database query.
+		 * 
+		 * @param array $array The array of data to be encoded into a CSV file
 		 */
 		private function outputCSV($array)
 		{
@@ -204,6 +132,8 @@
 		 * 
 		 * This is the target of an iFrame in the view. Its purpose is
 		 * to offer up the generated report as a csv download
+		 * 
+		 * @param string $filename The name of the file to be downloaded
 		 */
 		public function downloadReport($filename) 
 		{
