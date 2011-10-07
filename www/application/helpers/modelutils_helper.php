@@ -45,7 +45,8 @@ if ( ! function_exists('mysql_date'))
 {
 	function mysql_date($date=null)
 	{
-		date('Y-m-d H:i:s',$date);
+		if($date) return date('Y-m-d H:i:s',$date);
+		return date('Y-m-d H:i:s');
 	}
 }
 
