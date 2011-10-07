@@ -11,7 +11,7 @@
 
 		function index()
 		{
-			$db1 = $this->load->database('local', TRUE);
+			$db1 = $this->load->database('application',TRUE);
 
 			$reportListQuery = '
 			SELECT
@@ -49,8 +49,8 @@
 		// dynamiccaly build out the for for the report.
 		function buildForm()
 		{
-			$db1 = $this->load->database('local', TRUE);
-			$db2 = $this->load->database('temp', TRUE);
+			$db1 = $this->load->database('application', TRUE);
+			$db2 = $this->load->database('pglms', TRUE);
 
 			$reportId = $_POST['report_id'];
 
@@ -105,8 +105,8 @@
 		// Called via AJAX, recieves $_POST variables to be used in  the report query.
 		function processReport()
 		{
-			$db1 = $this->load->database('local', TRUE);
-			$db2 = $this->load->database('temp', TRUE);
+			$db1 = $this->load->database('application', TRUE);
+			$db2 = $this->load->database('pglms', TRUE);
 
 			$id = $_POST['reportID'];
 
