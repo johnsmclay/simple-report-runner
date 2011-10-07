@@ -1,0 +1,2 @@
+1. copy ./www/application/config/database.php.example ./www/application/config/database.php
+2. modify ./www/application/config/database.php to match your setup 
