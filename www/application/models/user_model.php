@@ -8,19 +8,14 @@
  
 class User_model extends CI_Model
 {
-	/** Utility Methods **/
-	function _required($required,$data)
-	{
-		foreach($required as $field)
-			if(!isset($data[$field])) return false;
-		
-		return true;
-	}
+	
+	private $acc_salt = '34q34545ytwgqegujyj6';
 	
 	function __construct()
 	{
+		$this->load->helper('modelutils','email');
+		$this->load->database();
 		parent::__construct();
-		$this->load->database('application');
 	}
 	
 	/** User Methods **/
@@ -28,10 +23,21 @@ class User_model extends CI_Model
 	/**
 	 * AddUser method creates a user
 	 * 
-	 * Option: Values
+	 * Option: Values (value* = required)
 	 * --------------
-	 * email
-	 * password
+	 * email_address*
+	 * password*
+	 * username*
+	 * fname
+	 * lname
+	 * deleted
+	 *
+	 * Example:
+	 * ->AddUser(array(
+	 * 		'email_address' => 'this@that.com',
+	 * 		'username' => 'cool_dude22',
+	 * 		'password' => 'asdfasdf',
+	 * ));
 	 *
 	 * @param array $options
 	 * @result int insert_id()
@@ -42,13 +48,44 @@ class User_model extends CI_Model
 		$req_vals = array('email_address','username','password');
 		if(!$this->_required($req_vals,$options)) return false;
 		
-		// add internal fields
-		$options['created'] = 
+		// validate email
+		if(!valid_email($options['email_address']))
 		
+		// add internal fields
+		$options['created'] = mysql_date();
+		
+		// hash password
+		$options['password'] = sha1($this->acc_salt.$options['password']);
+		
+		// insert the user
 		$this->db->insert('user',$options);
+		
+		return $this->db->insert_id();
+		
+	}
+	
+	/**
+	 * UsernameExists checks to see if an account with that username exists
+	 *
+	 * Example:
+	 * ->UsernameExists('cool_dude22');
+	 *
+	 * @param string $username
+	 * @result bool user_exists
+	 */
+	public UsernameExists($username)
+	{
+		// make sure a username came through
+		if(!isset($username) || $username == '') return false;
 		
 		
 	}
+	
+	/**
+	 * ValidateLogin checks to see if supplied login info is correct
+	 *
+	 */
+	public ValidateLogin($username,$password){}
 	
 	/**
 	 * DisableUser method disables a user
@@ -67,5 +104,6 @@ class User_model extends CI_Model
 	 *
 	 */
 	public GetUserByEmail($user_email){}
+	
 }
 ?>
