@@ -200,18 +200,12 @@ time, mark, audio, video {
 					text-align: left;
 					padding: 5px;
 					margin-left: 12px;
-/*					background-color: #DEDEDE;*/
-					-moz-border-radius: 5px;
-					border-radius: 5px;
 					font-size: .9em;
 				}
 				
 				.descriptionTextarea {
 					display: inline-block;
 					padding: 5px;
-/*					background-color: #DEDEDE;*/
-					-moz-border-radius: 5px;
-					border-radius: 5px;
 					font-size: .872em;
 				}
 				
@@ -227,10 +221,12 @@ time, mark, audio, video {
 				#formElements ul#reportList li.categoryHeading {
 					font-size: 1.5em;
 					font-weight: bold;
-					width: 195px;
-					padding: 3px 0 3px 10px;
-					cursor: pointer;
+					padding: 3px 0 3px 20px;
 					list-style-type: none;
+					background: url('../images/collapsed.png') 0px 8px no-repeat;
+				}
+				ul#reportList li ul {
+					margin-top: 5px;
 				}
 				ul#reportList li ul li {
 					height: 24px;
@@ -238,32 +234,30 @@ time, mark, audio, video {
 					font-weight: normal;
 					list-style: none;
 					line-height: 24px;
-					width: 100%;
+					width: 70%;
 					overflow: visible;
 				}
-				
 				ul#reportList li ul li.even a {
 					background-color: #ABABAB;
 					display: block;
 					padding-left: 20px;
 				}
-				
 				ul#reportList li ul li.odd a {
 					background-color: #E2E2E2;
 					display: block;
 					padding-left: 20px;
 				}
-				
 				ul#reportList li ul li a:hover {
 					cursor: pointer;
 					border-right:4px solid #454545;
 					border-left:4px solid #454545;
 				}
+
 				
-				input.shrinkButton {
+				/* ---- report form styles ------ */
+				form#reportForm input.shrinkButton {
 					font-size: .95em;
 				}
-				
 				form#reportForm fieldset{
 					margin-bottom: 10px;
 				}

@@ -8,6 +8,7 @@ $(function()
 	$('#reportList').each(function(){
 	 
 		var e = $(this).attr('id');
+		var test = false;
 		 
 		$('#'+e+' li > ul').each(function(i) {
 		   	var parent_li = $(this).parent('li');
@@ -19,7 +20,17 @@ $(function()
 		    }
 		    
 		    parent_li.find('a').addClass('jqcNode').css('cursor','pointer').click(function() {
-	        	sub_ul.slideToggle();
+		    	if (test == false)
+		    	{
+	        		$(this).parent().attr('style','background: url("assets/images/opened.png") 0px 8px no-repeat');
+	        		test = true;
+	        	}
+	        		else {
+		        		$(this).parent().attr('style','background:url("assets/images/collapsed.png") 0px 8px no-repeat');
+		        		test = false;
+	        		}
+	        		
+	        	sub_ul.toggle();
 				animateItems(sub_ul);
 		    });
 		    parent_li.append(sub_ul);
@@ -77,6 +88,7 @@ $(function()
 		});
 	}
 	
+	
 	// loadFeatures
 	//
 	// These are event listeners and UI widgets that normally would be loaded on page load,
@@ -84,126 +96,162 @@ $(function()
 	// is available to act upon. 
 	function loadFeatures() 
 	{
-		if ($('input:submit').length > 0)
+		if ($('#reportForm').length > 0)
 		{
-			$('input:submit').attr('id','submitReportBtn');
-		}
-		
-		if ($('#backButton'). length > 0) 
-		{
-			$('#backButton').click(function() {
-				$('#reportList').show(500);
-				$('#reportForm').hide(500);
-			});
-		}
-		
-		if($('#dateFrom').length > 0) 
-		{
-			// Set date fields on Enrollments page to use jQuery UI Datepicker widget
-			$('#dateFrom').datepicker(
+			
+			if ($('input:submit').length > 0)
 			{
-				changeMonth: true,
-				changeYear: true,
-				showButtonPanel: true
-			});
+				$('input:submit').attr('id','submitReportBtn');
+			}
 			
-			$('#dateTo').datepicker(
+			// The back button that causes the report list to be shown again
+			if ($('#backButton'). length > 0)
 			{
-				changeMonth: true,
-				changeYear: true,
-				showButtonPanel: true
-			});
+				$('#backButton').click(function() {
+					$('#reportList').show(500);
+					$('#reportForm').hide(500);
+				});
+			}
 			
-			//set date from and date to fields to be the current quarter
-			$('#dateFrom').val(shiftDates.getThisQuarter().beginDate);
-			$('#dateTo').val(shiftDates.getThisQuarter().endDate);
-			
-			$('#dateButtonsGroup').css('display','none');
-			
-			// this class is used to shrink the default size of the jQuery ui button widget which is applied righ after this
-			$('#reportForm input:button, input:submit').addClass('shrinkButton');
-			$('input:button, input:submit').button();
-			$('#dateButtonsGroup').show();
-		}
-		
-		
-		//////////////////////////////////////////////
-		//											//
-		//		 Date Button Event Listeners		//
-		//											//
-		//////////////////////////////////////////////
-		if ($('#previousMonth').length > 0) 
-		{
-			$('#previousMonth').click(function() 
+			if($('#dateFrom').length > 0) 
 			{
-				if($('#dateFrom').val() != '') 
+				// Set date fields on Enrollments page to use jQuery UI Datepicker widget
+				$('#dateFrom').datepicker(
 				{
-					var date = $('#dateFrom').val();
-					var month = date.substr(0,2) - 1;
-					var year = date.substr(6,4);
-				}
-				$('#dateFrom').val(shiftDates.getDifferentMonth('previous',month,year).beginDate);
-				$('#dateTo').val(shiftDates.getDifferentMonth('previous',month,year).endDate);
-			});
-			
-			$('#nextMonth').click(function() 
-			{
-				if($('#dateFrom').val() != '') 
+					changeMonth: true,
+					changeYear: true,
+					showButtonPanel: true
+				});
+				
+				$('#dateTo').datepicker(
 				{
-					var date = $('#dateFrom').val();
-					var month = date.substr(0,2) - 1;
-					var year = date.substr(6,4);
-				}
-				$('#dateFrom').val(shiftDates.getDifferentMonth('next',month,year).beginDate);
-				$('#dateTo').val(shiftDates.getDifferentMonth('next',month,year).endDate);
-			});
-			
-			$('#thisMonth').click(function() 
-			{
-				$('#dateFrom').val(shiftDates.getThisMonth().beginDate);
-				$('#dateTo').val(shiftDates.getThisMonth().endDate);
-			});
-			
-			$('#thisQuarter').click(function() 
-			{
+					changeMonth: true,
+					changeYear: true,
+					showButtonPanel: true
+				});
+				
+				//set date from and date to fields to be the current quarter
 				$('#dateFrom').val(shiftDates.getThisQuarter().beginDate);
 				$('#dateTo').val(shiftDates.getThisQuarter().endDate);
-			});
-	
-			$('#previousQuarter').click(function() 
-			{
-				if($('#dateFrom').val() != '') {
-					var date = $('#dateFrom').val();
-					var month = date.substr(0,2) - 1;
-					var year = date.substr(6,4);
-				}
-				$('#dateFrom').val(shiftDates.getPreviousQuarter(month,year).beginDate);
-				$('#dateTo').val(shiftDates.getPreviousQuarter(month,year).endDate);
-			});
+				
+				$('#dateButtonsGroup').css('display','none');
+				
+				// this class is used to shrink the default size of the jQuery ui button widget which is applied righ after this
+				$('#reportForm input:button, input:submit').addClass('shrinkButton');
+				$('input:button, input:submit').button();
+				$('#dateButtonsGroup').show();
+			}
 			
-			$('#fiscalYear').click(function() 
+			
+			//////////////////////////////////////////////
+			//											//
+			//		 Date Button Event Listeners		//
+			//											//
+			//////////////////////////////////////////////
+			if ($('#previousMonth').length > 0) 
 			{
-				$('#dateFrom').val(shiftDates.getFiscalYear().beginDate);
-				$('#dateTo').val(shiftDates.getFiscalYear().endDate);
+				$('#previousMonth').click(function() 
+				{
+					if($('#dateFrom').val() != '') 
+					{
+						var date = $('#dateFrom').val();
+						var month = date.substr(0,2) - 1;
+						var year = date.substr(6,4);
+					}
+					$('#dateFrom').val(shiftDates.getDifferentMonth('previous',month,year).beginDate);
+					$('#dateTo').val(shiftDates.getDifferentMonth('previous',month,year).endDate);
+				});
+				
+				$('#nextMonth').click(function() 
+				{
+					if($('#dateFrom').val() != '') 
+					{
+						var date = $('#dateFrom').val();
+						var month = date.substr(0,2) - 1;
+						var year = date.substr(6,4);
+					}
+					$('#dateFrom').val(shiftDates.getDifferentMonth('next',month,year).beginDate);
+					$('#dateTo').val(shiftDates.getDifferentMonth('next',month,year).endDate);
+				});
+				
+				$('#thisMonth').click(function() 
+				{
+					$('#dateFrom').val(shiftDates.getThisMonth().beginDate);
+					$('#dateTo').val(shiftDates.getThisMonth().endDate);
+				});
+				
+				$('#thisQuarter').click(function() 
+				{
+					$('#dateFrom').val(shiftDates.getThisQuarter().beginDate);
+					$('#dateTo').val(shiftDates.getThisQuarter().endDate);
+				});
+		
+				$('#previousQuarter').click(function() 
+				{
+					if($('#dateFrom').val() != '') {
+						var date = $('#dateFrom').val();
+						var month = date.substr(0,2) - 1;
+						var year = date.substr(6,4);
+					}
+					$('#dateFrom').val(shiftDates.getPreviousQuarter(month,year).beginDate);
+					$('#dateTo').val(shiftDates.getPreviousQuarter(month,year).endDate);
+				});
+				
+				$('#fiscalYear').click(function() 
+				{
+					$('#dateFrom').val(shiftDates.getFiscalYear().beginDate);
+					$('#dateTo').val(shiftDates.getFiscalYear().endDate);
+				});
+			}
+			
+			
+			//////////////////////////////
+			//							//
+			//	   Form Submission		//
+			//							//
+			//////////////////////////////
+			$('#reportForm').submit(function() 
+			{
+				var values = {};
+				
+				// First validate that all fields have been filled out correctly
+				
+				var validation = validateFields(this);
+				
+				if(validation != false) 
+				{
+					// Add the report ID to the values object, it is a hidden input
+					$.each($('#reportForm :hidden'),function()
+					{
+						values[this.id] = this.value;
+					});
+					
+					
+					// loop through each input and store its value in the values object
+					$.each($('#reportForm').serializeArray(),function(i,field) 
+					{
+						values[field.name] = field.value;
+					});
+					
+	
+					// Request the report to run
+					$.ajax({
+						url			: 'customreport/processReport',
+						type		: 'POST',
+						data		: values,
+						dataType	: 'json',
+						success		: function(data) 
+						{
+							$('#secretIFrame').attr('src',data.url);
+							// $('#reportForm').after('<span id="fileLink">Youre report is ready for download. Click <a href="' + data.url +'">here</a> to retrieve it.');
+						}
+					});
+				}
+				
+				// Keep the form from actually submitting
+				return false;
 			});
 		}
-		
-		// EVENT LISTENERS
-		$('#reportForm').submit(function() 
-		{
-			validateFields(this);
-			return false;
-			var values = {};
-			$.each($('#reportForm').serializeArray(),function(i,field) 
-			{
-				values[field.name] = field.value;
-				console.log(field.name + ' : ' + field.value);
-			});
-			
-			// Keep the form from actually submitting
-			return false;
-			
-		});
 	}
 	
 	// form validation
@@ -217,7 +265,7 @@ $(function()
 		{
 			var id = $(this).attr('id');
 			
-			if($(this).attr('valtype') == 'INT') {
+			if($(this).attr('valtype') == 'integer') {
 				
 				// Check to see if numbers only were entered
 				if($(this).val().match(numRegEx)) 
@@ -243,12 +291,12 @@ $(function()
 									$('#'+id).focus();
 								}
 							});
-						
+						// Did not pass validation
 						return false;
 					}
 			}
 			
-			if($(this).attr('valtype') == 'DATETIME') 
+			if($(this).attr('valtype') == 'datetime') 
 			{
 				
 				// Check that the format of the date is correct
@@ -275,13 +323,15 @@ $(function()
 									$('#'+id).focus();
 								}
 							});
+						
+						// Did not pass validation
 						return false;
 					}
 			}
-			
 		});
-		console.log('passed validation!');
-		return false;
+		
+		// Passed validation!
+		return true;
 	}
 	
 	// ---------------------------------//
