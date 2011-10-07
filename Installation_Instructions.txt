@@ -2,3 +2,6 @@
 2. modify ./www/application/config/database.php to match your setup
 3. copy ./www/.htaccess.example ./www/.htaccess
 4. modify the "rewriteBase" line in ./www/.htaccess to match the base of your installation relative to the hostname. (Ex. if the base URL would be http://bi.site.com/reports then the rewriteBase is '/reports')
+5. chmod -R 777 ./www/application/logs
+6. copy ./www/application/config/config.php.example ./www/application/config/config.php
+7. modify the logging threshold and base URL in ./www/application/config/config.php to match your needs
