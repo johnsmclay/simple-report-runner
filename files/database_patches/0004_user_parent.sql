@@ -1,0 +1,1 @@
+ALTER TABLE `user` ADD COLUMN `parent_user_id` INT(10) UNSIGNED AFTER `password`;
