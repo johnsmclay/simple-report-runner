@@ -8,8 +8,8 @@ $(function()
 	$('#reportList').each(function(){
 	 
 		var e = $(this).attr('id');
-		var opened = /opened\.png/;
-		var collapsed = /collapsed\.png/;
+		var opened = new RegExp('opened\.png');
+		var collapsed = new RegExp('collapsed\.png');
 		 
 		$('#'+e+' li > ul').each(function(i) {
 		   	var parent_li = $(this).parent('li');
@@ -21,7 +21,7 @@ $(function()
 		    }
 		    
 		    parent_li.find('a').addClass('jqcNode').css('cursor','pointer').click(function() {
-		    	if ($(this).parent.attr('style').match(collapsed))
+		    	if (collapsed.text($(this).parent().attr('style')) > 0)
 		    	{
 	        		$(this).parent().attr('style','background: url("assets/images/opened.png") 0px 8px no-repeat');
 	        	}
