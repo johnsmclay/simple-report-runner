@@ -108,6 +108,10 @@ $(function()
 				$('input:submit').attr('id','submitReportBtn');
 			}
 			
+			// this class is used to shrink the default size of the jQuery ui button widget which is applied righ after this
+			$('#reportForm input:button, input:submit').addClass('shrinkButton');
+			$('#reportForm input:button, #reportForm input:submit').button();
+			
 			// The back button that causes the report list to be shown again
 			if ($('#backButton'). length > 0)
 			{
