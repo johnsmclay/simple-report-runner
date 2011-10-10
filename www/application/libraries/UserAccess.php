@@ -105,6 +105,7 @@ class UserAccess {
 	
 	/**
 	 * logout method logs a user out
+	 * If that user is logged in as someone else it reverts the session to the original account
 	 *
 	 * Example:
 	 * $this->UserAccess->logout();
@@ -130,6 +131,15 @@ class UserAccess {
 	
 	// --------------------------------------------------------------------
 	
+	/**
+	 * LoginAs method saves current user id and switches the session over to another account
+	 *
+	 * Example:
+	 * $this->UserAccess->LoginAs($user_id);
+	 *
+	 * @param string $user_id
+	 * @result bool $logged_in
+	 */
 	public function LoginAs($user_id)
 	{
 		$current_user_id = $this->CI->session->userdata('user_id');
@@ -142,21 +152,67 @@ class UserAccess {
 	
 	// --------------------------------------------------------------------
 	
+	/**
+	 * CurrentUserId method returns the id of the current user
+	 *
+	 * Example:
+	 * $this->UserAccess->CurrentUserId();
+	 *
+	 * @result int $current_user_id
+	 */
 	public function CurrentUserId()
 	{
 		log_message('debug', __METHOD__.' called ');
-		$this->CI->load->helper('url');
 		$current_user_id = $this->CI->session->userdata('user_id');
-		if(!isset($current_user_id) || $current_user_id == '')
-		{
-			$this->CI->session->set_flashdata('error', 'You must be logged in to view this page.');
-			$this->CI->session->set_flashdata('last_page', uri_string());
-			redirect('/login/form/', 'refresh');
-		}
-		
 		log_message('debug', __METHOD__.' current_user_id = '.$current_user_id);
 		
 		return $current_user_id;
+	}
+	
+	// --------------------------------------------------------------------
+	
+	/**
+	 * LoginRequired method checks to see if the user is logged in and redirects if the user isn't
+	 *
+	 * Example:
+	 * $this->UserAccess->LoginRequired();
+	 *
+	 * @result int $current_user_id
+	 */
+	public function LoginRequired()
+	{
+		log_message('debug', __METHOD__.' called ');
+		
+		$user_id = $this->CurrentUserId();
+		if(!isset($user_id) || $user_id == '')
+		{
+			log_message('debug', __METHOD__.' no user is logged in. Redirecting to login.');
+			$this->RedirectToLogin();
+		}
+		
+		log_message('debug', __METHOD__.' user #'.$user_id.' is logged in');
+		
+		return $current_user_id;
+	}
+	
+	// --------------------------------------------------------------------
+	
+	/**
+	 * RedirectToLogin method referrs the user to the login page
+	 *
+	 * Example:
+	 * $this->UserAccess->RedirectToLogin();
+	 *
+	 * @result bool $successful
+	 */
+	public function RedirectToLogin()
+	{
+		log_message('debug', __METHOD__.' called ');
+		
+		$this->CI->load->helper('url');
+		$this->CI->session->set_flashdata('error', 'You must be logged in to view this page.');
+		$this->CI->session->set_flashdata('last_page', uri_string());
+		redirect('/login/', 'refresh');
 	}
 	
 	// --------------------------------------------------------------------

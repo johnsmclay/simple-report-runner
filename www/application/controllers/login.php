@@ -2,11 +2,25 @@
 
 class Login extends CI_Controller {
 
+	/**
+	 * index method is the default method for the controller
+	 * access by calling /login , /login/ , /login/index , or /login/index/
+	 *
+	 *
+	 * @result bool $successful
+	 */
 	public function index()
 	{
+		// we want the default action to be to send the user to the login form
 		$this->form();
 	}
 	
+	/**
+	 * form method displays login form 
+	 * access by calling /login/form or /login/form/
+	 *
+	 * @result bool $successful
+	 */
 	public function form()
 	{	
 		// we are going to be using session info
