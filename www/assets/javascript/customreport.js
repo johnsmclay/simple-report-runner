@@ -137,7 +137,7 @@ $(function()
 				
 				// this class is used to shrink the default size of the jQuery ui button widget which is applied righ after this
 				$('#reportForm input:button, input:submit').addClass('shrinkButton');
-				$('input:button, input:submit').button();
+				$('#reportForm input:button, #reportForm input:submit').button();
 				$('#dateButtonsGroup').show();
 			}
 			
