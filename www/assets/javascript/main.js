@@ -5,6 +5,10 @@ $(document).ready(function()
 	var url = window.location.pathname;
 	// get the final name in the url path
 	var filename = url.substring(url.lastIndexOf('/')+1);
+	console.log(filename);
+	
+	// hack for getting the main page to highlight
+	if (filename == '') filename = 'customreport';
 	
 	// Set up buttons to use jQuery UI
 	if($('#dateButtons').length > 0)
