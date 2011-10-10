@@ -80,6 +80,7 @@ $(function()
 					$('#reportForm #report').text(post.report_name);
 					$('#reportList').stop(true).hide();
 					$('#reportForm').stop(true).show();
+					$('#reportForm input:button, #reportForm input:submit').button();
 					loadFeatures();
 				});
 	
@@ -95,6 +96,7 @@ $(function()
 	// is available to act upon. 
 	function loadFeatures() 
 	{
+		console.log('called');
 		if ($('#reportForm').length > 0)
 		{
 			
