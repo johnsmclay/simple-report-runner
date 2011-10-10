@@ -152,7 +152,7 @@
 		 */
 		public function downloadReport($filename) 
 		{
-			$path = '/Users/ode/Documents/mi/mil-bi/www/report_holder/';
+			$path = readlink('var/www/newdashboard/report_holder');
 	
 			header("Expires: 0");
 			header("Cache-Control: no-cache, no-store");
