@@ -158,12 +158,12 @@
 			return $resultsArray;
 		}
 		
+		private function _loadReportDB($reportId)
+		{
+			// Load the needed connection.
+			$connection = $this->connection->getConnection($reportId);
+			$this->db2 = $this->load->database($connection,true);
+		}
 	}
 
-	private function _loadReportDB($reportId)
-	{
-		// Load the needed connection.
-		$connection = $this->connection->getConnection($reportId);
-		$this->db2 = $this->load->database($connection,true);
-	}
 ?>
