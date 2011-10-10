@@ -242,6 +242,20 @@ $(function()
 						dataType	: 'json',
 						success		: function(data) 
 						{
+							if (data.status == 'failed')
+							{
+								$('#errorModal').text('').append('<p>The report you requested returned no results.</p>').dialog(
+								{
+									modal			: true,
+									closeOnEscape	: true,
+									draggable		: false,
+									position		: ['center',200],
+									resizable		: false,
+									title			: 'There seems to be a problem',
+									minHeight		: 20,
+									maxHeight		: 100
+								});
+							}
 							$('#secretIFrame').attr('src',data.url);
 							// $('#reportForm').after('<span id="fileLink">Youre report is ready for download. Click <a href="' + data.url +'">here</a> to retrieve it.');
 						}

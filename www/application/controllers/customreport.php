@@ -8,6 +8,7 @@
 			parent::__construct();
 			$this->load->helper('form');
 			$this->load->model('custom_report_model','model');
+			$this->load->model('connection_model','connection');
 		}
 
 		function index()
@@ -33,7 +34,7 @@
 		 * for the associated variables for that report ID it returns an
 		 * array of report variables which is then used in the view to
 		 * dynamiccaly build out the for for the report.
-		 * 
+		 *
 		 * @return mixed Outputs the HTML to the browser for the view that has been called
 		 */ 
 		function buildForm()
@@ -70,7 +71,12 @@
 			$reportId = $_POST['reportID'];
 
 			// Get the query to be run
-			$reportQuery = $this->model->getReportData($reportId);
+			$reportData = $this->model->getReportData($reportId);
+			
+			$reportQuery = $reportData['report_data'];
+			
+			// Get the conneciton array data for running the custom report
+			$connection = $this->connection->getConnection($reportData['connection_id']);
 
 			// Get all of the report variables to loop through them and use them
 			// to match the terms in the query to be replaced
@@ -93,15 +99,24 @@
 							$reportQuery = preg_replace("/~" . $var['text_identifier'] . "~/i", $_POST[$var['text_identifier']], $reportQuery);
 						}
 			}
-
+			
 			// Run the report query and get the results
-			$resultsArray = $this->model->runReportQuery($reportQuery);
+			$resultsArray = $this->model->runReportQuery($reportQuery,$connection);
+			
+			if ($resultsArray == FALSE)
+			{
+				echo json_encode(array(
+					'status'=> 'failed'
+				));
+				exit();
+			}
 			
 			// Create the csv file
 			$this->outputCSV($resultsArray);
 
 			// Return the path to be passed to an iFrame that will cause the file to be downloaded.
 			echo json_encode(array(
+				'status' => 'success',
 				'url' => base_url() . 'customreport/downloadReport/' . $this->filename
 			));
 			exit();
