@@ -43,11 +43,6 @@
 			// ID passed via ajax call
 			$reportId = $_POST['report_id'];
 			
-			// Get the conneciton array data for running the custom report
-			$connection = $this->connection->getConnection($reportId);
-			
-			$this->model->setReportDB($connection);
-			
 			// Retrieve all the report variables	
 			$report_vars = $this->model->getReportVars($reportId);
 
@@ -79,12 +74,8 @@
 			// Get the query to be run
 			$reportData = $this->model->getReportData($reportId);
 			
-			// Get the conneciton array data for running the custom report
-			$connection = $this->connection->getConnection($reportId);
-			
 			$reportQuery = $reportData['report_data'];
 			
-
 			// Get all of the report variables to loop through them and use them
 			// to match the terms in the query to be replaced
 			$reportVars = $this->model->getReportVars($reportId,false);
