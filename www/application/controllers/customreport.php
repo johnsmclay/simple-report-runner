@@ -150,7 +150,8 @@
 		 */
 		public function downloadReport($filename) 
 		{
-			$path = readlink('/var/www/newdashboard/report_holder/');
+			
+			$path = readlink('/var/www/newdashboard') . DIRECTORY_SEPARATOR . 'report_holder/';
 	
 			header("Expires: 0");
 			header("Cache-Control: no-cache, no-store");
