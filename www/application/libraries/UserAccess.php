@@ -130,8 +130,7 @@ class UserAccess {
 			}
 		}
 		
-		$this->CI->session->set_flashdata('error', 'You must be logged in to view this page.');
-		redirect('/login/form/', 'refresh');
+		return true;
 	}
 	
 	// --------------------------------------------------------------------
