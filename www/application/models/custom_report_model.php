@@ -165,5 +165,4 @@
 			$this->db2 = $this->load->database($connection,true);
 		}
 	}
-
 ?>

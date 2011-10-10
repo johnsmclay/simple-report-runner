@@ -1,17 +1,17 @@
 			<div id="sidenav">
 				<ul>
-					<li>
-						<a href="<?=site_url("customers"); ?>">Customer Information</a>
+					<!--<li>
+						<a href="<? // =site_url("customers"); ?>">Customer Information</a>
 					</li>
 					<li>
-						<a href="<?=site_url("enrollments");?>">Enrollments</a>
+						<a href="<? // =site_url("enrollments");?>">Enrollments</a>
 					</li>
 					<li>
-						<a href="<?=site_url("teachers");?>">Teachers</a>
+						<a href="<? // =site_url("teachers");?>">Teachers</a>
 					</li>
 					<li>
-						<a href="<?=site_url("gale");?>">Gale</a>
-					</li>
+						<a href="<? // =site_url("gale");?>">Gale</a>
+					</li>-->
 					<li>
 						<a href="<?=site_url("customreport");?>">Custom Reports</a>
 					</li>

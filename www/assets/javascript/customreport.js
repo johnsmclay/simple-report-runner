@@ -8,7 +8,8 @@ $(function()
 	$('#reportList').each(function(){
 	 
 		var e = $(this).attr('id');
-		var test = false;
+		var opened = /opened\.png/;
+		var collapsed = /collapsed\.png/;
 		 
 		$('#'+e+' li > ul').each(function(i) {
 		   	var parent_li = $(this).parent('li');
@@ -20,14 +21,12 @@ $(function()
 		    }
 		    
 		    parent_li.find('a').addClass('jqcNode').css('cursor','pointer').click(function() {
-		    	if (test == false)
+		    	if (collapsed.test($(this).parent().attr('style')) == true || $(this).parent().attr('style') == undefined)
 		    	{
 	        		$(this).parent().attr('style','background: url("assets/images/opened.png") 0px 8px no-repeat');
-	        		test = true;
 	        	}
 	        		else {
-		        		$(this).parent().attr('style','background:url("assets/images/collapsed.png") 0px 8px no-repeat');
-		        		test = false;
+		        		$(this).parent().attr('style','background: url("assets/images/collapsed.png") 0px 8px no-repeat');
 	        		}
 	        		
 	        	sub_ul.toggle();
@@ -81,6 +80,10 @@ $(function()
 					$('#reportForm #report').text(post.report_name);
 					$('#reportList').stop(true).hide();
 					$('#reportForm').stop(true).show();
+					
+					// this had to be placed here as well otherwise some reports did not get the button styling
+					$('#reportForm input:button, input:submit').addClass('shrinkButton');
+					$('#reportForm input:button, #reportForm input:submit').button();
 					loadFeatures();
 				});
 	
@@ -96,6 +99,7 @@ $(function()
 	// is available to act upon. 
 	function loadFeatures() 
 	{
+		console.log('called');
 		if ($('#reportForm').length > 0)
 		{
 			
@@ -103,6 +107,10 @@ $(function()
 			{
 				$('input:submit').attr('id','submitReportBtn');
 			}
+			
+			// this class is used to shrink the default size of the jQuery ui button widget which is applied righ after this
+			$('#reportForm input:button, input:submit').addClass('shrinkButton');
+			$('#reportForm input:button, #reportForm input:submit').button();
 			
 			// The back button that causes the report list to be shown again
 			if ($('#backButton'). length > 0)
@@ -138,7 +146,7 @@ $(function()
 				
 				// this class is used to shrink the default size of the jQuery ui button widget which is applied righ after this
 				$('#reportForm input:button, input:submit').addClass('shrinkButton');
-				$('input:button, input:submit').button();
+				$('#reportForm input:button, #reportForm input:submit').button();
 				$('#dateButtonsGroup').show();
 			}
 			
@@ -255,9 +263,12 @@ $(function()
 									minHeight		: 20,
 									maxHeight		: 100
 								});
+								return false;
 							}
-							$('#secretIFrame').attr('src',data.url);
-							// $('#reportForm').after('<span id="fileLink">Youre report is ready for download. Click <a href="' + data.url +'">here</a> to retrieve it.');
+								else
+								{
+									$('#secretIFrame').attr('src',data.url);
+								}
 						}
 					});
 				}
