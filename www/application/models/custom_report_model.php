@@ -137,7 +137,7 @@
 		 */
 		function runReportQuery($query,$reportId)
 		{
-			$this->_loadReportDB($reportId)
+			$this->_loadReportDB($reportId);
 			// $tempConnect = $this->load->database($connection,true);
 			
 			$result = $this->db2->query($query);
