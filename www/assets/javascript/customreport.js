@@ -8,7 +8,8 @@ $(function()
 	$('#reportList').each(function(){
 	 
 		var e = $(this).attr('id');
-		var test = false;
+		var opened = /opened\.png/;
+		var collapsed = /collapsed\.png/;
 		 
 		$('#'+e+' li > ul').each(function(i) {
 		   	var parent_li = $(this).parent('li');
@@ -20,14 +21,12 @@ $(function()
 		    }
 		    
 		    parent_li.find('a').addClass('jqcNode').css('cursor','pointer').click(function() {
-		    	if (test == false)
+		    	if ($(this).parent.attr('style').match(collapsed))
 		    	{
 	        		$(this).parent().attr('style','background: url("assets/images/opened.png") 0px 8px no-repeat');
-	        		test = true;
 	        	}
 	        		else {
-		        		$(this).parent().attr('style','background:url("assets/images/collapsed.png") 0px 8px no-repeat');
-		        		test = false;
+		        		$(this).parent().attr('style','background: url("assets/images/collapsed.png") 0px 8px no-repeat');
 	        		}
 	        		
 	        	sub_ul.toggle();
