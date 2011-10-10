@@ -255,9 +255,12 @@ $(function()
 									minHeight		: 20,
 									maxHeight		: 100
 								});
+								return false;
 							}
-							$('#secretIFrame').attr('src',data.url);
-							// $('#reportForm').after('<span id="fileLink">Youre report is ready for download. Click <a href="' + data.url +'">here</a> to retrieve it.');
+								else
+								{
+									$('#secretIFrame').attr('src',data.url);
+								}
 						}
 					});
 				}
