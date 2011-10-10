@@ -7,15 +7,16 @@
 			$this->load->database();
 		}
 		
-		function getConnection($connectionID)
+		function getConnection($reportId)
 		{
 			$query ="
 			SELECT 
-				*
+				connection.*
 			FROM
-				mil_bi.connection
+				mil_bi.report
+				LEFT JOIN mil_bi.connection ON connection.id = report.connection_id 
 			WHERE
-				id = {$connectionID}
+				report.id = {$reportId}
 			";
 
 			$connectionResult = $this->db->query($query);

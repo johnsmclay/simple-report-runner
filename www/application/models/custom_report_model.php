@@ -8,7 +8,12 @@
 		{
 			parent::__construct();
 			$this->db1 = $this->load->database('application',TRUE);
-			$this->db2 = $this->load->database('pglms', TRUE);
+			// $this->db2 = $this->load->database('pglms', TRUE);
+		}
+		
+		function setReportDB($connection)
+		{
+			$this->db2 = $this->load->database($connection,true);
 		}
 		
 		/**
@@ -132,11 +137,11 @@
 		 * @param array $connection An array containing all data needed to connect to the database which the query will be run on
 		 * @return array The data returned from the query after having the header row attached as a new array element
 		 */
-		function runReportQuery($query,$connection)
+		function runReportQuery($query)
 		{
-			$tempConnect = $this->load->database($connection,true);
+			// $tempConnect = $this->load->database($connection,true);
 			
-			$result = $tempConnect->query($query);
+			$result = $db2->query($query);
 			$resultsArray = $result->result_array();
 			$resultCheck = $result->result();
 			if (empty($resultCheck))

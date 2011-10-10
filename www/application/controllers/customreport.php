@@ -2,6 +2,7 @@
 	class Customreport extends CI_Controller {
 
 		var $filename = '';
+		var $reportDB;
 
 		function __construct()
 		{
@@ -42,6 +43,11 @@
 			// ID passed via ajax call
 			$reportId = $_POST['report_id'];
 			
+			// Get the conneciton array data for running the custom report
+			$connection = $this->connection->getConnection($reportId);
+			
+			$this->model->setReportDB($connection);
+			
 			// Retrieve all the report variables	
 			$report_vars = $this->model->getReportVars($reportId);
 
@@ -76,7 +82,7 @@
 			$reportQuery = $reportData['report_data'];
 			
 			// Get the conneciton array data for running the custom report
-			$connection = $this->connection->getConnection($reportData['connection_id']);
+			$connection = $this->connection->getConnection($reportId);
 
 			// Get all of the report variables to loop through them and use them
 			// to match the terms in the query to be replaced
@@ -101,7 +107,7 @@
 			}
 			
 			// Run the report query and get the results
-			$resultsArray = $this->model->runReportQuery($reportQuery,$connection);
+			$resultsArray = $this->model->runReportQuery($reportQuery);
 			
 			if ($resultsArray == FALSE)
 			{
@@ -152,7 +158,7 @@
 		 */
 		public function downloadReport($filename) 
 		{
-			$path = readlink('/var/www/newdashboard/report_holder');
+			$path = readlink('/var/www/newdashboard/report_holder/');
 	
 			header("Expires: 0");
 			header("Cache-Control: no-cache, no-store");
