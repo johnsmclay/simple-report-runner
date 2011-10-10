@@ -79,10 +79,11 @@
 			// Get the query to be run
 			$reportData = $this->model->getReportData($reportId);
 			
-			$reportQuery = $reportData['report_data'];
-			
 			// Get the conneciton array data for running the custom report
 			$connection = $this->connection->getConnection($reportId);
+			
+			$reportQuery = $reportData['report_data'];
+			
 
 			// Get all of the report variables to loop through them and use them
 			// to match the terms in the query to be replaced
@@ -107,7 +108,7 @@
 			}
 			
 			// Run the report query and get the results
-			$resultsArray = $this->model->runReportQuery($reportQuery);
+			$resultsArray = $this->model->runReportQuery($reportQuery,$reportId);
 			
 			if ($resultsArray == FALSE)
 			{

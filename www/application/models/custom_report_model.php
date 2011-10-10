@@ -7,13 +7,9 @@
 		function __construct()
 		{
 			parent::__construct();
+			$this->load->model('connection_model','connection');
 			$this->db1 = $this->load->database('application',TRUE);
 			// $this->db2 = $this->load->database('pglms', TRUE);
-		}
-		
-		function setReportDB($connection)
-		{
-			$this->db2 = $this->load->database($connection,true);
 		}
 		
 		/**
@@ -62,6 +58,8 @@
 		 */
 		function getReportVars($reportId,$runOptions=true)
 		{
+			$this->_loadReportDB($reportId);
+			
 			$reportVarsQuery = "
 				SELECT
 					*
@@ -137,8 +135,9 @@
 		 * @param array $connection An array containing all data needed to connect to the database which the query will be run on
 		 * @return array The data returned from the query after having the header row attached as a new array element
 		 */
-		function runReportQuery($query)
+		function runReportQuery($query,$reportId)
 		{
+			$this->_loadReportDB($reportId)
 			// $tempConnect = $this->load->database($connection,true);
 			
 			$result = $this->db2->query($query);
@@ -159,5 +158,12 @@
 			return $resultsArray;
 		}
 		
+	}
+
+	private function _loadReportDB($reportId)
+	{
+		// Load the needed connection.
+		$connection = $this->connection->getConnection($reportId);
+		$this->db2 = $this->load->database($connection,true);
 	}
 ?>
