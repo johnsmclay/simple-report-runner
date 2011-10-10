@@ -13,14 +13,6 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
-
---
--- Create schema mil_bi
---
-
-CREATE DATABASE IF NOT EXISTS mil_bi;
-USE mil_bi;
-
 --
 -- Definition of table `connection`
 --
@@ -105,7 +97,7 @@ CREATE TABLE `report_permission` (
 --
 
 DROP TABLE IF EXISTS `report_variable`;
-CREATE TABLE `report_variable` (
+CREATE TABLE  `report_variable` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `report_id` int(10) unsigned NOT NULL,
   `variable_type` enum('integer','datetime','string') NOT NULL DEFAULT 'string',
@@ -113,6 +105,7 @@ CREATE TABLE `report_variable` (
   `text_identifier` varchar(60) NOT NULL,
   `display_name` varchar(60) NOT NULL,
   `description` varchar(256) NOT NULL,
+  `options_query` blob,
   PRIMARY KEY (`id`),
   KEY `FK_report_variable_report` (`report_id`),
   CONSTRAINT `FK_report_variable_report` FOREIGN KEY (`report_id`) REFERENCES `report` (`id`)

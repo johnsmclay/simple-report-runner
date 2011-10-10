@@ -100,6 +100,12 @@ class Login extends CI_Controller {
 		redirect($destination,'refresh');
 	}
 	
+	/**
+	 * token method allows a user to login without a username and password if they have the correct token
+	 * access by calling /login/token or /login/token/
+	 *
+	 * @result bool $successful
+	 */
 	public function token()
 	{
 		$token = $this->uri->segment(3);
@@ -118,6 +124,21 @@ class Login extends CI_Controller {
 		$destination = '/';
 		log_message('debug', __METHOD__.' all logged in! Forwarding user to: '.$destination);
 		redirect($destination,'refresh');
+	}
+
+	/**
+	 * logout method clears out the users session with us
+	 * access by calling /login/logout or /login/logout/
+	 *
+	 * @result bool $successful
+	 */
+	public function logout()
+	{
+		$this->load->helper(array('url'));
+		$this->load->library(array('session','UserAccess'));
+		$this->useraccess->logout();
+		$this->session->set_flashdata('error', 'Thank you, come again.');
+		redirect('/login/form/','refresh');
 	}
 }
 

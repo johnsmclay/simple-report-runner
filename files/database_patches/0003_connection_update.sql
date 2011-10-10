@@ -1,4 +1,4 @@
-ALTER TABLE `mil_bi`.`connection` 
+ALTER TABLE `connection` 
 	ADD COLUMN `type` ENUM('MySQL','MSSQL','Brain Honey') NOT NULL DEFAULT 'MySQL' AFTER `hostname`, 
 	ADD COLUMN `database` VARCHAR(60) NOT NULL  AFTER `type`, 
 	ADD COLUMN `dbprefix` VARCHAR(45) NULL  AFTER `database`,

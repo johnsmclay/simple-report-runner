@@ -31,6 +31,7 @@
 					type = "mysql"
 				';
 			$reportListResult = $this->db1->query($reportListQuery);
+			$reportList = array();
 			foreach ($reportListResult->result_array() AS $row)
 			{
 				$reportList[$row['category']][] = array(
