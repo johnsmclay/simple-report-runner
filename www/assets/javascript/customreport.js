@@ -80,6 +80,9 @@ $(function()
 					$('#reportForm #report').text(post.report_name);
 					$('#reportList').stop(true).hide();
 					$('#reportForm').stop(true).show();
+					
+					// this had to be placed here as well otherwise some reports did not get the button styling
+					$('#reportForm input:button, input:submit').addClass('shrinkButton');
 					$('#reportForm input:button, #reportForm input:submit').button();
 					loadFeatures();
 				});
