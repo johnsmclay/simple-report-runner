@@ -8,8 +8,8 @@ $(function()
 	$('#reportList').each(function(){
 	 
 		var e = $(this).attr('id');
-		var opened = new RegExp('opened\.png');
-		var collapsed = new RegExp('collapsed\.png');
+		var opened = /opened\.png/;
+		var collapsed = /collapsed\.png/;
 		 
 		$('#'+e+' li > ul').each(function(i) {
 		   	var parent_li = $(this).parent('li');
