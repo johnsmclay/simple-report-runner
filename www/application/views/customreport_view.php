@@ -24,14 +24,14 @@
 								echo "<ul>";
 								$counter = 1;
 								foreach($reportArray AS $report) {
-										
+									
 									if ($counter % 2 == 0)
 									{
-										echo "<li class='even reportItem'><a id='{$report['id']}'>{$report['display_name']}</a></li>";
+										echo "<li class='even reportItem'><a id='{$report['id']}'>{$report['display_name']} <span class='description'>-- {$report['description']}</span></a></li>";
 									}
 										else
 											{
-												echo "<li class='odd reportItem'><a id='{$report['id']}'>{$report['display_name']}</a></li>";
+												echo "<li class='odd reportItem'><a id='{$report['id']}'>{$report['display_name']} <span class='description'>-- {$report['description']}</span></a></li>";
 											}
 									$counter ++;
 								}

@@ -191,24 +191,6 @@ time, mark, audio, video {
 				}
 				
 			/* Custom Reports (dynamic form) */
-				/*.inputElement {
-					position: relative;
-					margin: 15px 0;
-				}*/
-				.description {
-					display: inline-block;
-					text-align: left;
-					padding: 5px;
-					margin-left: 12px;
-					font-size: .9em;
-				}
-				
-				.descriptionTextarea {
-					display: inline-block;
-					padding: 5px;
-					font-size: .872em;
-				}
-				
 				.textLabel {
 					display: block;
 				}
@@ -234,7 +216,7 @@ time, mark, audio, video {
 					font-weight: normal;
 					list-style: none;
 					line-height: 24px;
-					width: 70%;
+					width: 90%;
 					overflow: visible;
 				}
 				ul#reportList li ul li.even a {
@@ -290,4 +272,12 @@ time, mark, audio, video {
 				form#reportForm fieldset ul li input#submitReportBtn {
 					position: relative;
 					left: 20px;
+				}
+				
+				.description {
+					display: inline-block;
+					text-align: left;
+					padding: 5px;
+					margin-left: 12px;
+					font-size: .8em;
 				}

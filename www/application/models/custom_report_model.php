@@ -23,9 +23,10 @@
 		{
 			$reportListQuery = '
 				SELECT
-					report.id as id,
-					report.display_name,
-					(SELECT rc.title FROM report_category rc WHERE rc.id = report.category_id) AS category
+					id,
+					display_name,
+					(SELECT rc.title FROM report_category rc WHERE rc.id = report.category_id) AS category,
+					description
 				FROM 
 					report
 				WHERE
@@ -37,7 +38,8 @@
 			{
 				$reportList[$row['category']][] = array(
 					'id' => $row['id'],
-					'display_name' => $row['display_name']
+					'display_name' => $row['display_name'],
+					'description' => $row['description']
 				);
 			}
 			$reportListResult->free_result();
