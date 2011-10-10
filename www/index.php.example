@@ -19,6 +19,17 @@
  *
  */
 	define('ENVIRONMENT', 'development');
+	
+/*
+ *---------------------------------------------------------------
+ * USER ACCOUNTS PASSWORD SALT
+ *---------------------------------------------------------------
+ *
+ * Salt used when hashing passwords on user accounts
+ *
+ */
+	define('UA_PASSWORD_SALT', 'PLEASE_PUT_YOUR_OWN_SALT_HERE');
+	
 /*
  *---------------------------------------------------------------
  * ERROR REPORTING
@@ -36,10 +47,13 @@ if (defined('ENVIRONMENT'))
 			error_reporting(E_ALL);
 			ini_set('display_errors',1);
 		break;
-	
-		case 'testing':
+		case 'qa':
+			error_reporting(0);
+			ini_set('display_errors',0);
+		break;
 		case 'production':
 			error_reporting(0);
+			ini_set('display_errors',0);
 		break;
 
 		default:

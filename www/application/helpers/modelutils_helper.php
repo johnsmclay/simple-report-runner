@@ -23,11 +23,22 @@ if ( ! function_exists('fields_required'))
 	function fields_required($required,$data)
 	{
 		foreach($required as $field)
+		{
+			
+			$array_data = $data;
+			if(is_object($data))
+			{
+				$array_data = get_object_vars($data);
+			}
+			
+			log_message('debug', __METHOD__.' Data: '.json_encode($array_data).'  --  Required: '.json_encode($required));
+
 			// make sure it is set
-			if(!isset($data[$field])) return false;
+			if(!isset($array_data[$field])) return false;
 			// make sure it's not blank
-			if($data[$field] == '') return false;
-		
+			if($array_data[$field] == '') return false;
+		}
+			
 		return true;
 	}
 }
@@ -51,6 +62,8 @@ if ( ! function_exists('mysql_date'))
 }
 
 // ------------------------------------------------------------------------
+
+
 
 /* End of file modelutils_helper.php */
 /* Location: ./application/helpers/modelutils_helper.php */
