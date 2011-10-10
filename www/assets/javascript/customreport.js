@@ -21,7 +21,7 @@ $(function()
 		    }
 		    
 		    parent_li.find('a').addClass('jqcNode').css('cursor','pointer').click(function() {
-		    	if (collapsed.test($(this).parent().attr('style')) > 0)
+		    	if (collapsed.test($(this).parent().attr('style')) == true || $(this).parent().attr('style') == undefined)
 		    	{
 	        		$(this).parent().attr('style','background: url("assets/images/opened.png") 0px 8px no-repeat');
 	        	}
