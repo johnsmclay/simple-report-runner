@@ -141,7 +141,7 @@
 		{
 			// $tempConnect = $this->load->database($connection,true);
 			
-			$result = $db2->query($query);
+			$result = $this->db2->query($query);
 			$resultsArray = $result->result_array();
 			$resultCheck = $result->result();
 			if (empty($resultCheck))
