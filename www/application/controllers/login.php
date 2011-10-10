@@ -52,6 +52,13 @@ class Login extends CI_Controller {
 		$this->load->view('login/form',$view_data);
 	}
 	
+	/**
+	 * submit method is the endpoint to which the login form submits
+	 * It evaluates the form and either logs the user in or redirects back to the form
+	 * access by calling /login/submit or /login/submit/
+	 *
+	 * @result bool $successful
+	 */
 	public function submit()
 	{
 		log_message('debug', __METHOD__.' called with username "'.$_REQUEST['username'].'", password "'.$_REQUEST['password'].'".');

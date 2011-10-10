@@ -2,9 +2,14 @@
 
 class UserAccess {
 	
-	/** CLASS VARS **/
+	///////////////////////
+	/// CLASS VARS
+	///////////////////////
 	private $CI;
-	/****************/
+
+	///////////////////////
+	/// PUBLIC FUNCTIONS
+	///////////////////////
 	
     /**
 	 * UserAccess Constructor
@@ -12,7 +17,7 @@ class UserAccess {
 	 * The constructor runs the session routines automatically
 	 * whenever the class is instantiated.
 	 */
-	public function __construct($params = array())
+	public function __construct($options = array())
 	{
 		log_message('debug', "UserAccess Class Initialized");
 

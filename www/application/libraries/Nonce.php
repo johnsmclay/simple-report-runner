@@ -28,6 +28,10 @@ class Nonce {
 	*/
 	protected $nonce_types;
 	
+	///////////////////////
+	/// PUBLIC FUNCTIONS
+	///////////////////////
+	
 	function __construct($options=array())
 	{	
 		// Load the Codeigniter object for use in the class
@@ -47,11 +51,8 @@ class Nonce {
             if (array_key_exists("nonce_types",$options)){ $this->nonce_types=$options["nonce_types"]; }
         }
 		
-    }// end __construct()
-	
-	///////////////////////
-	/// PUBLIC FUNCTIONS
-	///////////////////////
+    }
+	// --------------------------------------------------------------------
 	
 	public function create_nonce($type,  $max_uses = 1, $data = null)
 	{
@@ -82,6 +83,7 @@ class Nonce {
 		// return false if we were unable to create a nonce
 		return $return;
 	}
+	// --------------------------------------------------------------------
 	
 	public function use_nonce($type, $hash)
 	{
@@ -127,6 +129,7 @@ class Nonce {
 		
 		return $response;
 	}
+	// --------------------------------------------------------------------
 	
 	public function invalidate_nonce($type, $hash)
 	{
@@ -145,6 +148,7 @@ class Nonce {
 		
 		return $response;
 	}
+	// --------------------------------------------------------------------
 	
 	///////////////////////
 	/// PRIVATE FUNCTIONS
@@ -177,6 +181,7 @@ class Nonce {
 		
 		return $response;
 	}
+	// --------------------------------------------------------------------
 		
 	private function increment_usage($nonce,$success)
 	{
@@ -199,6 +204,7 @@ class Nonce {
 		$this->ci->db->update('nonce', $data);
 		log_message('debug', __METHOD__.' -- update statement: '.$this->ci->db->last_query());
 	}
+	// --------------------------------------------------------------------
 	
 	private function insert_nonce($type, $max_uses = 1, $data = null)
 	{
@@ -214,12 +220,14 @@ class Nonce {
 		
 		return $this->ci->db->insert_id();
 	}
+	// --------------------------------------------------------------------
 	
 	private function gen_hash()
 	{
 		$date = date("Y-m-d H:i:s");
 		return sha1($date.rand());
 	}
+	// --------------------------------------------------------------------
 	
 	private function get_nonce_by_hash($type, $hash, $skip_deleted = TRUE)
 	{
@@ -248,6 +256,7 @@ class Nonce {
 		// return false if we were unable to find the nonce
 		return FALSE;
 	}
+	// --------------------------------------------------------------------
 }
 /*
 Table Creation:
