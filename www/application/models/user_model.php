@@ -113,7 +113,7 @@ class User_model extends CI_Model
 		
 		$user_array = $user;
 		// convert object to array if is object
-		if(is_object($user)) $user_array = get_object_vars($user_array);
+		if(is_object($user)) $user_array = get_object_vars($user);
 		
 		// required values
 		$req_vals = array('email_address','username','id');
