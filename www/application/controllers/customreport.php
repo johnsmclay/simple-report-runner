@@ -127,7 +127,8 @@
 		{
 			$this->filename = 'report_' . date('m_d_Y') . '_' . mt_rand(1, 999) . '.csv';
 			$handler = fopen("report_holder/" . $this->filename, 'wb');
-			
+			$utf8_bom="\xEF\xBB\xBF";
+			fputs($handler, $utf8_bom);
 			foreach($array AS $val)
 			{
 				fputcsv($handler,$val);
