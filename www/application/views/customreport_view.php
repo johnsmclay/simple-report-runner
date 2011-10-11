@@ -6,7 +6,11 @@
 	</head>
 	<body>
 		<div id="wrapper">
-			<h1 class="arial center">The Reporting Dashboard</h1>	
+			<img id="compLogo" src='<?=base_url();?>/assets/images/compLogo.png' title='Company Logo' />
+			<header>
+				<h1 class="arial center">The Reporting Dashboard</h1>
+			</header>
+			<div class="clear"></div> <!-- clear floats -->	
 			<?php
 				$this->load->view('dependencies/navigation_menu');
 			?>

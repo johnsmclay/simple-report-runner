@@ -20,11 +20,6 @@
 			// Add it to the view data
 			$view_data['reportList'] = $reportList;
 
-			// Allows you to name an individual JavaScript file to be loaded for this page.
-			// Just provide the name of the file, without the .js extension. Then create the
-			// file in the 'assets/javascript' folder located in the root of the codeIgniter folder
-			$view_data['javascript'] = 'customreport';
-			
 			$this->load->view('customreport_view', $view_data);
 		}
 

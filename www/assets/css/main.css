@@ -55,6 +55,30 @@ time, mark, audio, video {
 	div.ui-datepicker {
 		font-size: .925em;
 	}
+	
+	header {
+		width: 895px;
+		background-color: #2A2D25;
+		padding: 10px 0;
+		margin: 10px 0;
+		position: relative;
+		float: right;
+	}
+	
+	header h1 {
+		color: #FFFFFF;
+	}
+	
+	img#compLogo {
+		float: left;
+		margin-right: -150px;
+		background-color: #FFFFFF;
+		padding-top: 20px;
+		margin-top: 11px;
+		padding-bottom: 20px;
+		padding-right: 10px;
+	}
+
 
 /* Specific Styling */
 	.arial {
@@ -234,6 +258,14 @@ time, mark, audio, video {
 					border-right:4px solid #454545;
 					border-left:4px solid #454545;
 				}
+				ul#reportList .description {
+					display: inline-block;
+					text-align: left;
+					padding: 5px;
+					margin-left: 12px;
+					font-size: .8em;
+				}
+
 
 				
 				/* ---- report form styles ------ */
@@ -272,12 +304,4 @@ time, mark, audio, video {
 				form#reportForm fieldset ul li input#submitReportBtn {
 					position: relative;
 					left: 20px;
-				}
-				
-				.description {
-					display: inline-block;
-					text-align: left;
-					padding: 5px;
-					margin-left: 12px;
-					font-size: .8em;
 				}

@@ -6,7 +6,9 @@
 	</head>
 	<body>
 		<div id="wrapper">
-			<h1 class="arial center">The Dashboard</h1>	
+			<header>
+				<h1 class="arial center">The Dashboard</h1>
+			</header>	
 			<?
 				$this->load->view('dependencies/navigation_menu');
 			?>			
