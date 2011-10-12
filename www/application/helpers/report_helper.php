@@ -25,8 +25,9 @@ if (! function_exists('outputCSV'))
 {
 	function outputCSV($array)
 	{
+		$folder = "report_holder/";
 		$filename = 'report_' . date('m_d_Y') . '_' . mt_rand(1, 9999) . '.csv';
-		$handler = fopen("report_holder/" . $filename, 'wb');
+		$handler = fopen($folder . $filename, 'wb');
 		$utf8_bom="\xEF\xBB\xBF";
 		fwrite($handler, $utf8_bom);
 		foreach($array AS $val)
@@ -35,7 +36,7 @@ if (! function_exists('outputCSV'))
 		}
 		fclose($handler);
 		
-		return $filename;
+		return $folder.$filename;
 	}
 }
  

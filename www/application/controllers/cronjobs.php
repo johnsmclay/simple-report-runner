@@ -29,9 +29,16 @@ class Cronjobs extends CI_Controller {
 		// run the scheduled reports one at a time
 		foreach($scheduled_reports as $scheduled_report)
 		{
-			//TODO: run report
+			//run report
+			$this->load->model('Custom_report_model');
+			$result_array = $this->Custom_report_model->runReport();
 			
-			//TODO: get user
+			//get CSV url
+			
+			
+			//get user
+			$this->load->model('User_model');
+			$user = $this->User_model->GetUserByID();
 			
 			//TODO: get send email (only one email per user?)
 		}
