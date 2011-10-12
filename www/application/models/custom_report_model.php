@@ -1,8 +1,8 @@
 <?php
 	class Custom_report_model extends CI_Model {
 		
-		var $db1 = null; // Database connection 1
-		var $db2 = null; // Database connection 2
+		private $db1 = null; // Database connection 1
+		private $db2 = null; // Database connection 2
 			
 		function __construct()
 		{
@@ -19,7 +19,7 @@
 		 * 
 		 * @return array List of all reports available in the database of type MySQL
 		 */
-		function getReportList()
+		public function getReportList()
 		{
 			$reportListQuery = '
 				SELECT
@@ -58,7 +58,7 @@
 		 * @param bool $runOptions Whether or not the options query (if not empty) should be run by the MySQL conneciton
 		 * @return array All report variables for the requested report id
 		 */
-		function getReportVars($reportId,$runOptions=true)
+		public function getReportVars($reportId,$runOptions=true)
 		{
 			$this->_loadReportDB($reportId);
 			
@@ -108,7 +108,7 @@
 		 * @param int $reportId The id of the report being requested
 		 * @return string The pre-built query for the requested report
 		 */
-		function getReportData($reportId) 
+		public function getReportData($reportId) 
 		{
 			$getReportDataQuery = "
 				SELECT
@@ -133,16 +133,40 @@
 		 * so that all variables needed in the query have been replaced by the values retrieved
 		 * from the UI form data
 		 * 
-		 * @param string $query The query to be run
-		 * @param array $connection An array containing all data needed to connect to the database which the query will be run on
+		 * @param int $reportId The ID number of the requested report
+		 * @param 
 		 * @return array The data returned from the query after having the header row attached as a new array element
 		 */
-		function runReportQuery($query,$reportId)
+		public function runReport($reportId,$reportVars)
 		{
 			$this->_loadReportDB($reportId);
 			// $tempConnect = $this->load->database($connection,true);
 			
-			$result = $this->db2->query($query);
+			// Get the query to be run
+			$reportData = $this->getReportData($reportId);
+			
+			// Query to be prepped for running
+			$reportQuery = $reportData['report_data'];
+
+			// Loop through the report variables and replace the matching
+			// string in the report query with the appropriate $_POST variable value.
+			foreach ($reportVars AS $var)
+			{
+				if ($var['text_identifier'] == 'date_range')
+				{
+					$reportQuery = preg_replace("/~date_range~/", '"' . date('Y-m-d H:i:s', strtotime($_POST['start_date'])) . '" AND "' . date('Y-m-d H:i:s', strtotime($_POST['end_date'])) . '"', $reportQuery);
+				}
+					elseif ($var['variable_type'] == 'string')
+					{
+						$reportQuery = preg_replace("/~" . $var['text_identifier'] . "~/i", "'" . $_POST[$var['text_identifier']] . "'", $reportQuery);
+					}
+						else
+						{
+							$reportQuery = preg_replace("/~" . $var['text_identifier'] . "~/i", $_POST[$var['text_identifier']], $reportQuery);
+						}
+			}
+			
+			$result = $this->db2->query($reportQuery);
 			$resultsArray = $result->result_array();
 			$resultCheck = $result->result();
 			if (empty($resultCheck))
@@ -150,12 +174,6 @@
 				return false;
 			}
 			$result->free_result();
-			
-			// Get the database fields from the array keys whcih are used for the
-			// CSV files column headers row.
-			$headerRow = array_keys($resultsArray[0]);
-			
-			array_unshift($resultsArray, $headerRow);
 			
 			return $resultsArray;
 		}

@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	class Reportbuilder extends CI_Controller {
 		function __construct()
 		{
@@ -8,7 +8,7 @@
 		
 		function index()
 		{
-			$this->load->view('reportbuilder_view');
+			$this->load->view('customreports/reportbuilder_view');
 		}
 	}
 ?>

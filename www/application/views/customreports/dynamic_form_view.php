@@ -120,6 +120,7 @@
 					}
 
 				}
+				echo '<li class="inputElement"><label>Report Format:</label>CSV <input type="radio" name="reportFormat" checked="checked" value="csv" /> &nbsp;HTML <input type="radio" name="reportFormat" value="html" /></li>';
 				echo '<li class="inputElement">';
 				echo form_submit('reportSubmit', 'Get Report');
 				echo '</li>';

@@ -95,3 +95,32 @@
 		padding-left: 5px;
 		margin-left: 12px;
 	}
+
+
+/* ------ HTML Table Styles ------ */
+	table {
+		border-collapse: collapse;
+	}
+
+	div#htmlTable thead tr {
+		background-color: #B5CAFA;
+	}
+	div#htmlTable table th {
+		border-top:4px solid #AABCFE;
+		color: #039;
+		font-size: 1.2em;
+		text-align: left;
+		background-color: #B9C9FE;
+		border-bottom:1px dashed #000;
+		border-right:1px solid #B9C9FE;
+		padding: 10px;
+	}
+	div#htmlTable table td {
+		padding: 10px;
+		background-color: #E8EDFF;
+		color: #669;
+		border-top:1px solid transparent;
+		border-bottom:1px solid #FFF;
+		border-right:1px solid rgb(174,186,251);
+		border-left:1px solid rgb(174,186,251);
+	}

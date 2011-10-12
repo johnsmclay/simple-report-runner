@@ -1,18 +1,17 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 	class Customreport extends CI_Controller {
 
-		var $filename = '';
-		var $reportDB;
+		private $reportDB;
 
 		function __construct()
 		{
 			parent::__construct();
-			$this->load->helper('form');
+			$this->load->helper(array('form','report_helper'));
 			$this->load->model('custom_report_model','model');
 			$this->load->model('connection_model','connection');
 		}
 
-		function index()
+		public function index()
 		{
 			// Get the list of all reports
 			$reportList = $this->model->getReportList();
@@ -20,7 +19,7 @@
 			// Add it to the view data
 			$view_data['reportList'] = $reportList;
 
-			$this->load->view('customreport_view', $view_data);
+			$this->load->view('customreports/customreport_view', $view_data);
 		}
 
 		/** buildForm
@@ -31,9 +30,10 @@
 		 * array of report variables which is then used in the view to
 		 * dynamiccaly build out the for for the report.
 		 *
+		 * @access public
 		 * @return mixed Outputs the HTML to the browser for the view that has been called
 		 */ 
-		function buildForm()
+		public function buildForm()
 		{
 			// ID passed via ajax call
 			$reportId = $_POST['report_id'];
@@ -51,7 +51,7 @@
 
 			// Calling the load view method in this instance will immediately
 			// send back the view (HTML) to the ajax method that called this function
-			$this->load->view('dynamic_form_view', $view_data);
+			$this->load->view('customreports/dynamic_form_view', $view_data);
 		}
 
 		/**
@@ -59,42 +59,22 @@
 		 *
 		 * Called via AJAX, recieves $_POST variables to be used in  the report query.
 		 * 
+		 * @access public
 		 * @return mixed Echo's out the json encoded url for an iFrame src attribute in the view
 		 */ 
-		function processReport()
+		public function processReport()
 		{
 
 			$reportId = $_POST['reportID'];
+			$reportFormat = $_POST['reportFormat']; // HTML or CSV?
 
-			// Get the query to be run
-			$reportData = $this->model->getReportData($reportId);
-			
-			$reportQuery = $reportData['report_data'];
-			
 			// Get all of the report variables to loop through them and use them
 			// to match the terms in the query to be replaced
 			$reportVars = $this->model->getReportVars($reportId,false);
-
-			// Loop through the report variables and replace the matching
-			// string in the report query with the appropriate $_POST variable value.
-			foreach ($reportVars AS $var)
-			{
-				if ($var['text_identifier'] == 'date_range')
-				{
-					$reportQuery = preg_replace("/~date_range~/", '"' . date('Y-m-d H:i:s', strtotime($_POST['start_date'])) . '" AND "' . date('Y-m-d H:i:s', strtotime($_POST['end_date'])) . '"', $reportQuery);
-				}
-					elseif ($var['variable_type'] == 'string')
-					{
-						$reportQuery = preg_replace("/~" . $var['text_identifier'] . "~/i", "'" . $_POST[$var['text_identifier']] . "'", $reportQuery);
-					}
-						else
-						{
-							$reportQuery = preg_replace("/~" . $var['text_identifier'] . "~/i", $_POST[$var['text_identifier']], $reportQuery);
-						}
-			}
 			
 			// Run the report query and get the results
-			$resultsArray = $this->model->runReportQuery($reportQuery,$reportId);
+			$resultsArray = $this->model->runReport($reportId,$reportVars);
+			
 			
 			if ($resultsArray == FALSE)
 			{
@@ -104,37 +84,32 @@
 				exit();
 			}
 			
-			// Create the csv file
-			$this->outputCSV($resultsArray);
-
-			// Return the path to be passed to an iFrame that will cause the file to be downloaded.
-			echo json_encode(array(
-				'status' => 'success',
-				'url' => base_url() . 'customreport/downloadReport/' . $this->filename
-			));
-			exit();
-		}
-
-		/**
-		 * outputCSV
-		 * 
-		 * Creates the CSV file when passed an array of information retrieved
-		 * via the report database query.
-		 * 
-		 * @param array $array The array of data to be encoded into a CSV file
-		 */
-		private function outputCSV($array)
-		{
-			$this->filename = 'report_' . date('m_d_Y') . '_' . mt_rand(1, 999) . '.csv';
-			$handler = fopen("report_holder/" . $this->filename, 'wb');
-			$utf8_bom="\xEF\xBB\xBF";
-			fputs($handler, $utf8_bom);
-			foreach($array AS $val)
+			// Send the report information to the correct output method
+			if ($reportFormat == 'csv')
 			{
-				fputcsv($handler,$val);
+				// Create the csv file
+				$filename = outputCSV($resultsArray);
+				// Return the path to be passed to an iFrame that will cause the file to be downloaded.
+				echo json_encode(array(
+					'type' => $reportFormat,
+					'url' => base_url() . 'customreport/downloadReport/' . $filename
+				));
+				exit();
 			}
-			fclose($handler);
+				elseif($reportFormat == 'html')
+				{
+					$headers = array_keys($resultsArray[0]);
+					$html = createHTMLTable($resultsArray,$headers);
+					
+					echo json_encode(array(
+						'type' => $reportFormat,
+						'htmlTable' => $html
+					));
+					exit();
+				}
 		}
+
+		
 		
 		/**
 		 * downloadReport
@@ -142,6 +117,7 @@
 		 * This is the target of an iFrame in the view. Its purpose is
 		 * to offer up the generated report as a csv download
 		 * 
+		 * @access public
 		 * @param string $filename The name of the file to be downloaded
 		 */
 		public function downloadReport($filename) 
@@ -159,6 +135,7 @@
 			unlink($path . $filename);
 			exit();
 		}
+		
 
 		function test($exit = false)
 		{

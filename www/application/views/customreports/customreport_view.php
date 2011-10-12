@@ -53,6 +53,7 @@
 				</div>
 			</div>
 			<div class="clear"></div>
+			<div id="htmlTable"></div>
 		</div>
 		<?
 		// The secret iFrame is for pushing an automatic download

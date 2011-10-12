@@ -99,7 +99,6 @@ $(function()
 	// is available to act upon. 
 	function loadFeatures() 
 	{
-		console.log('called');
 		if ($('#reportForm').length > 0)
 		{
 			
@@ -265,10 +264,14 @@ $(function()
 								});
 								return false;
 							}
-								else
+								else if(data.type == 'csv')
 								{
 									$('#secretIFrame').attr('src',data.url);
 								}
+									else if(data.type == 'html')
+									{
+										$('#htmlTable').append(data.htmlTable);
+									}
 						}
 					});
 				}
@@ -283,7 +286,7 @@ $(function()
 	function validateFields(form) 
 	{
 		var numRegEx = /^[0-9]*$/;
-		var dateRegEx = /^(0?[1-9]|1[012])\/(0?[1-9]|[12][1-9]|3[01])\/20[01][0-9]$/;
+		var dateRegEx = /^(0?[1-9]|1[012])\/(0?[1-9]|[12][1-9]|3[01]|10)\/20[01][0-9]$/;
 		
 		// Iterate through all form elements and test their value for the correct data type
 		$('#' + $(form).attr('id') + ' :input').each(function()
