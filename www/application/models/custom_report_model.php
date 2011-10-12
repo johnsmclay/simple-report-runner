@@ -137,7 +137,7 @@
 		 * @param 
 		 * @return array The data returned from the query after having the header row attached as a new array element
 		 */
-		public function runReport($reportId,$reportVars)
+		public function runReport($reportId,$reportValues=array())
 		{
 			$this->_loadReportDB($reportId);
 			// $tempConnect = $this->load->database($connection,true);
@@ -147,6 +147,8 @@
 			
 			// Query to be prepped for running
 			$reportQuery = $reportData['report_data'];
+			
+			$reportVars = $this->getReportVars($reportId,false);
 
 			// Loop through the report variables and replace the matching
 			// string in the report query with the appropriate $_POST variable value.
@@ -154,15 +156,15 @@
 			{
 				if ($var['text_identifier'] == 'date_range')
 				{
-					$reportQuery = preg_replace("/~date_range~/", '"' . date('Y-m-d H:i:s', strtotime($_POST['start_date'])) . '" AND "' . date('Y-m-d H:i:s', strtotime($_POST['end_date'])) . '"', $reportQuery);
+					$reportQuery = preg_replace("/~date_range~/", '"' . date('Y-m-d H:i:s', strtotime($reportValues['start_date'])) . '" AND "' . date('Y-m-d H:i:s', strtotime($_POST['end_date'])) . '"', $reportQuery);
 				}
 					elseif ($var['variable_type'] == 'string')
 					{
-						$reportQuery = preg_replace("/~" . $var['text_identifier'] . "~/i", "'" . $_POST[$var['text_identifier']] . "'", $reportQuery);
+						$reportQuery = preg_replace("/~" . $var['text_identifier'] . "~/i", "'" . $reportValues[$var['text_identifier']] . "'", $reportQuery);
 					}
 						else
 						{
-							$reportQuery = preg_replace("/~" . $var['text_identifier'] . "~/i", $_POST[$var['text_identifier']], $reportQuery);
+							$reportQuery = preg_replace("/~" . $var['text_identifier'] . "~/i", $reportValues[$var['text_identifier']], $reportQuery);
 						}
 			}
 			

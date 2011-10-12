@@ -69,7 +69,6 @@
 		 */ 
 		public function processReport()
 		{
-
 			$reportId = $_POST['reportID'];
 			$reportFormat = $_POST['reportFormat']; // HTML or CSV?
 
@@ -78,7 +77,7 @@
 			$reportVars = $this->model->getReportVars($reportId,false);
 			
 			// Run the report query and get the results
-			$resultsArray = $this->model->runReport($reportId,$reportVars);
+			$resultsArray = $this->model->runReport($reportId,$_POST);
 			
 			
 			if ($resultsArray == FALSE)
@@ -89,11 +88,13 @@
 				exit();
 			}
 			
+			$headers = array_keys($resultsArray[0]);
+			
 			// Send the report information to the correct output method
 			if ($reportFormat == 'csv')
 			{
 				// Create the csv file
-				$filename = outputCSV($resultsArray);
+				$filename = outputCSV($resultsArray,$headers);
 				// Return the path to be passed to an iFrame that will cause the file to be downloaded.
 				echo json_encode(array(
 					'type' => $reportFormat,
@@ -103,8 +104,7 @@
 			}
 				elseif($reportFormat == 'html')
 				{
-					$headers = array_keys($resultsArray[0]);
-					$html = createHTMLTable($resultsArray,$headers);
+					$html = createHTMLTable($resultsArray,$headers,10);
 					
 					echo json_encode(array(
 						'type' => $reportFormat,
@@ -125,19 +125,17 @@
 		 * @access public
 		 * @param string $filename The name of the file to be downloaded
 		 */
-		public function downloadReport($filename) 
+		public function downloadReport($path,$filename) 
 		{
-			$path = 'report_holder/';
-	
 			header("Expires: 0");
 			header("Cache-Control: no-cache, no-store");
 			header("Content-Description: File Transfer");
 			header("Content-type: text/csv");
 			header("Content-Disposition: attachment; filename=$filename");
-			header("Content-Length: " . filesize($path . $filename));
-			readfile($path . $filename);
+			header("Content-Length: " . filesize($path . DIRECTORY_SEPARATOR . $filename));
+			readfile($path . DIRECTORY_SEPARATOR . $filename);
 			
-			unlink($path . $filename);
+			unlink($path . DIRECTORY_SEPARATOR . $filename);
 			exit();
 		}
 		

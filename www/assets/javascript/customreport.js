@@ -4,8 +4,27 @@ $(function()
 	
 	$('#reportForm').hide();
 	
+	$('tr').live('mouseover mouseout',function(event)
+	{
+		if (event.type == "mouseover")
+		{
+			$(this).children().each(function()
+			{
+				$(this).addClass('change');
+			})
+		}
+			else
+			{
+				$(this).children().each(function()
+				{
+					$(this).removeClass('change');
+				});
+			}
+	});
+	
 	// This creates the sliding menu animations
-	$('#reportList').each(function(){
+	$('#reportList').each(function()
+	{
 	 
 		var e = $(this).attr('id');
 		var opened = /opened\.png/;
@@ -251,6 +270,10 @@ $(function()
 						{
 							if (data.status == 'failed')
 							{
+								if($('#htmlTable table').length > 0)
+								{
+									$('#htmlTable table').remove();
+								}
 								$('#errorModal').text('').append('<p>The report you requested returned no results.</p>').dialog(
 								{
 									modal			: true,
@@ -266,10 +289,15 @@ $(function()
 							}
 								else if(data.type == 'csv')
 								{
-									$('#secretIFrame').attr('src',data.url);
+									console.log(unescape(data.url));
+									$('#secretIFrame').attr('src', data.url);
 								}
 									else if(data.type == 'html')
 									{
+										if($('#htmlTable table').length > 0)
+										{
+											$('#htmlTable table').remove();
+										}
 										$('#htmlTable').append(data.htmlTable);
 									}
 						}

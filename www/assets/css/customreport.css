@@ -124,3 +124,6 @@
 		border-right:1px solid rgb(174,186,251);
 		border-left:1px solid rgb(174,186,251);
 	}
+	div#htmlTable td.change {
+		background-color: rgb(210,217,251);
+	}

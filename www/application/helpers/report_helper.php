@@ -23,13 +23,19 @@ if ( !defined('BASEPATH'))
  */
 if (! function_exists('outputCSV'))
 {
-	function outputCSV($array)
+	function outputCSV($array,$headers=array())
 	{
 		$folder = "report_holder/";
 		$filename = 'report_' . date('m_d_Y') . '_' . mt_rand(1, 9999) . '.csv';
 		$handler = fopen($folder . $filename, 'wb');
 		$utf8_bom="\xEF\xBB\xBF";
 		fwrite($handler, $utf8_bom);
+		
+		if(! empty($headers))
+		{
+			fputcsv($handler,$headers);
+		}
+		
 		foreach($array AS $val)
 		{
 			fputcsv($handler,$val);
@@ -48,8 +54,9 @@ if (! function_exists('outputCSV'))
  */
 if (! function_exists('createHTMLTable'))
 {
-	function createHTMLTable($array, $headers = array())
+	function createHTMLTable($array, $headers = array(), $limit=null)
 	{
+		$count = (is_int($limit) && $limit) > 0 ? $limit : null;
 
 		$html = "<table>";
 
@@ -67,15 +74,19 @@ if (! function_exists('createHTMLTable'))
 		}
 
 		$html .= "<tbody>";
-
+		if($count > 0)
+		{
 		foreach ($array AS $arrays)
 		{
-			$html .= "<tr>";
-			foreach ($arrays AS $val)
-			{
-				$html .= "<td>{$val}</td>";
-			}
-			$html .= "</tr>";
+				$html .= "<tr>";
+				foreach ($arrays AS $val)
+				{
+					$html .= "<td>{$val}</td>";
+				}
+				$html .= "</tr>";
+				--$count;
+				echo "in here";
+		}
 		}
 		$html .= "</tbody></table>";
 
