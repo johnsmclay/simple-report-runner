@@ -4,6 +4,10 @@
 		{
 			parent::__construct();
 			$this->load->model('reportbuilder_model','report');
+			//----- This page requires login-----
+			$this->load->library('UserAccess');
+			$this->useraccess->LoginRequired();
+			//-----------------------------------
 		}
 		
 		function index()
