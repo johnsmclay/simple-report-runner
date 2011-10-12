@@ -9,6 +9,11 @@
 			$this->load->helper(array('form','report_helper'));
 			$this->load->model('custom_report_model','model');
 			$this->load->model('connection_model','connection');
+			
+			//----- This page requires login-----
+			$this->load->library('UserAccess');
+			$this->useraccess->LoginRequired();
+			//-----------------------------------
 		}
 
 		public function index()
