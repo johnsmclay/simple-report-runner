@@ -196,7 +196,7 @@ class UserAccess {
 		
 		log_message('debug', __METHOD__.' user #'.$user_id.' is logged in');
 		
-		return $current_user_id;
+		return true;
 	}
 	
 	// --------------------------------------------------------------------
