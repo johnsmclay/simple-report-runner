@@ -5,6 +5,7 @@ class Useradmin extends CI_Controller {
 	function __construct()
 	{
 		parent::__construct();
+		$this->load->model('User_model');
 		//----- This page requires login-----
 		$this->load->library('UserAccess');
 		$this->useraccess->LoginRequired();
@@ -21,7 +22,26 @@ class Useradmin extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->view('useradmin/admin');
+		//if($role = 'admin')
+		//{
+			$view_data = array(
+				'active_users' =>  $this->User_model->GetAllActive(),
+			);
+			$this->load->view('useradmin/admin',$view_data);
+		//}else{
+		//	$this->editaccount($this->useraccess->CurrentUserId());
+		//}
+	}
+	
+	public function editaccount($user_id)
+	{
+		if(!isset($user_id)) $this->index();
+		//if($role != 'admin' && $user_id != $this->useraccess->CurrentUserId()) $this->index();
+		
+		$view_data = array(
+			'user_id' => $user_id,
+		);
+		$this->load->view('useradmin/editaccount',$view_data);
 	}
 	
 	

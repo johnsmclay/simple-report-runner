@@ -306,6 +306,35 @@ class User_model extends CI_Model
 		}
 	}
 	
+	/**
+	 * GetAllActive method retreives a user object from the database by ID
+	 *
+	 * @result array(stdObject) $users
+	 */
+	public function GetAllActive()
+	{
+		// read from database
+		$query = $this->db->where('deleted',null);
+		$query = $this->db->or_where('deleted >',mysql_date());
+		$query = $this->db->get($this->db_table);
+		$result = $query->result();
+		log_message('debug', __METHOD__.' query result count '.count($result));
+		
+		// return object if there are any
+		if(count($result) >= 1)
+		{
+			$users = array();
+			foreach($result as $user)
+			{
+				unset($user->password);
+				$users[] = $user;
+			}
+			return $users;
+		}else{
+			return false;
+		}
+	}
+	
 	// --------------------------------------------------------------------
 	
 	/**

@@ -3,5 +3,12 @@
 	'header1' => 'The Reporting Dashboard',
 	'header2' => 'User Administration',
 )); ?>
-						<?php $this->load->view('dependencies/footer'); ?>
+						
+						<?php
+						echo form_open('useradmin/adduser');
+						foreach($active_users as $active_user)
+						{
+							
+						}
+						?>
 <?php $this->load->view('dependencies/footer'); ?>
