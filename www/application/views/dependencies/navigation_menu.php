@@ -17,8 +17,10 @@
 					</li>
 					<li>
 						<a href="<?=site_url("reportbuilder");?>">Report Builder</a>
-					</li>					
-						
+					</li>
+					<li>
+						<a href="<?=site_url("useradmin");?>">User Admin</a>
+					</li>
 					<!-- 
 						This runs via cron job, not necessary to have direct access<li>
 						<a href="_mil_enrollments.php">Biweekly MIL Enrollments</a>

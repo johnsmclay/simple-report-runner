@@ -1,4 +1,4 @@
-<?php $this->load->view('templates/header',array(
+<?php $this->load->view('dependencies/header',array(
 	'title' => 'Reporting Dashboard',
 	'header1' => 'The Reporting Dashboard',
 	'header2' => 'Middlebury Interactive Reporting',
@@ -32,4 +32,4 @@
 						?>
 						<div id="dynamicForm">
 						</div>
-<? $this->load->view('templates/footer'); ?>
+<?php $this->load->view('dependencies/footer'); ?>

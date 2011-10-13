@@ -1,4 +1,4 @@
-<?php $this->load->view('templates/header',array(
+<?php $this->load->view('dependencies/header',array(
 	'title' => 'Report Builder',
 	'header1' => 'The Reporting Dashboard',
 	'header2' => 'Middlebury Interactive Reporting',
@@ -76,4 +76,4 @@
 								
 							</div>
 						</form>
-<? $this->load->view('templates/footer'); ?>
+<?php $this->load->view('dependencies/footer'); ?>
