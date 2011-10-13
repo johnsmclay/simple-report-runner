@@ -1,6 +1,5 @@
 <?php 
 if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-if ( ! defined('CRON') || CRON != TRUE) exit('This controller is only meant to be called via the CLI in a cron job.');
 
 class Cronjobs extends CI_Controller {
 
@@ -17,6 +16,12 @@ class Cronjobs extends CI_Controller {
 	public function index()
 	{
 		// Do nothing.  This will not be called outside of the CLI.
+	}
+	
+	function __construct()
+	{
+		parent::__construct();
+		if ( ! $this->input->is_cli_request()) exit('This controller is only meant to be called via the CLI in a cron job.');
 	}
 	
 	public function processscheduledreports()
