@@ -53,6 +53,7 @@
 				</div>
 			</div>
 			<div class="clear"></div>
+			<div id="scheduleReport"></div>
 			<div id="htmlTable"></div>
 		</div>
 		<?
