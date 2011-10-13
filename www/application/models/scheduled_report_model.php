@@ -266,10 +266,10 @@ class Scheduled_report_model extends CI_Model
 		
 		// read from database
 		$query = 'SELECT * FROM '.$this->db_table.' WHERE ';
-		$query .= "(day_of_month IN ('*','".date('d')."','".date('j')."') ";
-		$query .= "AND (month_of_year IN ('*','".date('F')."','".date('m')."','".date('M')."','".date('n')."') ";
-		$query .= "AND (day_of_week IN ('*','".date('D')."','".date('l')."','".date('N')."','".date('W')."') ";
-		$query .= "AND (hour_of_day IN ('*','".date('G')."','".date('H')."') ";
+		$query .= "day_of_month IN ('*','".date('d')."','".date('j')."') ";
+		$query .= "AND month_of_year IN ('*','".date('F')."','".date('m')."','".date('M')."','".date('n')."') ";
+		$query .= "AND day_of_week IN ('*','".date('D')."','".date('l')."','".date('N')."','".date('W')."') ";
+		$query .= "AND hour_of_day IN ('*','".date('G')."','".date('H')."') ";
 		log_message('debug', __METHOD__.' query for reports due: '.$query);
 		$result = $this->db->query($query)->result();
 		log_message('debug', __METHOD__.' query result count '.count($result));

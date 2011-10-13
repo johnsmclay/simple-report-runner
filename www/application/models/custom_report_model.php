@@ -1,15 +1,42 @@
 <?php
 	class Custom_report_model extends CI_Model {
 		
+		/** CLASS VARS **/
+		private $db_table = 'report';
 		private $db1 = null; // Database connection 1
 		private $db2 = null; // Database connection 2
-			
+		/****************/
+		
 		function __construct()
 		{
 			parent::__construct();
 			$this->load->model('connection_model','connection');
 			$this->db1 = $this->load->database('application',TRUE);
 			// $this->db2 = $this->load->database('pglms', TRUE);
+		}
+		
+		/**
+		 * GetByID method retreives a user object from the database by ID
+		 *
+		 * @param int $object_id
+		 * @result stdObject $object
+		 */
+		public function GetByID($object_id)
+		{
+			if(!isset($object_id)) return false;
+			
+			// read from database
+			$result = $this->db->get_where($this->db_table,array('id'=>$object_id,),1)->result();
+			log_message('debug', __METHOD__.' query result count '.count($result));
+			
+			// return object if there are any
+			if(count($result) >= 1)
+			{
+				$object = $result[0];
+				return $object;
+			}else{
+				return false;
+			}
 		}
 		
 		/**
