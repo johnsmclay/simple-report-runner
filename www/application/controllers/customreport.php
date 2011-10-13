@@ -6,7 +6,7 @@
 		function __construct()
 		{
 			parent::__construct();
-			$this->load->helper(array('form','report_helper','MY_date_helper'));
+			$this->load->helper(array('form','report_helper','date_helper'));
 			$this->load->model('custom_report_model','model');
 			$this->load->model('connection_model','connection');
 			
