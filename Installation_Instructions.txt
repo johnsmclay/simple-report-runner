@@ -6,7 +6,7 @@
 6. copy ./www/application/config/config.php.example ./www/application/config/config.php
 7. modify the logging threshold and base URL in ./www/application/config/config.php to match your needs
 8. modify the encryption_key in ./www/application/config/config.php to the encryption key for your environment
-8. copy www/index.php.example www/index.php
-9. modify the ENVIRONMENT in www/index.php to fit your needs
-10. modify the UA_PASSWORD_SALT in www/index.php to the salt for your environment
-11. chmod -R 777 ./www/report_holder/
+9. copy www/index.php.example www/index.php
+10. modify the ENVIRONMENT in www/index.php to fit your needs
+11. modify the UA_PASSWORD_SALT in www/index.php to the salt for your environment
+12. chmod -R 777 ./www/report_holder/
