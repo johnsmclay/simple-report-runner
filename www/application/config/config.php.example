@@ -15,7 +15,8 @@
 |
 */
 
-$config['base_url']	= 'http://'.$_SERVER['HTTP_HOST'].'/';
+$_config_host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : 'bi.middil.com';
+$config['base_url']	= 'http://'.$_config_host.'/';
 
 /*
 |--------------------------------------------------------------------------
