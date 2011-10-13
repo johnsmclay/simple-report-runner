@@ -6,7 +6,7 @@
 		function __construct()
 		{
 			parent::__construct();
-			$this->load->helper(array('form','report_helper'));
+			$this->load->helper(array('form','report_helper','MY_date_helper'));
 			$this->load->model('custom_report_model','model');
 			$this->load->model('connection_model','connection');
 			
@@ -104,7 +104,7 @@
 			}
 				elseif($reportFormat == 'html')
 				{
-					$html = createHTMLTable($resultsArray,$headers,10);
+					$html = createHTMLTable($resultsArray,$headers,1000);
 					
 					echo json_encode(array(
 						'type' => $reportFormat,
@@ -114,8 +114,6 @@
 				}
 		}
 
-		
-		
 		/**
 		 * downloadReport
 		 * 
@@ -139,6 +137,20 @@
 			exit();
 		}
 		
+		/**
+		 * downloadReport
+		 * 
+		 * This is the target of an iFrame in the view. Its purpose is
+		 * to offer up the generated report as a csv download
+		 * 
+		 * @access public
+		 * @param string $filename The name of the file to be downloaded
+		 */
+		public function loadScheduleReport()
+		{
+			$this->load->view('schedule_report_view');
+		}
+
 
 		function test($exit = false)
 		{

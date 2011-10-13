@@ -95,6 +95,9 @@
 		padding-left: 5px;
 		margin-left: 12px;
 	}
+	form#reportForm #scheduleReportBtn {
+		margin-left: 30px;
+	}
 
 
 /* ------ HTML Table Styles ------ */
@@ -126,4 +129,7 @@
 	}
 	div#htmlTable td.change {
 		background-color: rgb(210,217,251);
+	}
+	div#htmlTable {
+		margin-bottom: 40px;
 	}

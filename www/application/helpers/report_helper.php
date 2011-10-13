@@ -74,20 +74,37 @@ if (! function_exists('createHTMLTable'))
 		}
 
 		$html .= "<tbody>";
-		if($count > 0)
+		
+		// If a limit has been passed in, limit the rows to that amount
+		if(is_int($count) && $count > 0)
 		{
-		foreach ($array AS $arrays)
-		{
-				$html .= "<tr>";
-				foreach ($arrays AS $val)
+			foreach($array AS $arrays)
+			{
+				if($count > 0)
 				{
-					$html .= "<td>{$val}</td>";
+					$html .= "<tr>";
+					foreach ($arrays AS $val)
+					{
+						$html .= "<td>{$val}</td>";
+					}
+					$html .= "</tr>";
 				}
-				$html .= "</tr>";
 				--$count;
-				echo "in here";
+			}
 		}
-		}
+			// Otherwise show all rows
+			else
+			{
+				foreach($array AS $arrays)
+				{
+					$html .= "<tr>";
+					foreach ($arrays AS $val)
+					{
+						$html .= "<td>{$val}</td>";
+					}
+					$html .= "</tr>";
+				}
+			}
 		$html .= "</tbody></table>";
 
 		return $html;
