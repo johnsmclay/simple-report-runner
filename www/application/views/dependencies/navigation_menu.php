@@ -19,7 +19,7 @@
 						<a href="<?=site_url("reportbuilder");?>">Report Builder</a>
 					</li>
 					<li>
-						<a href="<?=site_url("useradmin");?>">User Admin</a>
+						<a href="<?=site_url("useradmin");?>">Account Admin</a>
 					</li>
 					<!-- 
 						This runs via cron job, not necessary to have direct access<li>
