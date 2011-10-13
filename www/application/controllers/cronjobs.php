@@ -44,7 +44,7 @@ class Cronjobs extends CI_Controller {
 			
 			//get CSV url
 			$this->load->helper(array('report','url'));
-			$email_report['url'] = base_url().outputCSV($result_array);
+			$email_report['url'] = base_url().outputCSV($result_array,array_keys($result_array[0]));
 			
 			//get user
 			$this->load->model('User_model');
