@@ -9,6 +9,7 @@
 			$this->load->helper(array('form','report_helper','date_helper'));
 			$this->load->model('custom_report_model','model');
 			$this->load->model('connection_model','connection');
+			$this->load->model('user_model','user');
 			
 			//----- This page requires login-----
 			$this->load->library('UserAccess');
@@ -56,7 +57,10 @@
 
 			// Calling the load view method in this instance will immediately
 			// send back the view (HTML) to the ajax method that called this function
-			$this->load->view('customreports/dynamic_form_view', $view_data);
+			$html = $this->load->view('customreports/dynamic_form_view', $view_data, true);
+			
+			echo $html;
+			exit();
 		}
 
 		/**
@@ -72,13 +76,8 @@
 			$reportId = $_POST['reportID'];
 			$reportFormat = $_POST['reportFormat']; // HTML or CSV?
 
-			// Get all of the report variables to loop through them and use them
-			// to match the terms in the query to be replaced
-			$reportVars = $this->model->getReportVars($reportId,false);
-			
 			// Run the report query and get the results
 			$resultsArray = $this->model->runReport($reportId,$_POST);
-			
 			
 			if ($resultsArray == FALSE)
 			{
@@ -138,9 +137,9 @@
 		}
 		
 		/**
-		 * downloadReport
+		 * loadScheduleReport
 		 * 
-		 * This is the target of an iFrame in the view. Its purpose is
+		 * Loads the 
 		 * to offer up the generated report as a csv download
 		 * 
 		 * @access public
@@ -148,7 +147,11 @@
 		 */
 		public function loadScheduleReport()
 		{
-			$this->load->view('schedule_report_view');
+			$users = $this->user->GetAllActive();
+			$data['users'] = $users;
+			$html = $this->load->view('customreports/schedule_report_view',$data,true);
+			echo json_encode(array('html'=>$html));
+			exit();
 		}
 
 

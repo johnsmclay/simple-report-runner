@@ -1,4 +1,4 @@
-<form id="reportForm" method="post" action="customreport/processReport">
+<form id="reportForm">
 	<div id="goBack">
 		<input id="backButton" type="button" value="< Back" />
 	</div>
@@ -122,7 +122,18 @@
 				}
 				echo '<li class="inputElement"><label>Report Format:</label>CSV <input type="radio" name="reportFormat" checked="checked" value="csv" /> &nbsp;HTML <input type="radio" name="reportFormat" value="html" /></li>';
 				echo '<li class="inputElement">';
-				echo form_submit('reportSubmit', 'Get Report');
+				$submit = array(
+					'id' => 'submitReportBtn',
+					'value' => 'Get Report',
+					'name' => 'reportSubmit'
+				);
+				echo form_submit($submit);
+				$scheduleReport = array(
+					'id' => 'scheduleReportBtn',
+					'type' => 'button',
+					'value' => 'Schedule Report'
+				);
+				echo form_input($scheduleReport);
 				echo '</li>';
 			?>
 		</ul>

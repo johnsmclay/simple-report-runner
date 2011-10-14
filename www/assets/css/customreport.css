@@ -54,37 +54,38 @@
 
 	
 /* ---- report form styles ------ */
-	form#reportForm input.shrinkButton {
+	form input.shrinkButton {
 		font-size: .95em;
 	}
-	form#reportForm fieldset{
+	form fieldset {
 		margin-bottom: 10px;
 	}
-	form#reportForm legend {
+	form legend {
 		padding: 20px 0;
 		font-weight: bold;
 		display: block;
 		font-size: 1.5em;
 	}
-	form#reportForm label {
+	form label {
 		display: inline-block;
 		line-height: 1.8;
 		vertical-align: top;
+		width: 120px;
 	}
-	form#reportForm fieldset ul {
+	form fieldset ul {
 		margin: 0;
 		padding: 0;
 	}
-	form#reportForm fieldset li {
+	form fieldset li {
 		list-style: none;
 		padding: 5px;
 		margin: 0;
 	}
-	form#reportForm label {
-		width: 120px;
-	}
-	form#reportForm fieldset li select {
+	form fieldset li select {
 		width: 260px;
+	}
+	form#scheduleReportForm fieldset li select {
+		width: 100px;
 	}
 	form#reportForm fieldset ul li input#submitReportBtn {
 		position: relative;
@@ -132,4 +133,14 @@
 	}
 	div#htmlTable {
 		margin-bottom: 40px;
+	}
+
+/* ------ CLASSES ------ */
+	.example {
+		display: block;
+	}
+	
+	.selectError {
+		border: 1px solid #FF0000;
+    	border-radius: 5px 5px 5px 5px;
 	}

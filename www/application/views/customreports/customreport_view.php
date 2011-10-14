@@ -32,4 +32,9 @@
 						?>
 						<div id="dynamicForm">
 						</div>
+						<div id="scheduleFormBlock">
+							<?
+							 // $this->load->view('customreports/schedule_report_view');
+							?>
+						</div>
 <?php $this->load->view('dependencies/footer'); ?>

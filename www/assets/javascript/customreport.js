@@ -1,9 +1,31 @@
 // Add page specific JavaScript to this file
 $(function() 
 {
+	// A few global variables do not pollute the namespace with globals!
+	months = {
+		'1' : 'January',
+		'2' : 'February',
+		'3' : 'March',
+		'4' : 'April',
+		'5' : 'May',
+		'6' : 'June',
+		'7' : 'July',
+		'8' : 'August',
+		'9' : 'September',
+		'10': 'October',
+		'11': 'November',
+		'12': 'December'
+	}
+	//////////////////////////////////
+	//								//
+	//		On Page Load Events		//
+	//								//
+	//////////////////////////////////
 	
 	$('#reportForm').hide();
+	$('#scheduleFormBlock').hide();
 	
+	// highlight table rows on hover
 	$('tr').live('mouseover mouseout',function(event)
 	{
 		if (event.type == "mouseover")
@@ -22,7 +44,7 @@ $(function()
 			}
 	});
 	
-	// This creates the sliding menu animations
+	// This creates the sliding menu animations for the report list
 	$('#reportList').each(function()
 	{
 	 
@@ -57,9 +79,14 @@ $(function()
 		
 		//Hide all sub-lists
 		 $('#'+e+' ul').hide();
-	 
 	});
-		
+	
+	//////////////////////////////////
+	//								//
+	//			FUNCTIONS			//
+	//								//
+	//////////////////////////////////
+
 	// Cycle through each line item to add animation and click event listeners. Each
 	// line item represents a single report.
 	function animateItems(element) 
@@ -111,6 +138,8 @@ $(function()
 	}
 	
 	
+	
+	
 	// loadFeatures
 	//
 	// These are event listeners and UI widgets that normally would be loaded on page load,
@@ -121,14 +150,22 @@ $(function()
 		if ($('#reportForm').length > 0)
 		{
 			
+			if ($('#scheduleReportBtn').length > 0)
+			{
+				$('#scheduleReportBtn').click(function()
+				{
+					createScheduleView();
+				})
+			}
+			
 			if ($('input:submit').length > 0)
 			{
-				$('input:submit').attr('id','submitReportBtn');
+				$('#reportForm input:submit').attr('id','submitReportBtn');
 			}
 			
 			// this class is used to shrink the default size of the jQuery ui button widget which is applied righ after this
-			$('#reportForm input:button, input:submit').addClass('shrinkButton');
-			$('#reportForm input:button, #reportForm input:submit').button();
+			$('input:button, input:submit').addClass('shrinkButton');
+			$('input:button, input:submit').button();
 			
 			// The back button that causes the report list to be shown again
 			if ($('#backButton'). length > 0)
@@ -230,7 +267,6 @@ $(function()
 				});
 			}
 			
-			
 			//////////////////////////////
 			//							//
 			//	   Form Submission		//
@@ -238,28 +274,15 @@ $(function()
 			//////////////////////////////
 			$('#reportForm').submit(function() 
 			{
-				var values = {};
-				
 				// First validate that all fields have been filled out correctly
 				
 				var validation = validateFields(this);
 				
 				if(validation != false) 
 				{
-					// Add the report ID to the values object, it is a hidden input
-					$.each($('#reportForm :hidden'),function()
-					{
-						values[this.id] = this.value;
-					});
+					// Get form values
+					var values = serializeForm($('#reportForm'));
 					
-					
-					// loop through each input and store its value in the values object
-					$.each($('#reportForm').serializeArray(),function(i,field) 
-					{
-						values[field.name] = field.value;
-					});
-					
-	
 					// Request the report to run
 					$.ajax({
 						url			: 'customreport/processReport',
@@ -289,7 +312,6 @@ $(function()
 							}
 								else if(data.type == 'csv')
 								{
-									console.log(unescape(data.url));
 									$('#secretIFrame').attr('src', data.url);
 								}
 									else if(data.type == 'html')
@@ -308,6 +330,26 @@ $(function()
 				return false;
 			});
 		}
+	}
+	
+	function serializeForm(form)
+	{
+		var values = {};
+		var formId = $(form).attr('id');
+		
+		// Add the report ID to the values object, it is a hidden input
+		$.each($('#'+formId+' :hidden'),function()
+		{
+			values[this.id] = this.value;
+		});
+		
+		// loop through each input and store its value in the values object
+		$.each($('#'+formId).serializeArray(),function(i,field) 
+		{
+			values[field.name] = field.value;
+		});
+		
+		return values;
 	}
 	
 	// form validation
@@ -390,173 +432,155 @@ $(function()
 		return true;
 	}
 	
-	// ---------------------------------//
-	//									//
-	//		Date Button Functions		//
-	//									//
-	// ---------------------------------//
-	
-	// shiftDates
-	//
-	// Various methods for adjusting date values in text fields,
-	// each method returns an object consisting of a beginDate(String) and an endDate(String)
-	// @type Object
-	var shiftDates = 
+	function createScheduleView()
 	{
-		// To obtain the correct month with a 0 indexed offset for the date methods
-		monthsArray	: ['01','02','03','04','05','06','07','08','09','10','11','12'],
-		// Returns the days in a given month provided with the month and year NOTE: months are 0 indexed i.e. 0=January and 11=December
-		getDaysInMonth : function(month,year) 
+		// Since slide toggle is being used this function is called even when hiding the report
+		// therefore we must delete any forms in the div before creating it so that only one form will always show
+		if($('#scheduleFormBlock').children().length > 0)
 		{
-			return 32 - new Date(year, month, 32).getDate();
-		},
+			$('#scheduleFormBlock').children().remove();
+		}
 		
-		// getDifferentMonth
-		//
-		// Given the direction to go, this function will return begin and end dates formatted as mm/dd/yyyy
-		// 
-		// @direction String - Acceptable values are 'next' and 'previous'
-		// @returns Object: beginDate, endDate formatted as mm/dd/yyyy
-		getDifferentMonth : function(direction,month,year) 
+		// load the form data and append it to the div
+		$.ajax(
 		{
-			var setDate = new Date(year,month);
-			
-			switch (direction) 
+			url			: 'customreport/loadScheduleReport',
+			type		: 'POST',
+			dataType	: 'json',
+			success		: function(response)
 			{
-				case 'next':
-					var currentDate = new Date();
-					// Check to make sure that requested date range is not in the future (data will not exist for report)
-					if (currentDate.getMonth() <= setDate.getMonth() + 1 && currentDate.getFullYear() <= setDate.getFullYear()) 
-					{
-						var dates = 
-						{
-							beginDate	: this.getThisMonth().beginDate,
-							endDate		: this.getThisMonth().endDate
-						}
-						
-						return dates;
-					}
-					
-					// Calculates correct next month
-					var month = setDate.getMonth() == 11 ? 0 : setDate.getMonth() + 1;
-									
-					// Gets year and accounts for getting the next year if next month is January
-				 	var year = (month == 0) ? setDate.getFullYear() + 1 : setDate.getFullYear();	  
-					
-					break;
-				case 'previous':
-					// Calculates correct previous month
-					var month = setDate.getMonth() - 1 == 0 ? 11 : setDate.getMonth() - 1;
-					// Gets year and accounts for getting the previous year if previous month is December
-					var year = (month == 11) ? setDate.getFullYear() - 1 : setDate.getFullYear();
-					break;
-			}
+				$('#scheduleFormBlock').append(response.html);
 				
-		 	var	days = this.getDaysInMonth(month,year); // Get days of given month, within the given year
-			
-			var dates = 
-			{
-				beginDate 	: this.monthsArray[month] + '/01/' + year,
-				endDate		: this.monthsArray[month] + '/' + days + '/' + year
-			};
-			
-			return dates;
-		},
+					for (var t = 0; t < 31; t++)
+					{
+						$('#day_of_month').append('<option value="' + (t+1) + '">' + (t+1) + '</option>');
+					}
+				
+				// Load any features needed before displaying the form
+				loadFeatures();
+				
+				// display the form
+				$('#scheduleFormBlock').slideToggle(300);
+			}
+		});
 		
-		// getThisMonth
-		//
-		// Gets the current month up to the previous day
-		//
-		// @returns Object: beginDate, endDate formatted as mm/dd/yyyy
-		getThisMonth : function() 
-		{
-			var date = new Date();
-			var previousDay = (date.getDate() - 1) < 10 ? '0' + (date.getDate() - 1) : (date.getDate() - 1); 
-			var dates = 
+		$('#scheduleReportForm').live({
+			submit	: function()
 			{
-				beginDate 	: this.monthsArray[date.getMonth()] + '/01/' + date.getFullYear(),
-				endDate		: this.monthsArray[date.getMonth()] + '/' + previousDay + '/' + date.getFullYear()
-			};
-			
-			return dates;
-		},
-		
-		// getThisQuarter
-		//
-		// Gets the current quarter up to the previous day
-		//
-		// @returns Object: beginDate, endDate formatted as mm/dd/yyyy
-		getThisQuarter : function() 
-		{
-			var date = new Date();
-			var quarter = Math.floor(date.getMonth() / 3);
-			var firstDate = new Date(date.getFullYear(), quarter * 3,1);
-			var previousDay = (date.getDate() - 1) < 10 ? '0' + (date.getDate() - 1) : (date.getDate() - 1);
-			var dates = 
-			{
-				beginDate 	: this.monthsArray[firstDate.getMonth()] + '/01/' + firstDate.getFullYear(),
-				endDate		: this.monthsArray[date.getMonth()] + '/' + previousDay + '/' + date.getFullYear()
-			};
-			
-			return dates;
-		},
-		
-		// getPreviousQuarter
-		//
-		// Gets the previous quarter from the date entered into the To: input box
-		//
-		// @returns Object: beginDate, endDate formatted as mm/dd/yyyy
-		getPreviousQuarter : function(month,year)
-		{
-			var date = new Date(year,month);
-			var quarter = Math.floor(date.getMonth() / 3);
-			var firstDate = new Date(date.getFullYear(), quarter * 3 - 3,1);
-			var finishDate = new Date(firstDate.getFullYear(),firstDate.getMonth() + 3, 0);
-			var days = this.getDaysInMonth(finishDate.getMonth(),finishDate.getFullYear());
-			var dates = 
-			{
-				beginDate	: this.monthsArray[firstDate.getMonth()] + '/01/' + firstDate.getFullYear(),
-				endDate		: this.monthsArray[finishDate.getMonth()] + '/' + days + '/' + finishDate.getFullYear()
-			};
-			
-			return dates;
-		},
-		
-		// getFiscalYear
-		//
-		// Gets the current Fiscal year up to the current date 
-		// (current date is actually previous day, since no data exists for the current date)
-		//
-		// @returns Object: beginDate, endDate formatted as mm/dd/yyyy
-		getFiscalYear : function() 
-		{
-			var date = new Date();
-			var previousDay = (date.getDate() - 1) < 10 ? '0' + (date.getDate() - 1) : (date.getDate() - 1);
-			var month = date.getMonth();
-			var year = date.getFullYear();
-			if (month >= 0 && month <= 5) {
-				var previousYear = date.getFullYear() - 1;
-				var firstDate = new Date(previousYear,6,1);
-				var dates = 
-				{
-					beginDate	: this.monthsArray[firstDate.getMonth()] + '/01/' + firstDate.getFullYear(),
-					endDate		: this.monthsArray[date.getMonth()] + '/' + previousDay + '/' + date.getFullYear()
+				var scheduleData = serializeForm($('#scheduleReportForm'));
+				var reportData = serializeForm($('#reportForm'));
+				var data = {
+					'schedule' 	: scheduleData,
+					'report'	: reportData
 				};
 				
-				return dates;
-			}
-				else if (month >= 6 && month <= 11) 
+				$.ajax(
 				{
-					var firstDate = new Date(year,6,1);
-					var dates = 
+					url			: 'schedule_report/scheduleIt',
+					type		: 'post',
+					data		: data,
+					dataType	: 'json',
+					success		: function(data)
 					{
-						beginDate	: this.monthsArray[firstDate.getMonth()] + '/01/' + firstDate.getFullYear(),
-						endDate		: this.monthsArray[date.getMonth()] + '/' + previousDay + '/' + date.getFullYear()
-					};
-					
-					return dates;
+						
+					}
+				});
+				return false;
+			}
+		});
+		
+		// attach a change listener to remove the error class from select lists if they exist
+		$('#day_of_month').live({
+			change	: function()
+			{
+				if($(this).hasClass('selectError'))
+				{
+					$(this).removeClass('selectError');
 				}
-		}
-	} // end loadFeatures()
+			}
+		});
+		
+		//*********************************************************************************************
+		// Setup all features to deal with the correct day selection depending on what month is chosen
+		//*********************************************************************************************
+		$('#month_of_year').live({
+			change :function()
+			{
+				// Remember what day was selected when the month was changed
+				var selectedDay = $('#day_of_month').val();
+				var date = new Date(); // A date object for comparing month and days
+				
+				// Remove all options except the default
+				$('#day_of_month').children().each(function()
+				{
+					if (!$(this).hasClass('default'))
+					{
+						$(this).remove();
+					}
+				});
+				
+				
+				// Append the correct number of days (options) depending on which month was chosen
+				if($(this).val() < (date.getMonth() + 1))
+				{
+					// Get the number of days in the chosen month for the appropriate year (if month has already passed set year to next year)
+					var numOfDays = shiftDates.getDaysInMonth($(this).val() - 1, date.getFullYear() + 1);
+				}
+					else
+					{
+						var numOfDays = shiftDates.getDaysInMonth($(this).val() - 1, date.getFullYear());
+					}
+					
+					// If the default month is selected then show 31 days
+					if ($(this).val() == '*')
+					{
+						for (var t = 0; t < 31; t++)
+						{
+							$('#day_of_month').append('<option value="' + (t+1) + '">' + (t+1) + '</option>');
+						}
+					}
+						// Otherwise show however many days there are in the month chosen
+						else 
+						{
+							for (var i = 1; i - 1 < numOfDays; i++)
+							{
+								$('#day_of_month').append('<option value="' + i + '">' + i + '</option>');
+							}
+						}
+				
+				// If the default month is not chosen, check to see if the chosen date still exists in the new month selected
+				if ($(this).val() !== '*')
+				{	
+					// Check if the previous date selected is still available or not
+					var exists = 0 != $('#day_of_month option[value='+selectedDay+']').length;
+				
+					// if the date exists, set it
+					if(exists)
+					{
+						$('#day_of_month').val(selectedDay);
+					}
+						// if it does not, warn the user
+						else
+						{
+							$('#errorModal').text('').append('<p>' + months[$('#month_of_year').val()] + ' does not have ' + selectedDay +' days, please select a new day of the month</p>').dialog(
+								{
+									modal			: true,
+									closeOnEscape	: true,
+									draggable		: false,
+									position		: ['center',200],
+									resizable		: false,
+									title			: 'There seems to be a problem',
+									minHeight		: 20,
+									maxHeight		: 100,
+									close			: function()
+									{
+										$('#day_of_month').addClass('selectError');
+									}
+								});
+						}
+				}
+			}
+		});
+	}
 	
 });
