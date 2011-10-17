@@ -117,7 +117,7 @@ $(function()
 			$(this).click(function() 
 			{
 				var post = {};
-				post['report_name'] = $(this).children().first().text();
+				post['report_name'] = $(this).children().first().text().substring(0,$(this).children().first().text().indexOf(' --'));
 				post['report_id'] = $(this).children().first().attr('id');
 				
 				// Load the dynamic form into the dynamicForm div
@@ -171,6 +171,7 @@ $(function()
 			if ($('#backButton'). length > 0)
 			{
 				$('#backButton').click(function() {
+					$('#htmlTable table').remove()
 					$('#reportList').show(500);
 					$('#reportForm').hide(500);
 				});

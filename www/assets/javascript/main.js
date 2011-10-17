@@ -7,8 +7,10 @@ $(document).ready(function()
 	
 	// hack for getting the main page to highlight
 	if (filename == '') filename = 'customreport';
+
+	highlight(filename);
 	
-	var highlight = function()
+	function highlight(filename)
 	{
 		// Navigation link highlighter
 		$('#sidenav a').each(function() 
