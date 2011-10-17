@@ -6,11 +6,11 @@
  * @package Scheduled_eports
  */
  
-class Scheduled_report_model extends CI_Model
+class Role_model extends CI_Model
 {
 	
 	/** CLASS VARS **/
-	private $db_table = 'scheduled_report';
+	private $db_table = 'role';
 	/****************/
 	
 	/** External Methods **/
@@ -19,23 +19,13 @@ class Scheduled_report_model extends CI_Model
 	 * 
 	 * Option: Values (value* = required)
 	 * --------------
-	 * report_id*
-	 * user_id*
-	 * variables[]*
-	 * day_of_month
-	 * month_of_year
-	 * day_of_week
-	 * hour_of_day
-	 * email_template
+	 * name*
+	 * description
 	 *
 	 * Example:
 	 * $this->{model name}->Create(
 	 *   array(
-	 * 		'report_id' => '1',
-	 * 		'user_id' => '3',
-	 * 		'variables' => array(),
-	 * 		'day_of_week' => '1',
-	 * 		'hour_of_day' => '2',
+	 * 		'name' => 'Administrator',
 	 *   )
 	 * );
 	 *
@@ -47,7 +37,7 @@ class Scheduled_report_model extends CI_Model
 		log_message('debug', __METHOD__.' called with '.json_encode($options));
 		
 		// required values
-		$req_vals = array('report_id','user_id','variables');
+		$req_vals = array('name');
 		if(!fields_required($req_vals,$options))
 		{
 			log_message('error', __METHOD__.' options array missing required fields ');
@@ -55,16 +45,11 @@ class Scheduled_report_model extends CI_Model
 			return false;
 		}
 		
-		// encode the variables field
-		$options['variables'] = json_encode($options['variables']);
-		
 		// add internal fields
 		$options['created'] = mysql_date();
-		$this->load->library('UserAccess');
-		$options['created_by_user_id'] = $this->useraccess->CurrentUserId();
 		
 		// insert the record
-		log_message('debug', __METHOD__.' new report being scheduled: '.json_encode($options));
+		log_message('debug', __METHOD__.' new object: '.json_encode($options));
 		$this->db->insert($this->db_table,$options);
 		
 		// retrieve ID and send it back
@@ -82,14 +67,8 @@ class Scheduled_report_model extends CI_Model
 	 * Option: Values (value* = required)
 	 * --------------
 	 * id*
-	 * report_id*
-	 * user_id*
-	 * variables[]*
-	 * day_of_month
-	 * month_of_year
-	 * day_of_week
-	 * hour_of_day
-	 * email_template
+	 * name*
+	 * description
 	 *
 	 * Example:
 	 * $this->{model name}->Update($object);
@@ -106,16 +85,13 @@ class Scheduled_report_model extends CI_Model
 		if(is_object($object)) $object_array = get_object_vars($object);
 		
 		// required values
-		$req_vals = array('report_id','user_id','variables','id');
+		$req_vals = array('name','id');
 		if(!fields_required($req_vals,$object_array))
 		{
 			log_message('error', __METHOD__.' user object missing required fields ');
 			throw new Exception('missing required field');
 			return false;
 		}
-		
-		// encode the variables field
-		$object_array['variables'] = json_encode($object_array['variables']);
 		
 		// pull out id
 		$object_id = $object_array['id'];
@@ -202,7 +178,8 @@ class Scheduled_report_model extends CI_Model
 		if(count($result) >= 1)
 		{
 			$object = $result[0];
-			return $this->_PrepObject($object);
+			
+			return $object;
 		}else{
 			return false;
 		}
@@ -211,28 +188,23 @@ class Scheduled_report_model extends CI_Model
 	// --------------------------------------------------------------------
 	
 	/**
-	 * GetByUserId method retreives instances of the model by the user to whom they will be sent
+	 * GetAllActive method retreives a user object from the database
 	 *
-	 * @param string $user_id
-	 * @result stdObject[] $object[]
+	 * @result array(stdObject) $active_objects
 	 */
-	public function GetByUserId($user_id)
+	public function GetAllActive()
 	{
-		if(!isset($user_id)) return false;
-		
 		// read from database
-		$result = $this->db->get_where($this->db_table,array('user_id'=>$user_id,))->result();
+		$query = $this->db->where('deleted',null);
+		$query = $this->db->or_where('deleted >',mysql_date());
+		$query = $this->db->get($this->db_table);
+		$result = $query->result();
 		log_message('debug', __METHOD__.' query result count '.count($result));
 		
 		// return object if there are any
 		if(count($result) >= 1)
 		{
-			$objects = array();
-			foreach($result as $object)
-			{
-				$objects[] = $this->_PrepObject($object);
-			}
-			return $objects;
+			return $result;
 		}else{
 			return false;
 		}
@@ -241,42 +213,29 @@ class Scheduled_report_model extends CI_Model
 	// --------------------------------------------------------------------
 	
 	/**
-	 * GetReportsDue method retreives instances of the model by the user to whom they will be sent
+	 * GetNameIdArray method retreives objects from the database
 	 *
-	 * @param string $user_id
-	 * @result stdObject[] $object[]
+	 * @result array(stdObject) $active_objects
 	 */
-	public function GetReportsDue()
+	public function GetNameIdArray()
 	{
-		// read application setting for last run
-		//$this->load->model('Application_setting_model');
-		//$last_run = $this->Application_setting_model->GetByName('cron.report_processor.last_run');
-		
-		// if there was no application setting default to an hour ago
-		//(!$last_run) $last_run = date(strtotime("one hour ago",time()));
-		
-		
 		// read from database
-		$query = 'SELECT * FROM '.$this->db_table.' WHERE ';
-		$query .= "day_of_month IN ('*','".date('d')."','".date('j')."') ";
-		$query .= "AND month_of_year IN ('*','".date('F')."','".date('m')."','".date('M')."','".date('n')."') ";
-		$query .= "AND day_of_week IN ('*','".date('D')."','".date('l')."','".date('N')."','".date('W')."') ";
-		$query .= "AND hour_of_day IN ('*','".date('G')."','".date('H')."') ";
-		$query .= "AND (deleted > now() OR deleted IS NULL)";
-		$query .= "AND created <= now() ";
-		log_message('debug', __METHOD__.' query for reports due: '.$query);
-		$result = $this->db->query($query)->result();
+		$query = $this->db->select(array('id','name'));
+		$query = $this->db->where('deleted',null);
+		$query = $this->db->or_where('deleted >',mysql_date());
+		$query = $this->db->get($this->db_table);
+		$result = $query->result();
 		log_message('debug', __METHOD__.' query result count '.count($result));
 		
 		// return object if there are any
 		if(count($result) >= 1)
 		{
-			$objects = array();
-			foreach($result as $object)
+			$array = array();
+			foreach($result as $single_result)
 			{
-				$objects[] = $this->_PrepObject($object);
+				$array[$single_result->id] = $single_result->name;
 			}
-			return $objects;
+			return $array;
 		}else{
 			return false;
 		}
@@ -291,15 +250,6 @@ class Scheduled_report_model extends CI_Model
 		$this->load->helper('modelutils');
 		$this->load->database('application');
 		parent::__construct();
-	}	
-	
-	// --------------------------------------------------------------------
-	
-	private function _PrepObject($object)
-	{
-		$object->variables = json_decode($object->variables);
-		
-		return $object;
 	}	
 	
 	// --------------------------------------------------------------------

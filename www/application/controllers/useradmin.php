@@ -86,11 +86,28 @@ class Useradmin extends CI_Controller {
 		if(!isset($user_id)) $this->index();
 		//if($role != 'admin' && $user_id != $this->useraccess->CurrentUserId()) $this->index();
 		
+		$this->load->model('Role_model');
+		$available_roles = $this->Role_model->GetNameIdArray();
+		
+		$this->load->model('User_role_model');
+		$user_roles_objects = $this->User_role_model->GetByUserId($user_id);
+		$user_roles = array();
+		if($user_roles_objects)
+		{
+			foreach($user_roles_objects as $user_roles_object)
+			{
+				$temp_array = get_object_vars($user_roles_object);
+				$user_roles[$temp_array['role_id']] = $temp_array['name'];
+			}
+		}
+		
 		$view_data = array(
-			'user' => $this->User_model->GetUserByID($user_id),
+			'user' => $this->User_model->GetByID($user_id),
 			'hidden_fields' => array(
 				'user_id' => $user_id,
 			),
+			'available_roles' => $available_roles,
+			'user_roles' => $user_roles,
 		);
 		
 		$this->load->view('useradmin/editaccount',$view_data);
