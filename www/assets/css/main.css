@@ -57,12 +57,13 @@ time, mark, audio, video {
 	}
 	
 	header {
-		width: 895px;
+		width: 80%;
+		min-width: 80%;
 		background-color: #2A2D25;
 		padding: 10px 0;
 		margin: 10px 0;
-		position: relative;
-		float: right;
+		float:right;
+		margin-left: 18.5%
 	}
 	
 	header h1 {
@@ -77,6 +78,23 @@ time, mark, audio, video {
 		margin-top: 11px;
 		padding-bottom: 20px;
 		padding-right: 10px;
+	}
+	
+	#logOutLink {
+		position: relative;
+	}
+	
+	#logOutLink span {
+		float: right;
+		margin-right: 3px;
+		margin-top: -25px;
+		text-transform: uppercase;
+	}
+	
+	#logOutLink span a, #logOutLink span a:visited {
+		font-weight: bold;
+		color: #FFFFFF;
+		text-decoration: none;
 	}
 
 
@@ -104,7 +122,9 @@ time, mark, audio, video {
 
 /* Content wrapper */
 	#wrapper {
-		width: 1100px;
+		width: 80%;
+		min-width: 1200px;
+		max-width: 1920px;
 		margin: 0 auto;
 		height: 100%;
 		min-height: 100%;
@@ -113,7 +133,8 @@ time, mark, audio, video {
 
 /* Sidebar Navigation */
 	#sidenav {
-		width: 265px;
+		width: 18%;
+		max-width: 210px;
 		float: left;
 		position: absolute;
 	}
@@ -152,7 +173,7 @@ time, mark, audio, video {
 /* Main wrapper */
 	#main {
 		height: 100%;
-		width: 820px;
+		width: 80%;
 		padding-left: 20px;
 		float: right;
 	}

@@ -1096,6 +1096,15 @@ class CI_Loader {
 			return $filename;
 		}
 	}
+	
+	# Debugging function
+	public function show($var,$exit=null,$vardump=null) {
+		echo "<pre>";
+			if ($vardump) var_dump($var);
+			else print_r($var);
+		echo "</pre>";
+		if ($exit) exit();
+	}
 
 
 }

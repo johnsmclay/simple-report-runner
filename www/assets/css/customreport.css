@@ -27,7 +27,6 @@
 		line-height: 24px;
 		width: 95%;
 		overflow: visible;
-		margin-bottom: 10px;
 	}
 	ul#reportList li ul li.even a {
 		background-color: #ABABAB;
@@ -62,7 +61,7 @@
 		margin-bottom: 10px;
 	}
 	form legend {
-		padding: 20px 0;
+		padding: 20px 0 10px 0;
 		font-weight: bold;
 		display: block;
 		font-size: 1.5em;
@@ -84,6 +83,10 @@
 	}
 	form fieldset li select {
 		width: 260px;
+	}
+	form fieldset p#reportDescription {
+		padding-bottom: 10px;
+		font-weight: 600;
 	}
 	form#scheduleReportForm fieldset li select {
 		width: 100px;
