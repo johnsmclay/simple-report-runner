@@ -1,0 +1,48 @@
+/* ---- center report form ------ */
+	#holder {
+		min-height: 80%;
+		position: relative;
+	}
+	#loginForm {
+		position: absolute;
+		top: 50%;
+		left:50%;
+		width: 300px;
+		height: 200px;
+		margin: -100px 0 0 -150px;
+	}
+	.loginBtn {
+		left: 30%;
+	}
+
+/* ---- report form styles ------ */
+	form input.shrinkButton {
+		font-size: .95em;
+	}
+	form fieldset {
+		margin-bottom: 10px;
+	}
+	form legend {
+		padding: 20px 0 10px 0;
+		font-weight: bold;
+		display: block;
+		font-size: 1.5em;
+	}
+	form label {
+		display: inline-block;
+		line-height: 1.8;
+		vertical-align: top;
+		width: 90px;
+	}
+	form fieldset ul {
+		margin: 0;
+		padding: 0;
+	}
+	form fieldset li {
+		list-style: none;
+		padding: 5px;
+		margin: 0;
+	}
+	form fieldset li select {
+		width: 260px;
+	}

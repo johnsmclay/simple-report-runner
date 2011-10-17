@@ -87,6 +87,7 @@
 		 */
 		public function getReportVars($reportId,$runOptions=true)
 		{
+			// Load secondary database connection	
 			$this->_loadReportDB($reportId);
 			
 			$reportVarsQuery = "
@@ -127,6 +128,24 @@
 			$reportVarsResult->free_result();
 			
 			return $report_vars;
+		}
+		
+		public function getReportDescription($reportId)
+		{
+			$reportQuery = "
+				SELECT
+					description
+				FROM
+					report
+				WHERE
+					id = {$reportId}
+			";
+			
+			$reportResult = $this->db1->query($reportQuery);
+			
+			$result = $reportResult->result_array();
+			
+			return $result[0]['description'];
 		}
 		
 		/**

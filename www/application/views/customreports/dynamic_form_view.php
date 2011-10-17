@@ -4,6 +4,7 @@
 	</div>
 	<fieldset>
 		<legend id='report'></legend>
+		<p id='reportDescription'>DESCRIPTION: <?=$description;?></p>
 		<ul>
 			<input id="reportID" type="hidden" value="<?=$report_id;?>" name="reportID" />
 			<?
@@ -128,12 +129,12 @@
 					'name' => 'reportSubmit'
 				);
 				echo form_submit($submit);
-				$scheduleReport = array(
-					'id' => 'scheduleReportBtn',
-					'type' => 'button',
-					'value' => 'Schedule Report'
-				);
-				echo form_input($scheduleReport);
+				// $scheduleReport = array(
+					// 'id' => 'scheduleReportBtn',
+					// 'type' => 'button',
+					// 'value' => 'Schedule Report'
+				// );
+				// echo form_input($scheduleReport);
 				echo '</li>';
 			?>
 		</ul>
