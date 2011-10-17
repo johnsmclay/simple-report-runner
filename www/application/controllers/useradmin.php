@@ -106,23 +106,29 @@ class Useradmin extends CI_Controller {
 		$this->form_validation->set_rules('confirm_password', 'Password Confirmation', 'matches[password]|xss_clean');
 		$this->form_validation->set_rules('email_address', 'Email Address', 'required|min_length[5]|max_length[60]|valid_email|xss_clean');
 		
+		log_message('info', __METHOD__.' called with: '.json_encode($_REQUEST));
+		
 		if ($this->form_validation->run() == FALSE)
 		{
+			log_message('error', __METHOD__.' validation failed.  Redirecting to Account list.');
 			if(!isset($_REQUEST['user_id']))
 			{
 				$this->listaccounts();
 			}else{
-				$this->editaccount();
+				$this->editaccount($_REQUEST['user_id']);
 			}
 		}
 		else
 		{
+			log_message('debug', __METHOD__.' validation passed.');
 			if(!isset($_REQUEST['user_id']))
 			{
+				log_message('debug', __METHOD__.' no user_id found, the account will need to be created.');
 				$this->form_validation->set_rules('password', 'Password', 'required|xss_clean|min_length[8]|max_length[60]');
 				$this->form_validation->set_rules('confirm_password', 'Password Confirmation', 'required|matches[password]|xss_clean');
 				if (!$this->form_validation->run())
 				{
+					log_message('debug', __METHOD__.' password rule validation failed.  Redirecting to Account list.');
 					$this->listaccounts();
 					return true;
 				}
@@ -148,14 +154,80 @@ class Useradmin extends CI_Controller {
 					log_message('debug', __METHOD__.'Caught exception: '.$e->getMessage());
 				}
 			}else{
-				// update user
+				// validate the user_id
+				log_message('debug', __METHOD__.' user_id found, the account will need to be updated.');
+				$this->form_validation->set_rules('user_id', 'user id', 'required|min_length[1]|integer|xss_clean');
+				if($_REQUEST['password'] != '')
+				{
+					// user has submitted a password so we will validate it as well
+					$this->form_validation->set_rules('password', 'Password', 'required|xss_clean|min_length[8]|max_length[60]');
+					$this->form_validation->set_rules('confirm_password', 'Password Confirmation', 'required|matches[password]|xss_clean');
+				}
+				
+				if (!$this->form_validation->run())
+				{
+					log_message('debug', __METHOD__.' validation failed.  Returning to edit pane.');
+					$this->editaccount($_REQUEST['user_id']);
+					return true;
+				}
+				
+				log_message('debug', __METHOD__.' validation passed.  Updating user.');
+				
+				$user_array = array(
+					'id' => $_REQUEST['user_id'],
+					'fname' => $_REQUEST['fname'],
+					'lname' => $_REQUEST['lname'],
+					'username' => $_REQUEST['username'],
+					'email_address' => $_REQUEST['email_address'],
+				);
+				
+				if($_REQUEST['password'] != '')
+				{
+					// user has submitted a password so we will update it as well
+					$user_array['password'] = $_REQUEST['password'];
+				}
+				
+				try {
+					$user = $this->User_model->UpdateUser($user_array);
+					
+					if($user)
+					{
+						$id = $user->id;
+						log_message('debug', __METHOD__." user # $id updated");
+					}
+				} catch (Exception $e) {
+					echo 'Caught exception: ',  $e->getMessage(), "\n";
+					log_message('debug', __METHOD__.'Caught exception: '.$e->getMessage());
+				}
 				
 			}
 			
-			$this->index();
+			if(!isset($_REQUEST['user_id']))
+			{
+				$this->listaccounts();
+			}else{
+				$this->editaccount($_REQUEST['user_id']);
+			}
 		}
 	}
 	
+	public function deleteaccount()
+	{
+		// validate fields
+		$this->form_validation->set_rules('user_id', 'User ID', 'required|min_length[1]|integer|xss_clean');
+		if (!$this->form_validation->run())
+		{
+			log_message('debug', __METHOD__.' validation failed.  Returning to edit pane.');
+			$this->editaccount($_REQUEST['user_id']);
+			return true;
+		}
+		
+		// disable the user
+		$this->User_model->DisableUser($_REQUEST['user_id']);
+		
+		// take back to account list as the user is no longer here
+		$this->listaccounts();
+	}
 	
 }
 

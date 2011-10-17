@@ -108,12 +108,12 @@ class User_model extends CI_Model
 	 * @result stdObject $user
 	 */
 	public function UpdateUser($user)
-	{
-		log_message('debug', __METHOD__.' called for user '.$user->username);
-		
+	{	
 		$user_array = $user;
 		// convert object to array if is object
 		if(is_object($user)) $user_array = get_object_vars($user);
+		
+		log_message('debug', __METHOD__.' called for user '.$user_array['username']);
 		
 		// required values
 		$req_vals = array('email_address','username','id');
