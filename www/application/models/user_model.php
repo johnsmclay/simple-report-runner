@@ -225,7 +225,7 @@ class User_model extends CI_Model
 		// return true if there are any
 		if(count($result) >= 1)
 		{
-			$this->GetUserByID($result[0]->id);
+			$this->GetByID($result[0]->id);
 			unset($user->password);
 			return $user;
 		}else{
