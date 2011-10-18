@@ -101,7 +101,7 @@ class UserAccess {
 		$user_id = $this->CI->nonce->use_nonce($nonce_type,$token);
 		if(!$user_id) return false;
 		$this->CI->load->model('User_model');
-		$user = $this->CI->User_model->GetUserByID($user_id);
+		$user = $this->CI->User_model->GetByID($user_id);
 		$this->_CreateUserSession($user);
 		redirect('/', 'refresh');
 	}

@@ -82,7 +82,7 @@ class User_model extends CI_Model
 		$new_user_id = $this->db->insert_id();
 		log_message('debug', __METHOD__.' new user created successfully.  ID = '.$new_user_id);
 		
-		return $this->GetUserByID($new_user_id);
+		return $this->GetByID($new_user_id);
 	}
 	
 	// --------------------------------------------------------------------
@@ -150,13 +150,12 @@ class User_model extends CI_Model
 		$this->db->update($this->db_table, $user_array); 
 		
 		// re-read from database
-		$user = $this->GetUserByID($user_id);
+		$user = $this->GetByID($user_id);
 		
 		// return object if there are any
 		if(isset($user))
 		{
-			unset($user->password);
-			return $user;
+			return $this->_PrepObject($user);
 		}else{
 			return false;
 		}
@@ -226,9 +225,7 @@ class User_model extends CI_Model
 		// return true if there are any
 		if(count($result) >= 1)
 		{
-			$user = $this->GetUserByID($result[0]->id);
-			unset($user->password);
-			return $user;
+			return $this->_PrepObject($result[0]);
 		}else{
 			return false;
 		}
@@ -287,7 +284,7 @@ class User_model extends CI_Model
 	 * @param int $user_id
 	 * @result stdObject $user
 	 */
-	public function GetUserByID($user_id)
+	public function GetByID($user_id)
 	{
 		if(!isset($user_id)) return false;
 		
@@ -298,16 +295,14 @@ class User_model extends CI_Model
 		// return object if there are any
 		if(count($result) >= 1)
 		{
-			$user = $result[0];
-			unset($user->password);
-			return $user;
+			return $this->_PrepObject($result[0]);
 		}else{
 			return false;
 		}
 	}
 	
 	/**
-	 * GetAllActive method retreives a user object from the database by ID
+	 * GetAllActive method retreives a user object from the database
 	 *
 	 * @result array(stdObject) $users
 	 */
@@ -323,13 +318,15 @@ class User_model extends CI_Model
 		// return object if there are any
 		if(count($result) >= 1)
 		{
-			$users = array();
-			foreach($result as $user)
+			$objects = array();
+			foreach($result as $object)
 			{
-				unset($user->password);
-				$users[] = $user;
+				// prep the object
+				$this->_PrepObject($object);
+				
+				$objects[] = $object;
 			}
-			return $users;
+			return $objects;
 		}else{
 			return false;
 		}
@@ -354,9 +351,7 @@ class User_model extends CI_Model
 		// return object if there are any
 		if(count($result) >= 1)
 		{
-			$user = $result[0];
-			unset($user->password);
-			return $user;
+			return $this->_PrepObject($result[0]);
 		}else{
 			return false;
 		}
@@ -388,6 +383,17 @@ class User_model extends CI_Model
 	{
 		return sha1($this->salt.$password);
 	}
+	
+	// --------------------------------------------------------------------
+	
+	private function _PrepObject($object)
+	{
+		unset($object->password);
+		
+		return $object;
+	}	
+	
+	// --------------------------------------------------------------------
 	/**********************/
 	
 }

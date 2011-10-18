@@ -16,4 +16,19 @@
 						<?=form_open('useradmin/deleteaccount','',$hidden_fields)?>
 						<?=form_submit('submit', 'Delete')?>
 						<?=form_close()?>
+						<br />
+						<h2>Roles</h2>
+						<p><?=validation_errors()?></p>
+						<?=form_open('useradmin/saveaccount','',$hidden_fields)?><br />
+						<?php foreach ($available_roles as $role_id => $role): ?>
+							<?php $checked = array_key_exists($role_id,$user_roles) ? TRUE : FALSE; ?>
+							<?=form_checkbox(array(
+								'disabled'=> 'TRUE',
+								'name' => 'roles',
+								'value' => $role_id,
+								'checked' => $checked,
+							))?> <?=$role?><br />
+						<?php endforeach; ?>
+						<!--<?=form_submit('submit', 'Save')?>-->
+						<?=form_close()?>
 <?php $this->load->view('dependencies/footer'); ?>
