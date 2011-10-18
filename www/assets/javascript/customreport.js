@@ -294,9 +294,13 @@ $(function()
 						{
 							if (data.status == 'failed')
 							{
-								if($('#htmlTable table').length > 0)
+								if($('#htmlTable').children().length > 0)
 								{
-									$('#htmlTable table').remove();
+									console.log('should not be here');
+									$('#htmlTable').children().each(function()
+									{
+										$(this).remove();
+									});
 								}
 								$('#errorModal').text('').append('<p>The report you requested returned no results.</p>').dialog(
 								{
@@ -317,11 +321,20 @@ $(function()
 								}
 									else if(data.type == 'html')
 									{
-										if($('#htmlTable table').length > 0)
+										if($('#htmlTable').children().length > 0)
 										{
-											$('#htmlTable table').remove();
+											$('#htmlTable').children().each(function()
+											{
+												$(this).remove();
+											});
 										}
+										// $('#htmlTable').hide();
 										$('#htmlTable').append(data.htmlTable);
+										var div_width = $('#htmlTable').width();
+										console.log(div_width);
+										
+										$('.reportTable').scrollbarTable(600);
+										// $('#htmlTable').attr('style','width:'+div_width+'px;margin:0 auto;padding-right:80px;');
 									}
 						}
 					});

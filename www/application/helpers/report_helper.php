@@ -58,7 +58,7 @@ if (! function_exists('createHTMLTable'))
 	{
 		$count = (is_int($limit) && $limit) > 0 ? $limit : null;
 
-		$html = "<table>";
+		$html = "<table class='reportTable'>";
 
 		if ( !empty($headers))
 		{
