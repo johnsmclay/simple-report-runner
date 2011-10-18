@@ -155,7 +155,7 @@ class User_model extends CI_Model
 		// return object if there are any
 		if(isset($user))
 		{
-			$this->_PrepObject($user);
+			return $this->_PrepObject($user);
 		}else{
 			return false;
 		}
@@ -225,9 +225,7 @@ class User_model extends CI_Model
 		// return true if there are any
 		if(count($result) >= 1)
 		{
-			$this->GetByID($result[0]->id);
-			unset($user->password);
-			return $user;
+			return $this->_PrepObject($result[0]);
 		}else{
 			return false;
 		}
