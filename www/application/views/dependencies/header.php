@@ -11,7 +11,7 @@
 				<h1 class="arial center"><?=$header1?></h1>
 			</header>
 			<div id="logOutLink" style="position: relative;">
-				<span><a style="color:#FFF" href="login/logout">log out</a></span>
+				<span><a style="color:#FFF" href="<?=base_url()?>login/logout">log out</a></span>
 			</div>
 			<div class="clear"></div> <!-- clear floats -->	
 			<?php
