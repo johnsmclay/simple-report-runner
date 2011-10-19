@@ -24,6 +24,9 @@
 					<li>
 						<a href="<?=site_url("sysadmin");?>">System Admin</a>
 					</li>
+					<li>
+						<a href="<?=site_url("pglmsweeklies");?>">PGLMS Weekly Reports</a>
+					</li>
 					<!-- 
 						This runs via cron job, not necessary to have direct access<li>
 						<a href="_mil_enrollments.php">Biweekly MIL Enrollments</a>
