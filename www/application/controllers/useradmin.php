@@ -12,6 +12,7 @@ class Useradmin extends CI_Controller {
 		//----- This page requires login-----
 		$this->load->library('UserAccess');
 		$this->useraccess->LoginRequired();
+		if(!$this->useraccess->HasRole(array('system admin','user admin',))) redirect('/', 'refresh');
 		//-----------------------------------
 	}
 
