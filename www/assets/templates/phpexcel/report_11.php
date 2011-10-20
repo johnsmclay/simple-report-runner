@@ -1,6 +1,6 @@
 <?php
-styleSheet($sheet)
+function styleReport_11($sheet)
 {
-
+	echo 'test1';
 }
 ?>

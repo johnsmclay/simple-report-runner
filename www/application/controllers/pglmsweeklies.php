@@ -115,8 +115,14 @@ class Pglmsweeklies extends CI_Controller {
 				
 				//style the page
 				$phpexcel_templates_folder = './assets/templates/phpexcel/';
-				include $phpexcel_templates_folder.'report_'.$report_id.'.php';
-				styleSheet($objPHPExcel->getActiveSheet());
+				$templatePath = $phpexcel_templates_folder.'report_'.$report_id.'.php';
+				if(file_exists($templatePath))
+				{
+					include $templatePath;
+					$style_function = 'styleReport_'.$report_id;
+					$style_function($objPHPExcel->getActiveSheet());
+				}
+				
 			}
 			
 			// set the glossart as the default tab
