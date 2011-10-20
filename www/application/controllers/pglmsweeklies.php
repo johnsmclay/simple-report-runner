@@ -120,7 +120,7 @@ class Pglmsweeklies extends CI_Controller {
 				{
 					include $templatePath;
 					$style_function = 'styleReport_'.$report_id;
-					$style_function($objPHPExcel->getActiveSheet());
+					$style_function($objPHPExcel->getActiveSheet(),$report_name,$report_vars);
 				}
 				
 			}
