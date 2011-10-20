@@ -46,7 +46,7 @@ class Pglmsweeklies extends CI_Controller {
 	{
 		// prepare the file and it's glossary first
 		
-			$glossary_template_path = './assets/templates/weekly_report_glossary_template.xlsx';
+			$glossary_template_path = './assets/templates/excel/weekly_report_glossary_template.xlsx';
 			
 			// Get PHPExcel plugin
 			require_once 'PHPExcel.php';
@@ -112,6 +112,11 @@ class Pglmsweeklies extends CI_Controller {
 				
 				// delete the temporary file
 				unlink($filename);
+				
+				//style the page
+				$phpexcel_templates_folder = './assets/templates/phpexcel/';
+				include $phpexcel_templates_folder.'report_'.$report_id.'.php';
+				styleSheet($objPHPExcel->getActiveSheet());
 			}
 			
 			// set the glossart as the default tab
