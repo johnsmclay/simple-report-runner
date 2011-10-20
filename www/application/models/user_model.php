@@ -82,6 +82,13 @@ class User_model extends CI_Model
 		$new_user_id = $this->db->insert_id();
 		log_message('debug', __METHOD__.' new user created successfully.  ID = '.$new_user_id);
 		
+		// add external role
+		$this->load->model('User_role_model');
+		$this->User_role_model->Create(array(
+			'role_id' => 6,  // id of external role
+			'user_id' => $new_user_id,
+		));
+		
 		return $this->GetByID($new_user_id);
 	}
 	
