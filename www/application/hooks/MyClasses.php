@@ -8,7 +8,7 @@ class Myclasses {
 	*/
 	function index() {
 		//CodeIgniter 2.0.2
-		ini_set('include_path', ini_get('include_path') . ':' . BASEPATH . '../application/my_classes/Classes/');
+		ini_set('include_path', ini_get('include_path') . PATH_SEPARATOR . BASEPATH . '..' . DIRECTORY_SEPARATOR . 'application' . DIRECTORY_SEPARATOR . 'my_classes' . DIRECTORY_SEPARATOR . 'Classes' . DIRECTORY_SEPARATOR);
 	}
 }
 ?>
