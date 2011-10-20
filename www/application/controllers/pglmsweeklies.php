@@ -2,6 +2,13 @@
 
 class Pglmsweeklies extends CI_Controller {
 
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->helper(array('form','report_helper'));
+		$this->load->model('pglmsweeklies_model','pglms');
+	}
+
 	/**
 	 * Index Page for this controller.
 	 *
@@ -12,13 +19,19 @@ class Pglmsweeklies extends CI_Controller {
 	 */
 	public function index()
 	{
-		$this->load->helper('form');
+		$schools = $this->pglms->getSchoolsListOptions();
 		$view_data = array(
-			
+			'schools' => $schools
 		);
 		$this->load->view('pglmsweeklies/form', $view_data);
 	}
 	
+	/**
+	 * requestReport
+	 * 
+	 * Called via AJAX form
+	 * 
+	 */
 	public function requestReport()
 	{
 		$this->load->library('form_validation');
@@ -26,7 +39,7 @@ class Pglmsweeklies extends CI_Controller {
 		$this->form_validation->set_rules('from_date', 'From Date', 'required|strtotime');
 		$this->form_validation->set_rules('to_date', 'To Date', 'required|strtotime');
 		
-		log_message('info', __METHOD__.' called with: '.json_encode($_REQUEST));
+		log_message('debug', __METHOD__.' called with: '.json_encode($_REQUEST));
 		
 		if ($this->form_validation->run() == FALSE)
 		{
@@ -38,8 +51,8 @@ class Pglmsweeklies extends CI_Controller {
 		$from_date = strtotime($_REQUEST['from_date']);
 		$to_date = strtotime($_REQUEST['to_date']);
 		
-		$this->createReport($school_id,$from_date,$to_date);
-
+		echo json_encode(array('file'=>$this->createReport($school_id,$from_date,$to_date),'base'=>base_url()));
+		exit(); // Completely stop script execution (just in case there is something else to execute)
 	}
 	
 	private function createReport($school_id,$from_date,$to_date)
@@ -94,33 +107,36 @@ class Pglmsweeklies extends CI_Controller {
 			{
 				// run the report
 				$resultsArray = $this->custom_report_model->runReport($report_id,$report_vars);
-				// write out the report to a temporary file
-				$this->load->helper('report_helper');
-				$headers = array_keys($resultsArray[0]);
-				$filename = outputCSV($resultsArray,$headers);
 				
-				// import the data
-				$current_sheet_index += 1;
-				$objReader = PHPExcel_IOFactory::createReader('CSV')
-					->setDelimiter(',')
-					->setEnclosure('')
-					->setLineEnding("\r\n")
-					->setSheetIndex($current_sheet_index)
-					->loadIntoExisting($filename, $objPHPExcel);
-				$objPHPExcel->setActiveSheetIndex($current_sheet_index);
-				$objPHPExcel->getActiveSheet()->setTitle($title);
-				
-				// delete the temporary file
-				unlink($filename);
-				
-				//style the page
-				$phpexcel_templates_folder = './assets/templates/phpexcel/';
-				$templatePath = $phpexcel_templates_folder.'report_'.$report_id.'.php';
-				if(file_exists($templatePath))
+				if ($resultsArray)
 				{
-					include $templatePath;
-					$style_function = 'styleReport_'.$report_id;
-					$style_function($objPHPExcel->getActiveSheet());
+					// write out the report to a temporary file
+					$headers = array_keys($resultsArray[0]);
+					$filename = outputCSV($resultsArray,$headers);
+					
+					// import the data
+					$current_sheet_index += 1;
+					$objReader = PHPExcel_IOFactory::createReader('CSV')
+						->setDelimiter(',')
+						->setEnclosure('')
+						->setLineEnding("\r\n")
+						->setSheetIndex($current_sheet_index)
+						->loadIntoExisting($filename, $objPHPExcel);
+					$objPHPExcel->setActiveSheetIndex($current_sheet_index);
+					$objPHPExcel->getActiveSheet()->setTitle($title);
+					
+					// delete the temporary file
+					unlink($filename);
+					
+					//style the page
+					$phpexcel_templates_folder = './assets/templates/phpexcel/';
+					$templatePath = $phpexcel_templates_folder.'report_'.$report_id.'.php';
+					if(file_exists($templatePath))
+					{
+						include $templatePath;
+						$style_function = 'styleReport_'.$report_id;
+						// $style_function($objPHPExcel->getActiveSheet());
+					}
 				}
 				
 			}
@@ -151,9 +167,18 @@ class Pglmsweeklies extends CI_Controller {
 		$file_path = $this->createReport($school_id,$from_date,$to_date);
 	}
 	
-	public function downloadReport()
+	public function downloadReport($filename,$path)
 	{
+		header("Expires: 0");
+		header("Cache-Control: no-cache, no-store");
+		header("Content-Description: File Transfer");
+		header("Content-type: text/csv");
+		header("Content-Disposition: attachment; filename=$filename");
+		header("Content-Length: " . filesize($path . DIRECTORY_SEPARATOR . $filename));
+		readfile($path . DIRECTORY_SEPARATOR . $filename);
 		
+		unlink($path . DIRECTORY_SEPARATOR . $filename);
+		exit();
 	}
 	
 }

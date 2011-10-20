@@ -225,11 +225,11 @@ time, mark, audio, video {
 					margin: 20px 0 0 20px;
 				}
 				
-				#dynamicForm #reportForm #dateButtonsGroup div {
+				#dynamicForm #reportForm #dateButtonsGroup div, #dateButtonsGroup div {
 					margin: 10px 0;
 				}
 
-				#dynamicForm #reportForm #dateButtonsGroup div .dateButton {
+				#dynamicForm #reportForm #dateButtonsGroup div .dateButton, #dateButtonsGroup div .dateButton {
 					margin-right: 10px;
 				}
 				
@@ -250,3 +250,4 @@ time, mark, audio, video {
 				.inputError {
 					color: #FF0000;
 				}
+

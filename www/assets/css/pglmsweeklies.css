@@ -1,0 +1,30 @@
+form input.shrinkButton {
+	font-size: .95em;
+}
+form fieldset {
+	margin-bottom: 10px;
+}
+form legend {
+	padding: 20px 0 10px 0;
+	font-weight: bold;
+	display: block;
+	font-size: 1.5em;
+}
+form label {
+	display: inline-block;
+	line-height: 1.8;
+	vertical-align: top;
+	width: 120px;
+}
+form fieldset ul {
+	margin: 0;
+	padding: 0;
+}
+form fieldset li {
+	list-style: none;
+	padding: 5px;
+	margin: 0;
+}
+form fieldset li select {
+	width: 260px;
+}
