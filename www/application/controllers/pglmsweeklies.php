@@ -6,9 +6,14 @@ class Pglmsweeklies extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->helper(array('form','report_helper'));
-		$this->load->model('pglmsweeklies_model','pglms');
+		
+		//----- This page requires login-----
+		$this->load->library('UserAccess');
+		$this->useraccess->LoginRequired();
+		if(!$this->useraccess->HasRole(array('system admin','internal',))) redirect('/', 'refresh');
+		//-----------------------------------
 	}
-
+	
 	/**
 	 * Index Page for this controller.
 	 *
@@ -19,6 +24,7 @@ class Pglmsweeklies extends CI_Controller {
 	 */
 	public function index()
 	{
+		$this->load->model('pglmsweeklies_model','pglms');
 		$schools = $this->pglms->getSchoolsListOptions();
 		$view_data = array(
 			'schools' => $schools
@@ -140,7 +146,7 @@ class Pglmsweeklies extends CI_Controller {
 				{
 					include $templatePath;
 					$style_function = 'styleReport_'.$report_id;
-					// $style_function($objPHPExcel->getActiveSheet());
+					$style_function($objPHPExcel->getActiveSheet(),$report_name,$report_vars);
 				}
 			}
 			

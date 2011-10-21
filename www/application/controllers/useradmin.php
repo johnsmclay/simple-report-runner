@@ -12,6 +12,7 @@ class Useradmin extends CI_Controller {
 		//----- This page requires login-----
 		$this->load->library('UserAccess');
 		$this->useraccess->LoginRequired();
+		if(!$this->useraccess->HasRole(array('system admin','user admin',))) redirect('/', 'refresh');
 		//-----------------------------------
 	}
 
@@ -246,6 +247,71 @@ class Useradmin extends CI_Controller {
 		$this->listaccounts();
 	}
 	
+	public function saveroles()
+	{
+		$this->form_validation->set_rules('user_id', 'User ID', 'min_length[1]|integer|xss_clean');
+		$this->form_validation->set_rules('roles', 'Roles', 'required|is_array');
+		
+		log_message('info', __METHOD__.' called with: '.json_encode($_REQUEST));
+		
+		if (!$this->form_validation->run())
+		{
+			if(!isset($_REQUEST['user_id']))
+			{
+				$this->listaccounts();
+			}else{
+				$this->editaccount($_REQUEST['user_id']);
+			}
+		}
+		
+		// see what roles exist
+		$this->load->model('Role_model');
+		$available_roles = $this->Role_model->GetNameIdArray();
+		
+		// find out what the user and admin have currently
+		$this->load->model('User_role_model');
+		$role_objects = $this->User_role_model->GetByUserId($_REQUEST['user_id']);
+		$user_roles = array();
+		if($role_objects)
+		{
+			foreach($role_objects as $role_object)
+			{
+				$user_roles[] = $role_object->role_id;
+			}
+		}
+		
+		$roles_to_add = array();
+		$roles_to_remove = array();
+		
+		foreach($available_roles as $available_role_id => $available_role_name)
+		{
+			if($this->useraccess->HasRole(array('system admin',$available_role_name)))
+			{
+				if(in_array($available_role_id,$_REQUEST['roles']))
+				{
+					if(!in_array($available_role_id,$user_roles)) $roles_to_add[] = $available_role_id;
+				}else{
+					if(in_array($available_role_id,$user_roles)) $roles_to_remove[] = $available_role_id;
+				}
+			}
+		}
+		log_message('debug', __METHOD__.' Roles to add: '.json_encode($roles_to_add).' Roles to remove: '.json_encode($roles_to_remove));
+		
+		foreach($roles_to_add as $role)
+		{
+			$this->User_role_model->Create(array(
+				'role_id' => $role,
+				'user_id' => $_REQUEST['user_id'],
+			));
+		}
+		
+		foreach($roles_to_remove as $role)
+		{
+			$this->User_role_model->Delete($_REQUEST['user_id'],$role);
+		}
+		
+		redirect('useradmin/editaccount/'.$_REQUEST['user_id']);
+	}
 }
 
 /* End of file useradmin.php */

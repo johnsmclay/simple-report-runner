@@ -74,8 +74,22 @@ class UserAccess {
 		// ensure we recieved the credentials
 		if(!is_object($user_object)) return false;
 		
+		$this->CI->load->model('User_role_model');
+		$role_objects = $this->CI->User_role_model->GetByUserId($user_object->id);
+		log_message('debug', __METHOD__.' # of role objects returned = '.count($role_objects));
+		$roles = array();
+		if($role_objects)
+		{
+			foreach($role_objects as $role_object)
+			{
+				$roles[] = $role_object->name;
+			}
+		}
+		
+		
 		$session_data = array(
 			'user_id' => $user_object->id,
+			'roles' => $roles,
 		);
 		
 		$this->CI->session->set_userdata($session_data);
@@ -197,6 +211,54 @@ class UserAccess {
 		log_message('debug', __METHOD__.' user #'.$user_id.' is logged in');
 		
 		return true;
+	}
+	
+	// --------------------------------------------------------------------
+	
+	/**
+	 * HasRole method checks to see if the user is logged in and redirects if the user isn't
+	 *
+	 * Example:
+	 * $this->UserAccess->LoginRequired();
+	 *
+	 * @result int $current_user_id
+	 */
+	public function HasRole($possible_roles = array())
+	{
+		log_message('debug', __METHOD__.' called ');
+		if(!is_array($possible_roles)) $roles=array($possible_roles);
+		$user_roles = $this->CI->session->userdata('roles');
+		
+		foreach($possible_roles as $possible_role)
+		{
+			if(in_array($possible_role,$user_roles))
+			{
+				log_message('debug', __METHOD__.' user #'.$this->CurrentUserId().' has the role '.$possible_role);
+				return true;
+			}
+		}
+				
+		log_message('debug', __METHOD__.' user #'.$this->CurrentUserId().' with roles '.json_encode($user_roles).' does not have any of the roles '.json_encode($possible_roles));
+		return false;
+	}
+	
+	// --------------------------------------------------------------------
+	
+	/**
+	 * GetRoles method checks to see if the user is logged in and redirects if the user isn't
+	 *
+	 * Example:
+	 * $this->UserAccess->GetRoles();
+	 *
+	 * @result array(string) $roles
+	 */
+	public function GetRoles()
+	{
+		log_message('debug', __METHOD__.' called ');
+		$roles = $this->CI->session->userdata('roles');
+		log_message('debug', __METHOD__.' roles = '.json_encode($roles));
+		
+		return $roles;
 	}
 	
 	// --------------------------------------------------------------------

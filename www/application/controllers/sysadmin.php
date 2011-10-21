@@ -9,9 +9,10 @@ class Sysadmin extends CI_Controller {
 		$this->load->helper(array('form','url'));
 		$this->load->library(array('form_validation','table','session'));
 		
-		//----- This page requires login-----
+		//----- This page requires login and the role sysadmin-----
 		$this->load->library('UserAccess');
 		$this->useraccess->LoginRequired();
+		if(!$this->useraccess->HasRole(array('system admin'))) redirect('/', 'refresh');
 		//-----------------------------------
 	}
 
