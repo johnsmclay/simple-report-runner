@@ -2,6 +2,17 @@
 
 class Pglmsweeklies extends CI_Controller {
 
+	function __construct()
+	{
+		parent::__construct();
+		
+		//----- This page requires login-----
+		$this->load->library('UserAccess');
+		$this->useraccess->LoginRequired();
+		if(!$this->useraccess->HasRole(array('system admin','internal',))) redirect('/', 'refresh');
+		//-----------------------------------
+	}
+	
 	/**
 	 * Index Page for this controller.
 	 *
