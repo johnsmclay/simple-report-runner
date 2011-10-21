@@ -48,17 +48,23 @@
 		 */
 		public function getReportList()
 		{
-			$reportListQuery = '
+			$this->load->library('UserAccess');
+			$user_id = $this->useraccess->CurrentUserId();
+			$visibilities = "'public'";
+			if($this->useraccess->HasRole(array('internal','system admin'))) $visibilities .= ",'private'";
+			$reportListQuery = "
 				SELECT
-					id,
-					display_name,
-					(SELECT rc.title FROM report_category rc WHERE rc.id = report.category_id) AS category,
-					description
+					r.id,
+					r.display_name,
+					rc.title AS category,
+					r.description
 				FROM 
-					report
+					report r
+					LEFT JOIN report_category rc ON rc.id = r.category_id
+					LEFT JOIN report_permission rp ON rp.report_id=r.id AND rp.user_id=$user_id
 				WHERE
-					type = "mysql"
-				';
+					rp.id IS NOT NULL OR r.visibility IN ($visibilities)
+				";
 			$reportListResult = $this->db1->query($reportListQuery);
 			$reportList = array();
 			foreach ($reportListResult->result_array() AS $row)
