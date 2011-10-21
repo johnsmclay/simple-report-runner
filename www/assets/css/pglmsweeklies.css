@@ -28,3 +28,7 @@ form fieldset li {
 form fieldset li select {
 	width: 260px;
 }
+
+#loaderImg {
+	margin-left: 28px;
+}

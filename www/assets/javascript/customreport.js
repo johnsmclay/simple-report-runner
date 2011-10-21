@@ -22,8 +22,16 @@ $(function()
 	//								//
 	//////////////////////////////////
 	
-	$('#reportForm').hide();
-	$('#scheduleFormBlock').hide();
+	
+	if ($('#reportForm').length > 0)
+	{
+		$('#reportForm').hide();
+	}
+	
+	if ($('#scheduleFormBlock').length > 0)
+	{
+		$('#scheduleFormBlock').hide();
+	}
 	
 	// highlight table rows on hover
 	$('tr').live('mouseover mouseout',function(event)
@@ -147,6 +155,23 @@ $(function()
 	// is available to act upon. 
 	function loadFeatures() 
 	{
+		if ($('#loaderImg').length > 0)
+		{
+			var submitWidth = $('#submitReportBtn').width();
+			var imgWidth = $('#loaderImg').width();
+			var calculatedMargin = Math.floor((submitWidth - imgWidth)/2);
+			
+			$('#loaderImg').css(
+				{
+					width 			: submitWidth + 'px',
+					paddingLeft		: parseInt($('#submitReportBtn').css('paddingLeft')) +  parseInt($('#submitReportBtn').css('borderLeftWidth')),
+					paddingRight	: parseInt($('#submitReportBtn').css('paddingRight')) + parseInt($('#submitReportBtn').css('borderRightWidth'))
+				}
+			);
+			
+			$('#loaderImg').hide();
+		}
+		
 		if ($('#reportForm').length > 0)
 		{
 			
@@ -284,6 +309,8 @@ $(function()
 					// Get form values
 					var values = serializeForm($('#reportForm'));
 					
+					$('#submitReportBtn').hide();
+					$('#loaderImg').show();
 					// Request the report to run
 					$.ajax({
 						url			: 'customreport/processReport',
@@ -313,11 +340,18 @@ $(function()
 									minHeight		: 20,
 									maxHeight		: 100
 								});
+								
+								$('#submitReportBtn').show();
+								$('#loaderImg').hide();
+								
 								return false;
 							}
 								else if(data.type == 'csv')
 								{
 									$('#secretIFrame').attr('src', data.url);
+									
+									$('#submitReportBtn').show();
+									$('#loaderImg').hide();
 								}
 									else if(data.type == 'html')
 									{
@@ -328,13 +362,14 @@ $(function()
 												$(this).remove();
 											});
 										}
-										// $('#htmlTable').hide();
 										$('#htmlTable').append(data.htmlTable);
 										var div_width = $('#htmlTable').width();
-										console.log(div_width);
 										
+										// Create scrollable table 600px in height
 										$('.reportTable').scrollbarTable(600);
-										// $('#htmlTable').attr('style','width:'+div_width+'px;margin:0 auto;padding-right:80px;');
+										
+										$('#submitReportBtn').show();
+										$('#loaderImg').hide();
 									}
 						}
 					});
@@ -346,31 +381,11 @@ $(function()
 		}
 	}
 	
-	function serializeForm(form)
-	{
-		var values = {};
-		var formId = $(form).attr('id');
-		
-		// Add the report ID to the values object, it is a hidden input
-		$.each($('#'+formId+' :hidden'),function()
-		{
-			values[this.id] = this.value;
-		});
-		
-		// loop through each input and store its value in the values object
-		$.each($('#'+formId).serializeArray(),function(i,field) 
-		{
-			values[field.name] = field.value;
-		});
-		
-		return values;
-	}
-	
 	// form validation
 	function validateFields(form) 
 	{
 		var numRegEx = /^[0-9]*$/;
-		var dateRegEx = /^(0?[1-9]|1[012])\/(0?[1-9]|[12][1-9]|3[01]|10)\/20[01][0-9]$/;
+		var dateRegEx = /^(0?[1-9]|1[012])\/(0?[1-9]|[12][0-9]|3[01])\/20[01][0-9]$/;
 		
 		// Iterate through all form elements and test their value for the correct data type
 		$('#' + $(form).attr('id') + ' :input').each(function()

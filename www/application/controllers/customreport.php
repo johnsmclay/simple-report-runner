@@ -107,7 +107,7 @@
 			}
 				elseif($reportFormat == 'html')
 				{
-					$html = createHTMLTable($resultsArray,$headers,1000);
+					$html = createHTMLTable($resultsArray,$headers,200);
 					
 					echo json_encode(array(
 						'type' => $reportFormat,
@@ -157,12 +157,5 @@
 			echo json_encode(array('html'=>$html));
 			exit();
 		}
-
-
-		function test($exit = false)
-		{
-			$this->show($_POST, $exit);
-		}
-
 	}
 ?>

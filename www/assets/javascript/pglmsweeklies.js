@@ -1,5 +1,10 @@
 $(function()
 {
+	if ($('#loaderImg').length > 0)
+	{
+		$('#loaderImg').hide();
+	}
+	
 	$('#pglmsWeekliesForm').submit(function()
 	{
 		submitForm($(this));
@@ -117,18 +122,58 @@ function submitForm(form)
 {
 	var values = serializeForm($(form));
 	
+	$('#pglmsSubmit').hide();
+	$('#loaderImg').show();
+	
 	$.ajax(
 	{
 		url			: 'pglmsweeklies/requestReport',
 		dataType	: 'json',
 		type		: 'post',
 		data		: values,
+		asynch		: false,
 		success		: function(data)
 		{
-			$('#secretIFrame').attr(
-			{ 
-				src	: data.base + data.file
-			});
+			if (data.results == false)
+			{
+				if($('#htmlTable').children().length > 0)
+				{
+					console.log('should not be here');
+					$('#htmlTable').children().each(function()
+					{
+						$(this).remove();
+					});
+				}
+				
+				// Display an error message to the user letting them know 
+				$('#errorModal').text('').append('<p>The report you requested returned no results for the selected school and date range.</p>').dialog(
+				{
+					modal			: true,
+					closeOnEscape	: true,
+					draggable		: false,
+					position		: ['center',200],
+					resizable		: false,
+					title			: 'No Information Found',
+					minHeight		: 20,
+					maxHeight		: 100
+				});
+				
+				$('#pglmsSubmit').show();
+				$('#loaderImg').hide();
+				
+				return false;
+			}
+				else if (data.results == true)
+				{
+					// Set the iFrame source attribute to download the generated Excel file
+					$('#secretIFrame').attr(
+					{ 
+						src	: data.base + data.file
+					});
+					
+					$('#pglmsSubmit').show();
+					$('#loaderImg').hide();
+				}
 		}
 	});
 	
