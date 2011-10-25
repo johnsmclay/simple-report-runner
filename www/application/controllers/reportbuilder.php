@@ -7,6 +7,7 @@
 			//----- This page requires login-----
 			$this->load->library('UserAccess');
 			$this->useraccess->LoginRequired();
+			if(!$this->useraccess->HasRole(array('system admin','report admin',))) redirect('/', 'refresh');
 			//-----------------------------------
 		}
 		

@@ -8,6 +8,10 @@
 		color: #FF0000;
 	}
 	
+	#loaderImg {
+		float:left;
+	}
+	
 /* Select Report */
 	#formElements ul#reportList li.categoryHeading {
 		font-size: 1.5em;
@@ -56,6 +60,7 @@
 /* ---- report form styles ------ */
 	form input.shrinkButton {
 		font-size: .95em;
+		margin: 0;
 	}
 	form fieldset {
 		margin-bottom: 10px;
@@ -90,10 +95,6 @@
 	}
 	form#scheduleReportForm fieldset li select {
 		width: 100px;
-	}
-	form#reportForm fieldset ul li input#submitReportBtn {
-		position: relative;
-		left: 20px;
 	}
 	form#reportForm .description {
 		display: inline-block;

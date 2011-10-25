@@ -60,6 +60,23 @@ $(document).ready(function() {
 		});
 
 });
+
+/**
+ * Serializes input values into a JSON object from the form passed in
+ */
+function serializeForm(form)
+{
+	var values = {};
+	
+	// loop through each input and store its value in the values object
+	$.each($(form).serializeArray(),function(i,field) 
+	{
+		values[field.name] = field.value;
+	});
+	
+	return values;
+}
+
 // ---------------------------------//
 //									//
 //	  Date Adujstment Functions		//

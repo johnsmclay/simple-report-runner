@@ -129,6 +129,7 @@
 					'name' => 'reportSubmit'
 				);
 				echo form_submit($submit);
+				echo '<div id="loaderImg"><img src="' . base_url() . 'assets/images/ajax-loader-2.gif" alt="Loader Image" /></div>';
 				// $scheduleReport = array(
 					// 'id' => 'scheduleReportBtn',
 					// 'type' => 'button',

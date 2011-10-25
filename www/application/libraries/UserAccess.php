@@ -75,7 +75,8 @@ class UserAccess {
 		if(!is_object($user_object)) return false;
 		
 		$this->CI->load->model('User_role_model');
-		$role_objects = $this->CI->User_role_model->GetByUserId($user_id);
+		$role_objects = $this->CI->User_role_model->GetByUserId($user_object->id);
+		log_message('debug', __METHOD__.' # of role objects returned = '.count($role_objects));
 		$roles = array();
 		if($role_objects)
 		{
@@ -222,20 +223,23 @@ class UserAccess {
 	 *
 	 * @result int $current_user_id
 	 */
-	public function HasRole($role)
+	public function HasRole($possible_roles = array())
 	{
-		log_message('debug', __METHOD__.' called with the role '.$role);
+		log_message('debug', __METHOD__.' called ');
+		if(!is_array($possible_roles)) $roles=array($possible_roles);
+		$user_roles = $this->CI->session->userdata('roles');
 		
-		$roles = $this->CI->session->userdata('roles');
-		if(!isset($user_id) || $user_id == '')
+		foreach($possible_roles as $possible_role)
 		{
-			log_message('debug', __METHOD__.' no user is logged in. Redirecting to login.');
-			$this->RedirectToLogin();
+			if(in_array($possible_role,$user_roles))
+			{
+				log_message('debug', __METHOD__.' user #'.$this->CurrentUserId().' has the role '.$possible_role);
+				return true;
+			}
 		}
-		
-		log_message('debug', __METHOD__.' user #'.$user_id.' is logged in');
-		
-		return true;
+				
+		log_message('debug', __METHOD__.' user #'.$this->CurrentUserId().' with roles '.json_encode($user_roles).' does not have any of the roles '.json_encode($possible_roles));
+		return false;
 	}
 	
 	// --------------------------------------------------------------------

@@ -159,13 +159,13 @@ class User_role_model extends CI_Model
 	 * @param string $object_id
 	 * @result bool $success
 	 */
-	public function Delete($object_id)
+	public function Delete($user_id,$role_id)
 	{
-		log_message('debug', __METHOD__.' called with object ID "'.$object_id.'" -- WARNING!!!.');
+		log_message('debug', __METHOD__.' called with user ID "'.$user_id.'" and role ID "'.$role_id.'" -- WARNING!!!.');
 		
-		if(isset($object_id))
+		if(isset($user_id) && isset($role_id))
 		{
-			$this->db->delete($this->db_table,array('id'=>$object_id,));
+			$this->db->delete($this->db_table,array('user_id'=>$user_id,'role_id'=>$role_id,));
 			log_message('debug', __METHOD__.' object with ID "'.$object_id.'" -- DELETED!!!.');
 		}
 	}
@@ -176,7 +176,7 @@ class User_role_model extends CI_Model
 	 * Disable method disables an instance of the model
 	 *
 	 */
-	public function Disable($object_id)
+	public function Disable($user_id,$role_id)
 	{
 		log_message('debug', __METHOD__.' called with object ID "'.$object_id.'".');
 		
@@ -189,7 +189,7 @@ class User_role_model extends CI_Model
 		// }
 		
 		// There is no deleted property on this object so we are going to actually delete stuff
-		$this->Delete($object_id);
+		$this->Delete($user_id,$role_id);
 	}
 	
 	// --------------------------------------------------------------------
