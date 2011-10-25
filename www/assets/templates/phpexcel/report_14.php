@@ -93,7 +93,6 @@ function styleReport_14($sheet)
 	#***************************************
 	$objReader = PHPExcel_IOFactory::createReader('Excel2007');
 	$objReader->setReadDataOnly(true);
-    $objReader->$sheet;
 	$highestRow = $sheet->getHighestRow(); // e.g. 10
 	
 	$totalRow = $highestRow+1;

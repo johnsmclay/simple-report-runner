@@ -94,7 +94,6 @@ function styleReport_11($sheet,$report_name,$report_vars)
 	#***************************************
 	$objReader = PHPExcel_IOFactory::createReader('Excel2007');
 	$objReader->setReadDataOnly(true);
-    $objReader->$sheet;
 	$highestRow = $sheet->getHighestRow(); // e.g. 10
 	
 	for ($row = 4; $row <= $highestRow; ++$row) {
