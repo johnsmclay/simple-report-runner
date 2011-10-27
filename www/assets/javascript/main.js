@@ -58,20 +58,34 @@ $(document).ready(function() {
 			'display' : 'none',
 			'visibility' : 'hidden'
 		});
-
 });
 
 /**
  * Serializes input values into a JSON object from the form passed in
  */
-function serializeForm(form)
+function serializeForm(form,check)
 {
 	var values = {};
+	var fields = {}
 	
 	// loop through each input and store its value in the values object
 	$.each($(form).serializeArray(),function(i,field) 
 	{
-		values[field.name] = field.value;
+		// If check is set to true create validation flags for parsing on the back-end
+		if(check == true){
+			if ($('#'+field.name).attr('req') != undefined)
+			{
+				values[field.name] = {'value':field.value, req:true}
+			}
+				else
+				{
+					values[field.name] = {'value':field.value,req:false};
+				}
+		}
+			else if (check == false)
+			{
+				values[field.name] = field.value;
+			}
 	});
 	
 	return values;

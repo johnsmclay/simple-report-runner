@@ -54,6 +54,22 @@ div#reportConnectionSection {
 	margin-left: 10px;
 }
 
+#reportBuilderSections {
+	float:	left;
+	width: 90%;
+}
+
+#buttonColumn {
+	float: left;
+	width: 10%;
+}
+
+.separator {
+	width: 95%;
+	height: 3px;
+	margin: 35px auto;
+	background-color: #aba;
+}
 
 .shadow {
 	-moz-box-shadow:inset 0 0 5px #000000;
@@ -67,4 +83,13 @@ div#reportConnectionSection {
 	text-transform: uppercase;
 	font-size: 1.3em;
 	margin-bottom: 15px;
+}
+
+.required {
+	color: #FF0000;
+}
+
+.requiredError {
+	border: 2px solid #FF0000;
+/*EABFC4	*/
 }

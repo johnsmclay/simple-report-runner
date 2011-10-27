@@ -1,4 +1,4 @@
-		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+		<script type="text/javascript" src="<?=base_url();?>assets/javascript/jquery-1.6.4.min.js"></script>
 		<script type="text/javascript" src="<?=base_url();?>assets/javascript/jquery-ui-1.8.15.custom.min.js"></script>
 		<script type="text/javascript" src="<?=base_url();?>assets/javascript/jquery.collapse.js"></script>
 		<script type="text/javascript" src="<?=base_url();?>assets/javascript/jquery.scrollbarTable-0.1.js"></script>

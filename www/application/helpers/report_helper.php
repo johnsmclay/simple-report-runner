@@ -57,10 +57,12 @@ if (! function_exists('createHTMLTable'))
 	function createHTMLTable($array, $headers = array(), $limit=null)
 	{
 		$count = (is_int($limit) && $limit) > 0 ? $limit : null;
+		$numHeaders = count($headers);
+		$numResults = count($array);
 
 		$html = "<table class='reportTable'>";
 
-		if ( !empty($headers))
+		if (!empty($headers))
 		{
 			$html .= "<thead>";
 			$html .= "<tr>";
@@ -76,7 +78,7 @@ if (! function_exists('createHTMLTable'))
 		$html .= "<tbody>";
 		
 		// If a limit has been passed in, limit the rows to that amount
-		if(is_int($count) && $count > 0)
+		if (is_int($count) && $count > 0)
 		{
 			foreach($array AS $arrays)
 			{
@@ -90,6 +92,11 @@ if (! function_exists('createHTMLTable'))
 					$html .= "</tr>";
 				}
 				--$count;
+			}
+			
+			if ($numResults > $limit)
+			{
+				$html .= "<tr><td colspan='{$numHeaders}'>The Report returned more results. However this temporary display has been limited to show only {$limit} results. If you want the full report, select the CSV radio button above and run it again.</td></tr>";
 			}
 		}
 			// Otherwise show all rows
