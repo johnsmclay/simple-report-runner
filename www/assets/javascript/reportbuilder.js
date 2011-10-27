@@ -7,7 +7,7 @@ $(function()
 	//**********************************//
 	
 	// A global var for storing the value of the report connection drop down
-	var rememberConnection;
+	var reportConnection;
 	
 	// Reset the form on refresh
 	$(':input','#reportBuilderForm')
@@ -39,7 +39,7 @@ $(function()
 	{
 		if ($(this).val() != "" && $('#connectionForm').length > 0)
 		{
-			cancelNewConnection();
+			cancelNewConnection($(this).val());
 		}
 	});
 	
@@ -199,13 +199,20 @@ $(function()
 		});
 	}
 	
-	function cancelNewConnection()
+	function cancelNewConnection(passedVal)
 	{
 		if ($('#newConnectionSection').length > 0)
 		{
 			$('#newConnectionSection').slideToggle().remove();
 		}
-		
-		$('#connection_id').val(reportConnection).attr('req','true');
+
+		if (typeof passedVal == 'undefined')
+		{
+			$('#connection_id').val(reportConnection).attr('req','true');
+		}
+			else
+			{
+				$('#connection_id').val(passedVal);
+			}
 	}
 });
