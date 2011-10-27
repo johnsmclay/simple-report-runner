@@ -82,7 +82,7 @@ function serializeForm(form,check)
 					values[field.name] = {'value':field.value,req:false};
 				}
 		}
-			else if (check == false)
+			else
 			{
 				values[field.name] = field.value;
 			}
