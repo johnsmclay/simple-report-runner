@@ -23,7 +23,7 @@ if ( !defined('BASEPATH'))
  */
 if (! function_exists('outputCSV'))
 {
-	function outputCSV($array,$headers=array())
+	function outputCSV($array,$headers=array(),$name=null,$parameters=array())
 	{
 		$folder = "report_holder/";
 		$filename = 'report_' . date('m_d_Y') . '_' . mt_rand(1, 9999) . '.csv';

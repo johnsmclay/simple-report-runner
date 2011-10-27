@@ -146,7 +146,7 @@ class Pglmsweeklies extends CI_Controller {
 				{
 					include $templatePath;
 					$style_function = 'styleReport_'.$report_id;
-					$style_function($objPHPExcel->getActiveSheet(),$report_name,$report_vars);
+					$style_function($objPHPExcel->getActiveSheet(),$title,$report_vars);
 				}
 			}
 			
@@ -173,7 +173,7 @@ class Pglmsweeklies extends CI_Controller {
 	public function test()
 	{
 		$this->load->helper('url');
-		$file_path = $this->createReport(1,strtotime('10/2/2011'),strtotime('10/8/2011'));
+		$file_path = $this->createReport(1,strtotime('10/2/2011'),strtotime('10/3/2011'));
 		redirect($file_path, 'refresh');
 	}
 	
