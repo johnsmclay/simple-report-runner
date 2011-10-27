@@ -6,32 +6,15 @@ $(function()
 	//									//
 	//**********************************//
 	
+	// A global var for storing the value of the report connection drop down
+	var rememberConnection;
+	
 	// Reset the form on refresh
 	$(':input','#reportBuilderForm')
 	 .not(':button, :submit, :reset, :hidden, #visibilityCheckbox')
 	 .val('')
 	 .removeAttr('checked')
 	 .removeAttr('selected');
-	
-	// Handle default text in query textarea's
-	var textarea = 'Enter query here...';
-	$('#report_data').val(textarea);
-	
-	$('#report_data').focus(function()
-	{
-		if ($(this).val() == 'Enter query here...')
-		{
-			$(this).val('');
-		}
-	});
-	
-	$('#report_data').blur(function()
-	{
-		if ($(this).val() == '')
-		{
-			$(this).val(textarea);
-		}
-	});
 	
 	// Call the createNewConnection function when this button is clicked
 	$('#newConnectionBtn').click(function()
@@ -67,20 +50,6 @@ $(function()
 	{
 		handleReportForm($(this));
 		return false;
-	});
-	
-	$('#reportConnection').change(function()
-	{
-		var connectionId = $(this).val();
-		console.log(connectionId);
-		if (connectionId != 0  && $('#connectionForm').length == 0)
-		{
-			$(this).removeAttr('req');
-		}
-			else if($('#connectionForm').length > 0)
-			{
-				$(this).attr('req','true');
-			}
 	});
 	
 	//**********************//
@@ -203,7 +172,9 @@ $(function()
 			return false;
 		}
 		
-		$('#reportConnection').val('0').removeAttr('req');
+		reportConnection = $('#connection_id').val();
+		
+		$('#connection_id').val('').removeAttr('req');
 		
 		$.ajax(
 		{
@@ -214,6 +185,15 @@ $(function()
 				if (data.status == true)
 				{
 					$('#reportConnectionSection').append(data.html);
+					// Setup checkboxes to toggle hidden input values. This overcomes jQuery's failure to grab unchecked checkboxes using serializeArray
+					$('input:checkbox').each(function()
+					{
+						$(this).click(function()
+						{
+							var checked = $(this).is(':checked') ? 'TRUE' : 'FALSE';
+							$(this).next().val(checked);
+						})
+					})
 				}
 			}
 		});
@@ -226,9 +206,6 @@ $(function()
 			$('#newConnectionSection').slideToggle().remove();
 		}
 		
-		if ($('#reportConnection').val() == 0)
-		{
-			$('#reportConnection').attr('req','true');
-		}
+		$('#connection_id').val(reportConnection).attr('req','true');
 	}
 });

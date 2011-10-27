@@ -16,7 +16,7 @@
 			$view_data['connections'] = $this->report->getConnections();
 			$view_data['categories'] = $this->report->getCategories();
 			$view_data['userID'] = $this->useraccess->CurrentUserId();
-			$this->load->view('customreports/reportbuilder_view',$view_data);
+			$this->load->view('reportbuilder/reportbuilder_view',$view_data);
 		}
 		
 		function generateVariables()
@@ -27,7 +27,7 @@
 			
 			$view_data['variables'] = $variables;
 			
-			$html = $this->load->view('customreports/reportvariables_view',$view_data,TRUE);
+			$html = $this->load->view('reportbuilder/reportvariables_view',$view_data,TRUE);
 			
 			echo json_encode(array('html'=>$html));
 			exit();
@@ -35,7 +35,7 @@
 		
 		public function getConnectionForm()
 		{
-			$html = $this->load->view('customreports/report_connection_form_view',null,true);
+			$html = $this->load->view('reportbuilder/reportbuilder_connection_form_view',null,true);
 			echo json_encode(array('html'=>$html,'status'=>true));
 			exit();
 		}
@@ -80,7 +80,7 @@
 			// Insert connection if a new one exists
 			if (isset($_POST['connectionForm']))
 			{
-				$connectionId = $this->report->insertConnection($connectionVars);
+				$connectionId = $this->report->insertConnection();
 			}
 				else
 				{

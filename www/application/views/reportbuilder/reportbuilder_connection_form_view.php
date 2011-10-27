@@ -19,7 +19,7 @@
 				<input type="text" id="connection_password" name="connection_password" req="true" />
 			</li>
 			<li>
-				<label><span class="required">*</span>hostname:</label>
+				<label><span class="required">*</span>host:</label>
 				<input type="text" id="connection_hostname" name="connection_hostname" req="true" />
 			</li>
 			<?
@@ -43,15 +43,18 @@
 			</li>
 			<li>
 				<label>Persistent Conneciton:</label>
-				<input type="checkbox" id="connection_pconnect" name="connection_pconnect" checked="checked" />
+				<input type="checkbox" id="connection_pconnect" checked="checked" />
+				<input type="hidden" name="connection_pconnect" id="hidden_pconnect" value="TRUE" />
 			</li>
 			<li>
 				<label>Display Database Errors?</label>
-				<input type="checkbox" id="connection_db_debug" name="connection_db_debug" checked="checked" />
+				<input type="checkbox" id="connection_db_debug" checked="checked" />
+				<input type="hidden" name="connection_db_debug" id="hidden_db_debug" value="TRUE" />
 			</li>
 			<li>
 				<label>Database Cache:</label>
-				<input type="checkbox" id="connection_cache_on" name="connection_cache_on" />
+				<input type="checkbox" id="connection_cache_on" />
+				<input type="hidden" name="connection_cache_on" id="hidden_cache_on" />
 			</li>
 			<li>
 				<label>Database Cache Directory:</label>
@@ -71,11 +74,13 @@
 			</li>
 			<li>
 				<label>Auto Initialize Connection:</label>
-				<input type="checkbox" id="connection_autoinit" name="connection_autoinit" checked="checked" />
+				<input type="checkbox" id="connection_autoinit" checked="checked" />
+				<input type="hidden" name="connection_autoinit" id="hidden_auto_init" value="TRUE" />
 			</li>
 			<li>
 				<label>Strict Mode:</label>
-				<input type="checkbox" id="connection_stricton" name="connection_stricton" />
+				<input type="checkbox" id="connection_stricton" />
+				<input type="hidden" name="connection_stricton" id="hidden_stricton" value="FALSE" />
 			</li>
 			<li>
 				<label>Port:</label>

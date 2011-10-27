@@ -49,7 +49,7 @@
 						<label for="report_data"><span class="required">*</span>Report Query:</label>
 						<br />
 						<span>*denote query variables by surrounding them with ~ (tilde)</span>
-						<textarea id="report_data" name="report_data" req="true">Enter query here...</textarea>
+						<textarea id="report_data" name="report_data" req="true"></textarea>
 					</li>
 					<li>
 						<input id="generateVarBtn" type="button" value="Generate Variables" />

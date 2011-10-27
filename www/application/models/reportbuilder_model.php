@@ -45,7 +45,8 @@
 			{
 				if (preg_match('/connection_/', $key) AND $val['value'] != '')
 				{
-					$connectionVars[preg_replace('/connection_/','',$key)] = $val['value']; 
+					$connectionVars[preg_replace('/connection_/','',$key)] = $val['value'];
+					
 				}
 			}
 
@@ -53,6 +54,14 @@
 			return $this->db->insert_id();
 		}
 		
+		/**
+		 * insertReport
+		 * 
+		 * Inserts the new report into the database
+		 * 
+		 * @param int $connection The id of the database connection that this report will use
+		 * @return int The last insert ID
+		 */
 		public function insertReport($connection)
 		{
 			$values = array(
