@@ -25,7 +25,10 @@ $(function()
 	// Call the cancelNewConnection function when this button is clicked
 	$('#cancelConnectionBtn').click(function()
 	{
-		cancelNewConnection();
+		if ($('#connectionForm').length > 0)
+		{
+			cancelNewConnection();
+		}
 	});
 	
 	// Call the generateVariables function when the button is clicked
