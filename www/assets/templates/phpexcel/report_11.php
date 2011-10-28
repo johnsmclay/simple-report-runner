@@ -100,7 +100,7 @@ function styleReport_11($sheet,$report_name,$report_vars)
   	$curGrade = $sheet->getCellByColumnAndRow(12,$row)->getValue();
 	$lastLogInDate = $sheet->getCellByColumnAndRow(9,$row)->getValue();
 		//Checking that Current grade is less than 65
-		if($curGrade < 65){
+		if($curGrade < 59.5){
 			$sheet->getStyle('A'.$row.':S'.$row)->applyFromArray($failingStudentStyle);
 		}
 		//Checking for last login greater than 1 wk.

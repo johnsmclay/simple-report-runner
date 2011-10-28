@@ -21,11 +21,9 @@
 						<a href="<?=site_url("reportbuilder");?>">Report Builder</a>
 					</li>
 					<?php endif; ?>
-					<?php if ($this->useraccess->HasRole(array('user admin','system admin'))): ?>
 					<li>
-						<a href="<?=site_url("useradmin");?>">Account Admin</a>
+						<a href="<?=site_url("useradmin");?>">User Profile</a>
 					</li>
-					<?php endif; ?>
 					<?php if ($this->useraccess->HasRole(array('system admin'))): ?>
 					<li>
 						<a href="<?=site_url("sysadmin");?>">System Admin</a>

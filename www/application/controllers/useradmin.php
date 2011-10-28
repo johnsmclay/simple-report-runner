@@ -12,7 +12,7 @@ class Useradmin extends CI_Controller {
 		//----- This page requires login-----
 		$this->load->library('UserAccess');
 		$this->useraccess->LoginRequired();
-		if(!$this->useraccess->HasRole(array('system admin','user admin',))) redirect('/', 'refresh');
+		//if(!$this->useraccess->HasRole(array('system admin','user admin',))) redirect('/', 'refresh');
 		//-----------------------------------
 	}
 
@@ -26,10 +26,12 @@ class Useradmin extends CI_Controller {
 	 */
 	public function index()
 	{
-		//if($role != 'admin') $this->editaccount($this->useraccess->CurrentUserId());
-		
-		$this->listaccounts();
-
+		if(!$this->useraccess->HasRole(array('system admin','user admin',)))
+		{
+			$this->editaccount($this->useraccess->CurrentUserId());
+		}else{
+			$this->listaccounts();
+		}
 	}
 	
 	public function listaccounts()
@@ -85,7 +87,7 @@ class Useradmin extends CI_Controller {
 	public function editaccount($user_id)
 	{
 		if(!isset($user_id)) $this->index();
-		//if($role != 'admin' && $user_id != $this->useraccess->CurrentUserId()) $this->index();
+		//if(!$this->useraccess->HasRole(array('system admin','user admin',))) $this->index();
 		
 		$this->load->model('Role_model');
 		$available_roles = $this->Role_model->GetNameIdArray();
@@ -115,7 +117,7 @@ class Useradmin extends CI_Controller {
 	}
 	
 	public function saveaccount()
-	{
+	{	
 		$this->form_validation->set_rules('user_id', 'User ID', 'min_length[1]|integer|xss_clean');
 		$this->form_validation->set_rules('fname', 'First Name', 'required|min_length[1]|max_length[60]|xss_clean');
 		$this->form_validation->set_rules('lname', 'Last Name', 'required|min_length[1]|max_length[60]|xss_clean');
@@ -141,6 +143,8 @@ class Useradmin extends CI_Controller {
 			log_message('debug', __METHOD__.' validation passed.');
 			if(!isset($_REQUEST['user_id']))
 			{
+				// must be an admin to create users
+				if(!$this->useraccess->HasRole(array('system admin','user admin',))) $this->index();
 				log_message('debug', __METHOD__.' no user_id found, the account will need to be created.');
 				$this->form_validation->set_rules('password', 'Password', 'required|xss_clean|min_length[8]|max_length[60]');
 				$this->form_validation->set_rules('confirm_password', 'Password Confirmation', 'required|matches[password]|xss_clean');
@@ -174,6 +178,10 @@ class Useradmin extends CI_Controller {
 			}else{
 				// validate the user_id
 				log_message('debug', __METHOD__.' user_id found, the account will need to be updated.');
+				
+				// only an admin or the actual user can edit a user's account
+				if(!$this->useraccess->HasRole(array('system admin','user admin',)) && $this->useraccess->CurrentUserId() !=  $_REQUEST['user_id']) $this->index();
+				
 				$this->form_validation->set_rules('user_id', 'user id', 'required|min_length[1]|integer|xss_clean');
 				if($_REQUEST['password'] != '')
 				{
@@ -231,6 +239,9 @@ class Useradmin extends CI_Controller {
 	
 	public function deleteaccount()
 	{
+		// only admins can delete accounts
+		if(!$this->useraccess->HasRole(array('system admin','user admin',))) $this->index();
+		
 		// validate fields
 		$this->form_validation->set_rules('user_id', 'User ID', 'required|min_length[1]|integer|xss_clean');
 		if (!$this->form_validation->run())
@@ -249,6 +260,9 @@ class Useradmin extends CI_Controller {
 	
 	public function saveroles()
 	{
+		// only admins can edit roles
+		if(!$this->useraccess->HasRole(array('system admin','user admin',))) $this->index();
+		
 		$this->form_validation->set_rules('user_id', 'User ID', 'min_length[1]|integer|xss_clean');
 		$this->form_validation->set_rules('roles', 'Roles', 'required|is_array');
 		
