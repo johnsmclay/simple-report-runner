@@ -1,5 +1,5 @@
 <?php $this->load->view('dependencies/header', array(
-		'title' => 'User Administration',
+		'title' => 'Weekly Enrollment Reports',
 		'header1' => 'The Reporting Dashboard',
 		'header2' => 'PGLMS Weekly Enrollment Reports',
 ));

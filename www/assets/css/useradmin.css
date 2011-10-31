@@ -1,0 +1,26 @@
+#table-container {
+    display: 				table;
+    }
+
+#table-row  {
+	display: 				table-row;
+}
+
+#table-column-left, #table-column-right, #table-column-middle {
+	display: 				table-cell;
+}
+
+#table-column-left {
+	padding-right: 			10px;
+}
+
+td {
+	padding-right: 			20px;
+}
+
+th {
+	font-weight:			bold;
+	text-align:				left;
+	border-bottom-style:	solid;
+	border-bottom-width:	1px;
+}

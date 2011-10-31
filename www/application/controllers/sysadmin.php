@@ -27,8 +27,9 @@ class Sysadmin extends CI_Controller {
 	public function index()
 	{
 		//if($role != 'admin') $this->editaccount($this->useraccess->CurrentUserId());
+		$view_data = array();
 		
-		//$this->listaccounts();
+		$this->load->view('systemadmin/system_admin',$view_data);
 
 	}
 	
