@@ -31,6 +31,7 @@
 					<option value="MySQL">MySQL</option>
 					<option value="MSSQL">MSSQL</option>
 					<option value="Brain Honey">Brain Honey</option>
+					<option value="Brain Honey">PostgreSQL</option>
 				</select>
 			</li>
 			<li>
