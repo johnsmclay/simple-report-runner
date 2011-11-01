@@ -32,7 +32,7 @@
 							 </div>
 							 <div id="table-row">
 								<div id="table-column-left">
-									<?=form_submit('submit', 'Create')?>
+									<?=form_submit('submit', 'Save')?>
 									<?=form_close()?>
 								</div>
 								<div id="table-column-right">
