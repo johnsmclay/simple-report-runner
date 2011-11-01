@@ -64,6 +64,7 @@
 					LEFT JOIN report_permission rp ON rp.report_id=r.id AND rp.user_id=$user_id
 				WHERE
 					rp.id IS NOT NULL OR r.visibility IN ($visibilities)
+					AND (r.deleted = 0 OR r.deleted IS NULL OR r.deleted > NOW())
 				";
 			$reportListResult = $this->db1->query($reportListQuery);
 			$reportList = array();
