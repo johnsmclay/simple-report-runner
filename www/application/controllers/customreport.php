@@ -49,7 +49,7 @@
 			
 			// Obtain the description seperately from the report variables in order to display
 			$description = $this->model->getReportDescription($reportId);
-
+			
 			// Load the variables into the view data array
 			$view_data['report_vars'] = $report_vars;
 			$view_data['description'] = $description;

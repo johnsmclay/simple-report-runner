@@ -3,6 +3,10 @@
 	'header1' => 'The Reporting Dashboard',
 	'header2' => 'Middlebury Interactive Reporting',
 )); ?>
+<?
+echo $this->router->class;
+echo date('Y-m-d',strtotime("first day of last month -0 months"));
+?>
 <ul id="reportList">
 	<?php
 	$category = '';

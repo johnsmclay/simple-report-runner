@@ -10,11 +10,7 @@ $(function()
 	var reportConnection;
 	
 	// Reset the form on refresh
-	$(':input','#reportBuilderForm')
-	 .not(':button, :submit, :reset, :hidden, #visibilityCheckbox')
-	 .val('')
-	 .removeAttr('checked')
-	 .removeAttr('selected');
+	clearForm('reportBuilderForm');
 	
 	// Call the createNewConnection function when this button is clicked
 	$('#newConnectionBtn').click(function()
@@ -61,9 +57,16 @@ $(function()
 	//						//
 	//**********************//
 	
+	/**
+	 * Once the form has been submitted handle all
+	 * necessary preparations before passing it to the controller
+	 */
 	function handleReportForm(form)
 	{
 		var values = serializeForm(form,true);
+		
+		$('#createReportBtn').hide();
+		$('#ajaxLoader').show();
 		
 		if ($('#connectionForm').length > 0)
 		{
@@ -78,7 +81,11 @@ $(function()
 			dataType	: 'json',
 			success		: function(data)
 			{
+				$('#ajaxLoader').hide();
+				$('#createReportBtn').show();
+				
 				clearErrors(form);
+				
 				if (data.status == 'error')
 				{
 					for (var i in data.errors)
@@ -89,12 +96,16 @@ $(function()
 					else if (data.status == 'passed')
 					{
 						clearErrors(form);
+						clearForm('reportBuilderForm');
 					}
 			}
 		});
 		return false;
 	}
 	
+	/**
+	 * Clear all errors on the form
+	 */
 	function clearErrors(form)
 	{
 		$.each($(form).serializeArray(),function(i,field)
@@ -106,6 +117,9 @@ $(function()
 		});
 	}
 	
+	/**
+	 * Generate the variables by parsing the SQL statement
+	 */
 	function generateVariables()
 	{
 		var query = {'query' : $('#report_data').val()};
@@ -127,6 +141,7 @@ $(function()
 			return;
 		}
 		
+		// Pass the SQL statement to the controller where it will be parsed
 		$.ajax(
 		{
 			url			: 'reportbuilder/generateVariables',
@@ -135,6 +150,7 @@ $(function()
 			data		: query,
 			success		: function(data)
 			{
+				// Remove any variables (form elements) that exist to avoid duplication
 				if($('#reportVariablesFieldset').children())
 				{
 					$('#reportVariablesFieldset').children().each(function()
@@ -143,12 +159,22 @@ $(function()
 					});
 				}
 				
+				// Append the html received from the controller into the fieldset
 				$('#reportVariablesFieldset').append(data.html);
-				if($('#createReportBtn').length <= 0)
+				
+				// If the submit button for the form does not exist yet create it
+				if($('#createReportBtn').length == 0)
 				{
+					// Append the report button into the button column
 					$('#buttonColumn').append('<input type="submit" value="Submit" id="createReportBtn">');
+					// Append an ajax loader image into the button column
+					$('#buttonColumn').append('<img id="ajaxLoader" src="assets/images/ajax-loader-2.gif" />');
+					// Hide the ajax loader until we are ready for it
+					$('#ajaxLoader').hide();
+					
+					// Hide the submit button and then show it with an easing effect *for UI interaction and notification*
 					$('#createReportBtn').hide();				
-					$('#createReportBtn').show('bounce',{direction:'up'},500);
+					$('#createReportBtn').show('bounce',{direction:'up',distance : 40,mode : 'show',times : 6},500);
 				}
 				$('input:submit').button();
 				$('.optionsQuery').hide();
@@ -168,6 +194,9 @@ $(function()
 		})
 	}
 	
+	/**
+	 * Create the new connection form
+	 */
 	function createNewConnection()
 	{
 		if ($('#newConnectionSection').length > 0)
@@ -202,6 +231,10 @@ $(function()
 		});
 	}
 	
+	/**
+	 * Destroy the new connection form so no values from it will be passed
+	 * to the controller when the form is created causing needless processing
+	 */
 	function cancelNewConnection(passedVal)
 	{
 		if ($('#newConnectionSection').length > 0)
@@ -218,4 +251,5 @@ $(function()
 				$('#connection_id').val(passedVal);
 			}
 	}
+	
 });

@@ -91,6 +91,20 @@ function serializeForm(form,check)
 	return values;
 }
 
+/**
+ * Clears all form inputs
+ * 
+ * @param string formId the ID of the form to be cleared
+ */
+function clearForm(formId)
+{
+	$(':input','#' + formId)
+	.not(':button, :submit, :reset, :hidden, #visibilityCheckbox')
+	.val('')
+	.removeAttr('checked')
+	.removeAttr('selected');
+}
+
 // ---------------------------------//
 //									//
 //	  Date Adujstment Functions		//

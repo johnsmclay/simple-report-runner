@@ -12,7 +12,7 @@
 		float:left;
 	}
 	
-/* Select Report */
+/* Select Report From Reportl List */
 	#formElements ul#reportList li.categoryHeading {
 		font-size: 1.5em;
 		font-weight: bold;
@@ -57,7 +57,7 @@
 
 
 	
-/* ---- report form styles ------ */
+/* ---- form styles ------ */
 	form input.shrinkButton {
 		font-size: .95em;
 		margin: 0;
@@ -93,48 +93,24 @@
 		padding-bottom: 10px;
 		font-weight: 600;
 	}
-	form#scheduleReportForm fieldset li select {
-		width: 100px;
-	}
 	form#reportForm .description {
 		display: inline-block;
 		padding-left: 5px;
 		margin-left: 12px;
 	}
-
-
-/* ------ HTML Table Styles ------ */
-	table {
-		border-collapse: collapse;
+	form fieldset#scheduleTime li select {
+		width: 150px;
+	}
+	form fieldset li select#reportTimeFrame {
+		width: 80px;
+	}
+	fieldset#scheduleTime ul {
+		margin-top: 10px;
+	}
+	fieldset#scheduleTime div#scheduleInstructions p {
+		width: 470px;
 	}
 
-	div#htmlTable thead tr {
-		background-color: #B5CAFA;
-	}
-	div#htmlTable table th {
-		border-top:4px solid #AABCFE;
-		color: #039;
-		font-size: 1.2em;
-		text-align: left;
-		background-color: #B9C9FE;
-		border-right:1px solid #B9C9FE;
-		padding: 10px;
-	}
-	div#htmlTable table td {
-		padding: 10px;
-		background-color: #E8EDFF;
-		color: #669;
-		border-top:1px solid transparent;
-		border-bottom:1px solid #FFF;
-		border-right:1px solid rgb(174,186,251);
-		border-left:1px solid rgb(174,186,251);
-	}
-	div#htmlTable td.change {
-		background-color: rgb(210,217,251);
-	}
-	div#htmlTable {
-		margin-bottom: 40px;
-	}
 
 /* ------ CLASSES ------ */
 	.example {
@@ -144,4 +120,10 @@
 	.selectError {
 		border: 1px solid #FF0000;
     	border-radius: 5px 5px 5px 5px;
+	}
+	
+	
+/* ------ IDs ------ */
+	#timeQuantifier {
+		width: 15px;
 	}

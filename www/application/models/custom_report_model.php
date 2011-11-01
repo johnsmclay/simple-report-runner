@@ -210,7 +210,7 @@
 			{
 				if ($var['text_identifier'] == 'date_range')
 				{
-					$reportQuery = preg_replace("/~date_range~/", '"' . date('Y-m-d H:i:s', strtotime($reportValues['start_date'])) . '" AND "' . date('Y-m-d H:i:s', strtotime($reportValues['end_date'])) . '"', $reportQuery);
+					$reportQuery = preg_replace("/~date_range~/", '"' . date('Y-m-d H:i:s', strtotime($reportValues['start_date'])) . ' 00:00:00" AND "' . date('Y-m-d', strtotime($reportValues['end_date'])) . ' 23:59:59"', $reportQuery);
 				}
 					elseif ($var['variable_type'] == 'string')
 					{

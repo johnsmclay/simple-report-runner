@@ -52,6 +52,10 @@ time, mark, audio, video {
 		margin: .35em 0 
 	}
 	
+	h4 {
+		margin: 10px 0 5px 0;
+	}
+	
 	div.ui-datepicker {
 		font-size: .925em;
 	}
@@ -188,6 +192,17 @@ time, mark, audio, video {
 		text-transform: uppercase;
 	}
 	
+	#notices {
+		background-color: #F7DFDA;
+	    border: 1px solid #F7BEB5;
+	    font-size: 1.5em;
+	    margin: 20px 0 -5px 0;
+	    padding: 4px;
+	    color: #FF0000;
+	    text-align: center;
+	    display: none;
+	}
+	
 		/* Form Elements */
 			#formElements .section {
 				padding-bottom: 20px;
@@ -210,18 +225,22 @@ time, mark, audio, video {
 				position: absolute;
 				display: inline;
 			}
+			
+			.example {
+				
+			}
 	
 			/* Customer Section */
-				#customerSelection  div{
+				/*#customerSelection  div{
 					margin: 20px 0 0 20px;
 				}
 				
 				#customerId {
 					display: inline;
-				}
+				}*/
 				
 			/* Enrollments Section */
-				#enrollmentSelection div{
+				/*#enrollmentSelection div{
 					margin: 20px 0 0 20px;
 				}
 				
@@ -231,16 +250,16 @@ time, mark, audio, video {
 
 				#dynamicForm #reportForm #dateButtonsGroup div .dateButton, #dateButtonsGroup div .dateButton {
 					margin-right: 10px;
-				}
+				}*/
 				
 				/*#enrollmentSelection #dateButtons {
 					margin-top: 20px;
 				}*/
 				
 			/* Teacher Section */
-				#teacherSelection {
+				/*#teacherSelection {
 					
-				}
+				}*/
 				
 			/* Custom Reports (dynamic form) */
 				.textLabel {
@@ -249,5 +268,9 @@ time, mark, audio, video {
 				
 				.inputError {
 					color: #FF0000;
+				}
+				.note {
+					font-size: .9em;
+					font-weight: bold;
 				}
 
