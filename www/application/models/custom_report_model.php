@@ -106,6 +106,7 @@
 				";
 	
 			$reportVarsResult = $this->db1->query($reportVarsQuery);
+			$report_vars = array();
 			foreach ($reportVarsResult->result_array() AS $row)
 			{
 				if (!empty($row['options_query']) && $runOptions == true)

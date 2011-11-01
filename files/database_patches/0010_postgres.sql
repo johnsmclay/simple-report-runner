@@ -1,0 +1,1 @@
+ALTER TABLE `connection` MODIFY COLUMN `type` ENUM('MySQL','MSSQL','Brain Honey','Postgres') NOT NULL DEFAULT 'MySQL';
