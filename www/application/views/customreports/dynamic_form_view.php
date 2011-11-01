@@ -215,9 +215,9 @@
 							</select>
 							</li>
 							<li>
-								<label>Send To:</label>
+								<label><span class="required">*</span>Send To:</label>
 								<select id="user" name="user">
-									<option value='*' selected="selected"></option>
+									<option value='' selected="selected"></option>
 									<?
 										foreach ($users AS $user)
 										{

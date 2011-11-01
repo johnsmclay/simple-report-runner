@@ -105,23 +105,18 @@
 		width: 80px;
 	}
 	fieldset#scheduleTime ul {
-		margin-top: 10px;
+		margin-bottom: 16px;
 	}
 	fieldset#scheduleTime div#scheduleInstructions p {
 		width: 470px;
 	}
 
-
 /* ------ CLASSES ------ */
 	.example {
-		display: block;
+		list-style-type: square;
+		margin-left: 14px;
+		padding-left: 0;
 	}
-	
-	.selectError {
-		border: 1px solid #FF0000;
-    	border-radius: 5px 5px 5px 5px;
-	}
-	
 	
 /* ------ IDs ------ */
 	#timeQuantifier {

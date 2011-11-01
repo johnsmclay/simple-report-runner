@@ -105,6 +105,25 @@ function clearForm(formId)
 	.removeAttr('selected');
 }
 
+/**
+ * clearFormErrors
+ * 
+ * Clears all errors (css class) in a form
+ * 
+ * @param object form The form to be processed
+ * @param string error The class which to look for
+ */
+function clearFormErrors(form,error)
+{
+	$.each($(form).serializeArray(),function(i,field)
+	{
+		if ($('#' + field.name).hasClass(error))
+		{
+			$('#' + field.name).removeClass(error);
+		}
+	});
+}
+
 // ---------------------------------//
 //									//
 //	  Date Adujstment Functions		//
@@ -193,9 +212,38 @@ var shiftDates = {
 		var date = new Date();
 		var quarter = Math.floor(date.getMonth() / 3);
 		var firstDate = new Date(date.getFullYear(), quarter * 3, 1);
+		var dateYear = date.getFullYear();
+		var dateMonth = date.getMonth();
+		var dateDay = date.getDate() - 1;
+		
+		// Fix glitch where the first day of the month is being subtracted to 0
+		if (dateDay == 0)
+		{
+			// Do not do previous day if it is the first day of a new quarter
+			switch(dateMonth)
+			{
+				case 0:
+					dateDay = dateDay + 1
+					break;
+				case 3:
+					dateDay = dateDay + 1
+					break;
+				case 6:
+					dateDay = dateDay + 1
+					break
+				case 9:
+					dateDay = dateDay + 1
+					break;
+				default:
+					dateMonth = dateMonth - 1;
+					dateDay = shiftDates.getDaysInMonth(dateMonth,dateYear);
+					break;
+			}
+		}
+		
 		var dates = {
 			beginDate : this.monthsArray[firstDate.getMonth()] + '/01/' + firstDate.getFullYear(),
-			endDate : this.monthsArray[date.getMonth()] + '/' + (date.getDate() - 1) + '/' + date.getFullYear()
+			endDate : this.monthsArray[dateMonth] + '/' + (dateDay < 10 ? '0' + dateDay : dateDay) + '/' + dateYear
 		};
 
 		return dates;

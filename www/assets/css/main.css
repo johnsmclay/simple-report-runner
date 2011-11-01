@@ -225,41 +225,7 @@ time, mark, audio, video {
 				position: absolute;
 				display: inline;
 			}
-			
-			.example {
-				
-			}
 	
-			/* Customer Section */
-				/*#customerSelection  div{
-					margin: 20px 0 0 20px;
-				}
-				
-				#customerId {
-					display: inline;
-				}*/
-				
-			/* Enrollments Section */
-				/*#enrollmentSelection div{
-					margin: 20px 0 0 20px;
-				}
-				
-				#dynamicForm #reportForm #dateButtonsGroup div, #dateButtonsGroup div {
-					margin: 10px 0;
-				}
-
-				#dynamicForm #reportForm #dateButtonsGroup div .dateButton, #dateButtonsGroup div .dateButton {
-					margin-right: 10px;
-				}*/
-				
-				/*#enrollmentSelection #dateButtons {
-					margin-top: 20px;
-				}*/
-				
-			/* Teacher Section */
-				/*#teacherSelection {
-					
-				}*/
 				
 			/* Custom Reports (dynamic form) */
 				.textLabel {
@@ -273,4 +239,10 @@ time, mark, audio, video {
 					font-size: .9em;
 					font-weight: bold;
 				}
-
+				.required {
+					color: #FF0000;
+				}
+				.selectError {
+					border: 1px solid #FF0000;
+			    	border-radius: 5px 5px 5px 5px;
+				}

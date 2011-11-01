@@ -140,8 +140,3 @@
 	.example {
 		display: block;
 	}
-	
-	.selectError {
-		border: 1px solid #FF0000;
-    	border-radius: 5px 5px 5px 5px;
-	}

@@ -317,6 +317,29 @@ $(function()
 		$('#scheduleReportBtn').hide();
 		$('#loaderImg').show();
 		
+		// Clear errors before checking for required fields
+		clearFormErrors($('#reportForm'),'selectError');
+		
+		// User is the only required field, if it is empty, warn the user
+		if ($('#user').val() == '')
+		{
+			$('#errorModal').text('').append('<p>You must select who this report is going to be sent to.</p>').dialog(
+			{
+				modal			: true,
+				closeOnEscape	: true,
+				draggable		: false,
+				position		: ['center',200],
+				resizable		: false,
+				title			: 'There seems to be a problem',
+				minHeight		: 20,
+				maxHeight		: 100,
+				close			: function()
+				{
+					$('#user').addClass('selectError');
+				}
+			});
+		}
+		
 		// Pass the form data via AJAX
 		$.ajax(
 			{
@@ -328,7 +351,8 @@ $(function()
 				{
 					if (data.status == 'success')
 					{
-						$('#notices').append('<p class="notice">Your report has been successfully scheduled</p>').delay(2500).fadeOut();
+						console.log('here');
+						$('#notices').append('<p>Your report has been successfully scheduled</p>').show().delay(2500).fadeOut();
 					}
 				}
 			}

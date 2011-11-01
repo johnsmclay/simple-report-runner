@@ -85,10 +85,6 @@ div#reportConnectionSection {
 	margin-bottom: 15px;
 }
 
-.required {
-	color: #FF0000;
-}
-
 .requiredError {
 	border: 2px solid #FF0000;
 /*EABFC4	*/
