@@ -352,7 +352,7 @@ $(function()
 					if (data.status == 'success')
 					{
 						console.log('here');
-						$('#notices').append('<p>Your report has been successfully scheduled</p>').show().delay(2500).fadeOut();
+						$('#notices').append('<p>Your report has been successfully scheduled</p>').show().delay(1500).fadeOut();
 					}
 				}
 			}

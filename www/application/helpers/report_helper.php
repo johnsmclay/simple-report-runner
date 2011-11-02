@@ -96,7 +96,7 @@ if (! function_exists('createHTMLTable'))
 			
 			if ($numResults > $limit)
 			{
-				$html .= "<tr><td colspan='{$numHeaders}'>The Report returned more results. However this temporary display has been limited to show only {$limit} results. If you want the full report, select the CSV radio button above and run it again.</td></tr>";
+				$html .= "<tr><td colspan='{$numHeaders}'>The Report returned more results. However this temporary display is limited to {$limit} rows. If you want the full report, select the CSV button above and run it again.</td></tr>";
 			}
 		}
 			// Otherwise show all rows

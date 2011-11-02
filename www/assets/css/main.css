@@ -192,6 +192,13 @@ time, mark, audio, video {
 		text-transform: uppercase;
 	}
 	
+	#dateButtonsGroup div {
+		margin-bottom: 10px;
+	}
+	#dateButtonsGroup div input {
+		margin-right: 6px;
+	}
+	
 	#notices {
 		background-color: #F7DFDA;
 	    border: 1px solid #F7BEB5;
@@ -199,6 +206,7 @@ time, mark, audio, video {
 	    margin: 20px 0 -5px 0;
 	    padding: 4px;
 	    color: #FF0000;
+	    position: absolute;
 	    text-align: center;
 	    display: none;
 	}

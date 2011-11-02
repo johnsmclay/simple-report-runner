@@ -22,6 +22,8 @@ $(function()
 	//								//
 	//////////////////////////////////
 	
+	var fieldsetMargin = '58px';
+	
 	
 	if ($('#reportForm').length > 0)
 	{
@@ -300,17 +302,26 @@ $(function()
 			//////////////////////////////
 			$('#reportForm').submit(function() 
 			{
-				// First validate that all fields have been filled out correctly
+				// Remove the HTML table results if they already exist
+				if($('#htmlTable').children().length > 0)
+				{
+					$('#htmlTable').empty();
+				}
 				
+				// First validate that all fields have been filled out correctly
 				var validation = validateFields(this);
 				
 				if(validation != false) 
 				{
+					// Add UI feedback
+					$('#notices').empty();
+					$('#notices').append('<p>Please wait while your report is generated</p>').fadeIn();
+					$('#submitReportBtn').hide();
+					$('#loaderImg').show();
+					
 					// Get form values
 					var values = serializeForm($('#reportForm'));
 					
-					$('#submitReportBtn').hide();
-					$('#loaderImg').show();
 					// Request the report to run
 					$.ajax({
 						url			: 'customreport/processReport',
@@ -341,6 +352,10 @@ $(function()
 									maxHeight		: 100
 								});
 								
+								// Remove UI feedback
+								$('#notices').delay(1000).fadeOut();
+								// if ($('#notices').css('display') == 'none')
+									// $('#notices').empty();
 								$('#submitReportBtn').show();
 								$('#loaderImg').hide();
 								
@@ -348,19 +363,32 @@ $(function()
 							}
 								else if(data.type == 'csv')
 								{
-									$('#secretIFrame').attr('src', data.url);
-									
+									// Remove UI feedback
+									$('#notices').delay(1000).fadeOut();
+									// if ($('#notices').css('display') == 'none')
+										// $('#notices').empty();
 									$('#submitReportBtn').show();
 									$('#loaderImg').hide();
+									
+									$('#secretIFrame').attr('src', data.url);
+									
 								}
 									else if(data.type == 'html')
 									{
+										// Remove UI feedback
+										$('#notices').delay(1000).fadeOut();
+										// if ($('#notices').css('display') == 'none')
+											// $('#notices').empty();
+										$('#submitReportBtn').show();
+										$('#loaderImg').hide();
+										
 										if($('#htmlTable').children().length > 0)
 										{
-											$('#htmlTable').children().each(function()
-											{
-												$(this).remove();
-											});
+											$('#htmlTable').empty();
+											// $('#htmlTable').children().each(function()
+											// {
+												// $(this).remove();
+											// });
 										}
 										$('#htmlTable').append(data.htmlTable);
 										var div_width = $('#htmlTable').width();
@@ -368,8 +396,6 @@ $(function()
 										// Create scrollable table 600px in height
 										$('.reportTable').scrollbarTable(600);
 										
-										$('#submitReportBtn').show();
-										$('#loaderImg').hide();
 									}
 						}
 					});
@@ -461,6 +487,19 @@ $(function()
 		return true;
 	}
 	
-	
+	// This function is only for making the ui a little smoother
+	// when displaying notices
+	function padFieldset(add)
+	{
+		console.log('inside');
+		if (!add)
+		{
+			$('#reportForm fieldset').css('margin-top','0');
+		}
+			else
+			{
+				$('#reportForm fieldset').css('margin-top',fieldsetMargin);
+			}
+	}
 	
 });
