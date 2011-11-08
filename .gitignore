@@ -1,3 +1,6 @@
 .project
 .settings
 fix_permissions.sh
+._*
+.DS_Store
+

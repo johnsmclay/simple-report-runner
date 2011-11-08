@@ -4,7 +4,7 @@ function styleReport_11($sheet,$report_name,$report_vars)
 	/** Error reporting */
 	error_reporting(E_ALL);
 	ini_set('display_errors', 1);
-	ini_set('memory_limit', '512M');
+	//ini_set('memory_limit', '512M');
 		
     $start_date = substr($report_vars['start_date'], 0, -9);
     $end_date   = substr($report_vars['end_date'],0,-9);	
@@ -99,7 +99,7 @@ function styleReport_11($sheet,$report_name,$report_vars)
 	for ($row = 4; $row <= $highestRow; ++$row) {
   	$curGrade = $sheet->getCellByColumnAndRow(12,$row)->getValue();
 	$lastLogInDate = $sheet->getCellByColumnAndRow(9,$row)->getValue();
-		//Checking that Current grade is less than 65
+		//Checking that Current grade is less than 59.5 (which rounds up to 60)
 		if($curGrade < 59.5){
 			$sheet->getStyle('A'.$row.':S'.$row)->applyFromArray($failingStudentStyle);
 		}
