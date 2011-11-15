@@ -8,7 +8,7 @@
 			<a href="<?=site_url("reportbuilder");?>">Report Builder</a>
 		</li>
 		<?php endif; ?>
-		<?php if ($this->useraccess->HasRole(array('user admin','system admin'))): ?>
+		<?php if ($this->useraccess->HasRole(array('user admin','system admin','internal','external'))): ?>
 		<li>
 			<a href="<?=site_url("useradmin");?>">Account Admin</a>
 		</li>
