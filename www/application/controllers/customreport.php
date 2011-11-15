@@ -101,6 +101,7 @@
 
 				// Prepare Preface
 				$preface = 'Report: ' . $report->display_name . "\n";
+				$preface .= "Date/Time of Report: ".DATE('l jS \of F Y h:i:s A')." \n";
 				$preface .= '------------------------------------'."\n";
 				$preface .= "Parameters: \n";
 				foreach($_POST AS $item=>$value)
