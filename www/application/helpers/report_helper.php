@@ -23,7 +23,7 @@ if ( !defined('BASEPATH'))
  */
 if (! function_exists('outputCSV'))
 {
-	function outputCSV($array,$headers=array(),$name=null,$parameters=array())
+	function outputCSV($array,$headers=array(),$preface=null)
 	{
 		$folder = "report_holder/";
 		$filename = 'report_' . date('m_d_Y') . '_' . mt_rand(1, 9999) . '.csv';
@@ -31,6 +31,11 @@ if (! function_exists('outputCSV'))
 		$utf8_bom="\xEF\xBB\xBF";
 		fwrite($handler, $utf8_bom);
 		
+		if(! is_null($preface))
+		{
+			fwrite($handler,$preface);
+		}
+
 		if(! empty($headers))
 		{
 			fputcsv($handler,$headers);

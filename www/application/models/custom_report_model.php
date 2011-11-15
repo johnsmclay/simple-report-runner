@@ -16,7 +16,7 @@
 		}
 		
 		/**
-		 * GetByID method retreives a user object from the database by ID
+		 * GetByID method retreives a custom report object from the database by ID
 		 *
 		 * @param int $object_id
 		 * @result stdObject $object

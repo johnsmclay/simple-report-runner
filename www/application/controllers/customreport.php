@@ -96,8 +96,24 @@
 			// Send the report information to the correct output method
 			if ($reportFormat == 'csv')
 			{
+				// get the report
+				$report = $this->model->GetByID($reportId);
+
+				// Prepare Preface
+				$preface = 'Report: ' . $report->display_name . "\n";
+				$preface .= '------------------------------------'."\n";
+				$preface .= "Parameters: \n";
+				foreach($_POST AS $item=>$value)
+				{
+					if($item != 'reportID' && $item != 'reportFormat')
+					{
+						$preface .= $item . " = " . $value . "\n";
+					}
+				}
+				$preface .= '------------------------------------'."\n";
+
 				// Create the csv file
-				$filename = outputCSV($resultsArray,$headers);
+				$filename = outputCSV($resultsArray,$headers,$preface);
 				// Return the path to be passed to an iFrame that will cause the file to be downloaded.
 				echo json_encode(array(
 					'type' => $reportFormat,
