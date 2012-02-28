@@ -6,12 +6,6 @@ class Cronjobs extends CI_Controller {
 	/**
 	 * Index Page for this controller.
 	 *
-	 * Maps to the following URL
-	 * 		http://example.com/index.php/cronjobs
-	 *	- or -  
-	 * 		http://example.com/index.php/cronjobs/index
-	 * So any other public methods not prefixed with an underscore will
-	 * map to /index.php/welcome/<method_name>
 	 */
 	public function index()
 	{
@@ -24,11 +18,21 @@ class Cronjobs extends CI_Controller {
 		if ( ! $this->input->is_cli_request()) exit('This controller is only meant to be called via the CLI in a cron job.');
 	}
 	
+	/**
+	 * processscheduledreports()
+	 * 
+	 * Called from the CLI to read the database and run scheduled
+	 * reports if it is their time to be run.
+	 * 
+	 * 
+	 */
 	public function processscheduledreports()
 	{
 		// find the reports that need to run
 		$this->load->model('Scheduled_report_model');
 		$scheduled_reports = $this->Scheduled_report_model->GetReportsDue();
+
+		// make sure there was a result
 		if(!$scheduled_reports) return true;
 		
 		// run the scheduled reports one at a time
@@ -50,12 +54,21 @@ class Cronjobs extends CI_Controller {
 			$this->load->model('User_model');
 			$user = $this->User_model->GetUserByID($scheduled_report->user_id);
 			
+			//TODO: add email templating system and do the lookup here
 			$template = array();
 			
 			$this->_SendEmail(array($email_report),$user->email_address,$template);
 		}
 	}
 	
+	/**
+	 * _SendEmail()
+	 * 
+	 * Called from the CLI to read the database and run scheduled
+	 * reports if it is their time to be run.
+	 * 
+	 * 
+	 */
 	private function _SendEmail($reports,$to,$template=array())
 	{
 		$default_template = array(
@@ -67,6 +80,7 @@ class Cronjobs extends CI_Controller {
 			'footer' => "<br/>Thanks!!<br/><br/>If you recieved this email in error please contact the Help Desk @ xxx.xxx.xxxx",
 		);
 		
+		// create the email
 		$this->load->library('email');
 		$this->email->from(isset($template['from_email']) ? $template['from_email'] : $default_template['from_email'] , isset($template['from_name']) ? $template['from_name'] : $default_template['from_name']);
 		$this->email->to($to); 
@@ -80,7 +94,9 @@ class Cronjobs extends CI_Controller {
 			$message .= $line;
 		}
 		$message .= isset($template['footer']) ? $template['footer'] : $default_template['footer'];
-		$this->email->message($message);	
+		$this->email->message($message);
+		
+		// send the email	
 		$this->email->send();
 	}
 	

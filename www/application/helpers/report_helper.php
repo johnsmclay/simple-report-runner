@@ -2,6 +2,9 @@
 if ( !defined('BASEPATH'))
 	exit('No direct script access allowed');
 
+// To Load:
+// $this->load->helper('report_helper');
+
 /**
  * CodeIgniter Report Helpers
  *
@@ -122,5 +125,59 @@ if (! function_exists('createHTMLTable'))
 		return $html;
 	}
 
+}
+
+
+if (! function_exists('sendEmailReport'))
+{
+	function sendEmailReport($to_address,$subject,$html,$attachments,$print_debug=FALSE)
+	{
+		$CI =& get_instance();
+
+		echo "Sending report email to $to_address"."<br/>\n";
+
+		$cc_list = array(
+			'cjohns@middil.com',
+			'bgaunce@middil.com',
+		);
+
+		$CI->load->library('email');
+		$CI->load->helper('email');
+
+		$config['mailtype'] = 'html';
+
+		if(!valid_email($to_address))
+		{
+			echo "Invalid Email address -- ".$to_address." -- skipping"."<br/>\n";
+			return true;
+		}
+
+		$CI->email->clear();
+		$CI->email->from('reports@middil.com', 'Reporting Daemon');
+		$CI->email->reply_to('bgaunce@middleburyinteractive.com', 'Beth Gaunce');
+		$CI->email->to($to_address); 
+		$CI->email->cc($cc_list); 
+
+		$CI->email->subject($subject);
+		$CI->email->message($html);
+		print_r($attachments);//debug	
+		if(!is_null($attachments))
+		{
+			foreach($attachments as $attachment)
+			{
+				if(file_exists($attachment)) $CI->email->attach($attachment);
+			}
+		}
+		$CI->email->send();
+
+		echo 'email sent'."<br/>\n";//debug
+
+		if($print_debug)
+		{
+			echo $CI->email->print_debugger();
+		}
+
+		$CI->email->clear(TRUE);
+	}
 }
 ?>
