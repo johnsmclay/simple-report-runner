@@ -83,7 +83,7 @@ function styleReport_11($sheet,$report_name,$report_vars)
 	$sheet->setCellValue('A2','=today()');
 	$sheet->getStyle('A2')->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::toFormattedString('d-mmm-yyyy'));
 	$sheet->getStyle('A2')->applyFromArray($boldFormatStyle);
-	$sheet->getStyle('A3:U3')->applyFromArray($headerRowStyles);
+	$sheet->getStyle('A3:V3')->applyFromArray($headerRowStyles);
 	$sheet->getColumnDimension('D')->setWidth(12);
 	$sheet->getColumnDimension('I')->setWidth(12);
 	$sheet->getColumnDimension('J')->setWidth(12);
@@ -97,7 +97,7 @@ function styleReport_11($sheet,$report_name,$report_vars)
 	$highestRow = $sheet->getHighestRow(); // e.g. 10
 	
 	for ($row = 4; $row <= $highestRow; ++$row) {
-  	$curGrade = $sheet->getCellByColumnAndRow(14,$row)->getValue();
+  	$curGrade = $sheet->getCellByColumnAndRow(15,$row)->getValue();
 	$lastLogInDate = $sheet->getCellByColumnAndRow(9,$row)->getValue();
 		//Checking that Current grade is less than 59.5 (which rounds up to 60)
 		if($curGrade < 59.5){

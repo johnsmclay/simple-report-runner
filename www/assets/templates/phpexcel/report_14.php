@@ -82,7 +82,7 @@ function styleReport_14($sheet)
 	$sheet->setCellValue('A2','=today()');
 	$sheet->getStyle('A2')->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::toFormattedString('d-mmm-yyyy'));
 	$sheet->getStyle('A2')->applyFromArray($boldFormatStyle);	
-	$sheet->getStyle('A3:K3')->applyFromArray($headerRowStyles);
+	$sheet->getStyle('A3:L3')->applyFromArray($headerRowStyles);
 	$sheet->getColumnDimension('D')->setWidth(12);
 	$sheet->getColumnDimension('E')->setWidth(12);
 	$sheet->getColumnDimension('F')->setWidth(12);
@@ -98,15 +98,16 @@ function styleReport_14($sheet)
 	$totalRow = $highestRow+1;
 	
 	$sheet->setCellValue('A'.$totalRow,'Grand Total');
-	$sheet->setCellValue('F'.$totalRow,'=Sum(F4:F'.$highestRow.')');
 	$sheet->setCellValue('G'.$totalRow,'=Sum(G4:G'.$highestRow.')');
 	$sheet->setCellValue('H'.$totalRow,'=Sum(H4:H'.$highestRow.')');
 	$sheet->setCellValue('I'.$totalRow,'=Sum(I4:I'.$highestRow.')');
-	$sheet->setCellValue('J'.$totalRow,'=Sum(J4:I'.$highestRow.')');
-	$sheet->setCellValue('K'.$totalRow,'=Sum(K4:I'.$highestRow.')');
+	$sheet->setCellValue('J'.$totalRow,'=Sum(J4:J'.$highestRow.')');
+	$sheet->setCellValue('K'.$totalRow,'=Sum(K4:K'.$highestRow.')');
+	$sheet->setCellValue('L'.$totalRow,'=Sum(L4:L'.$highestRow.')');
+
 	
 	
-	$sheet->getStyle('A'.$totalRow.':K'.$totalRow)->applyFromArray($totalRowStyles);
+	$sheet->getStyle('A'.$totalRow.':L'.$totalRow)->applyFromArray($totalRowStyles);
 	
 }
 ?>
