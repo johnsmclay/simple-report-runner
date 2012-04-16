@@ -27,7 +27,7 @@ $money_format = '$%=#10.2n';
 </table>
 <?php endif; ?>
 
-<p style="font-family:Arial">Message to teachers here</p>
+<p style="font-family:Arial">Please review the students who have not logged in for a week and/or have a grade that is 70% or lower.  Follow the guidelines in the MIL Teacher Handbook for contacting these students, their schools and the Director of Online Instruction.  Log your contacts according to the guidelines if necessary.</p>
 
 <h2 style="font-family:Arial">Students</h2>
 

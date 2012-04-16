@@ -4,6 +4,10 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 class Teacherpay extends CI_Controller {
 
 	private $report_Output_folder = './report_holder/';
+	private $db_connection_pglms = NULL;
+	private $testing_mode = TRUE;
+	private $override_email = array('fmaldonado@middil.com');
+	private $note_to_teachers = '';
 
 	public function index()
 	{
@@ -14,6 +18,12 @@ class Teacherpay extends CI_Controller {
 	{
 		parent::__construct();
 		//if ( ! $this->input->is_cli_request()) exit('This controller is only meant to be called via the CLI in a cron job.');
+		//----- This page requires login-----
+		$this->load->library('UserAccess');
+		$this->useraccess->LoginRequired();
+		if(!$this->useraccess->HasRole(array('system admin',))) redirect('/', 'refresh');
+		//-----------------------------------
+		$this->db_connection_pglms = $this->load->database('pglms', TRUE);
 	}
 
 
@@ -34,9 +44,9 @@ class Teacherpay extends CI_Controller {
 	public function sendall($month_id,$skip_email=FALSE)
 	{
 		echo "Sending pay reports for month $month_id"."<br/>\n";
-		$pglms_db = $this->load->database('pglms');
 
-		$teachers = $this->db->get_where('warehouse.mil_teachers', array('deleted' => '0000-00-00 00:00:00'))->result_array();
+		$teachers = $this->db_connection_pglms->get_where('warehouse.mil_teachers', array('deleted' => '0000-00-00 00:00:00'))->result_array();
+		//print_r($teachers);//debug
 
 		$file_list = array();
 
@@ -62,8 +72,9 @@ class Teacherpay extends CI_Controller {
 				teacher_pay.monthly_pay_summary sum 
 				LEFT JOIN teacher_pay.month mo ON sum.month_id = mo.id
 				LEFT JOIN warehouse.mil_teachers mt ON sum.teacher_id = mt.id
+			WHERE mo.id = $month_id
 		";
-		$squery = $this->db->query($SummaryQuery);
+		$squery = $this->db_connection_pglms->query($SummaryQuery);
 		$summary_csv_data = $this->dbutil->csv_from_result($squery);
 
 
@@ -87,7 +98,7 @@ class Teacherpay extends CI_Controller {
 			WHERE
 				month_id = $month_id
 		";
-		$dquery = $this->db->query($DetailsQuery);
+		$dquery = $this->db_connection_pglms->query($DetailsQuery);
 		$detailed_csv_data = $this->dbutil->csv_from_result($dquery);
 
 		$this->load->helper('file');
@@ -101,18 +112,20 @@ class Teacherpay extends CI_Controller {
 		$file_list[] = $this->report_Output_folder.$filename;
 
 		$subject = 'Pay Review Report - Complete';
-		$email = 'mblake@middil.com';
-		$this->sendEmail($email, $subject, 'Here is your copy.', $file_list);
+		//$subject .= ' - FIXED';//debug
+		$email = array('mblake@middil.com','bgaunce@middil.com');
+		if($this->testing_mode) $email = $this->override_email;
+		sendEmailReport($email, $subject, 'Here is your copy.', $file_list);
 	}
 
-	private function singleteacher($teacher_id,$month_id,$skip_email=FALSE)
+	public function singleteacher($teacher_id,$month_id,$skip_email=FALSE)
 	{
 
 		echo "Sending pay report to teacher # $teacher_id"."<br/>\n";
-		$pglms_db = $this->load->database('pglms');
 		//$teacher_pay_db = $this->load->database('teacher_pay');
 		
-		$teacher_info = $this->db->get_where('warehouse.mil_teachers', array('id' => $teacher_id), 1)->result_array();
+		$teacher_info = $this->db_connection_pglms->get_where('warehouse.mil_teachers', array('id' => $teacher_id), 1)->result_array();
+		echo 'Got teacher info:'.json_encode($teacher_info)."<br/>\n";
 
 		$SummaryQuery = "SELECT 
 				mo.month, 
@@ -129,7 +142,7 @@ class Teacherpay extends CI_Controller {
 				LEFT JOIN teacher_pay.month mo ON sum.month_id = mo.id
 			WHERE sum.teacher_id = $teacher_id
 		";
-		$squery = $this->db->query($SummaryQuery);
+		$squery = $this->db_connection_pglms->query($SummaryQuery);
 		$SummaryResult = $squery->result_array();
 		if(sizeof($SummaryResult) == 0)
 		{
@@ -157,7 +170,7 @@ class Teacherpay extends CI_Controller {
 				mil_teacher_id = $teacher_id
 				AND month_id = $month_id
 		";
-		$dquery = $this->db->query($DetailsQuery);
+		$dquery = $this->db_connection_pglms->query($DetailsQuery);
 		$DetailsResult = $dquery->result_array();
 
 		$html = $this->load->view('email_templates/teacher_pay_report_email', array(
@@ -169,12 +182,20 @@ class Teacherpay extends CI_Controller {
 		
 		$filename = 'pay_'.$teacher_info[0]['email_address'].'_'.strftime('%Y-%m-%d',time()).'.xls';
 		$this->load->helper('report_helper');
+		$this->load->helper('file');
 		write_file($this->report_Output_folder.$filename, $html);
 		$subject = 'Pay Review Report - '.$teacher_info[0]['display_name'];
-		$email = $teacher_info[0]['email_address'];
-		//$email = 'cjohns@middil.com';//debug
+		//$subject .= ' - FIXED';//debug
+		$email = array($teacher_info[0]['email_address'],'bgaunce@middil.com');
+		if($this->testing_mode) $email = $this->override_email;
 		$this->load->helper('file');
-		if(!$skip_email) sendEmailReport($email, $subject, $html, array($this->report_Output_folder.$filename));
+		if(!$skip_email)
+		{
+			if($teacher_info[0]['skip_pay_report'] == 0)
+			{
+				sendEmailReport($email, $subject, $html, array($this->report_Output_folder.$filename));
+			}
+		}
 		return $this->report_Output_folder.$filename;
 	}
 

@@ -163,7 +163,7 @@ class UserAccess {
 		$current_user_id = $this->CI->session->userdata('user_id');
 		$this->CI->session->set_userdata('old_user_id', $current_user_id);
 		$this->CI->load->model('User_model');
-		$user = $this->CI->User_model->GetUserByID($user_id);
+		$user = $this->CI->User_model->GetByID($user_id);
 		$this->_CreateUserSession($user);
 		redirect('/', 'refresh');
 	}
@@ -185,6 +185,24 @@ class UserAccess {
 		log_message('debug', __METHOD__.' current_user_id = '.$current_user_id);
 		
 		return $current_user_id;
+	}
+
+	/**
+	 * CurrentUser method returns the id of the current user
+	 *
+	 * Example:
+	 * $this->UserAccess->CurrentUser();
+	 *
+	 * @result User $current_user
+	 */
+	public function CurrentUser()
+	{
+		log_message('debug', __METHOD__.' called ');
+		$this->CI->load->model('User_model');
+		$current_user = $this->CI->User_model->GetByID($this->CI->session->userdata('user_id'));
+		log_message('debug', __METHOD__.' current user = '.json_encode($current_user));
+		
+		return $current_user;
 	}
 	
 	// --------------------------------------------------------------------

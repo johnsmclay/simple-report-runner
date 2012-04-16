@@ -140,20 +140,34 @@
 		
 		public function getReportDescription($reportId)
 		{
-			$reportQuery = "
-				SELECT
-					description
-				FROM
-					report
-				WHERE
-					id = {$reportId}
-			";
 			
-			$reportResult = $this->db1->query($reportQuery);
+
+			$this->db1->select('description');
+			$this->db1->where('id', $reportId);
+			$query = $this->db1->get('report');
+			$result = $query->result_array();
 			
-			$result = $reportResult->result_array();
+			// How Adam was trying to query it
+			//$reportQuery = "SELECT description FROM report	WHERE id = {$reportId}";
+			//$reportResult = $this->db1->query($reportQuery);
+			//$result = $reportResult->result_array();
 			
 			return $result[0]['description'];
+		}
+
+		/**
+		 * getReportDefinition
+		 * 
+		 * @param int $reportId The id of the report being requested
+		 * @return string The pre-built query for the requested report
+		 */
+		public function getReportDefinition($reportId)
+		{
+			$this->db1->select('definition');
+			$this->db1->where('id', $reportId);
+			$query = $this->db1->get('report');
+			$result = $query->result_array();
+			return $result[0]['definition'];
 		}
 		
 		/**

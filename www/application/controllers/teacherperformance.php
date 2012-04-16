@@ -15,6 +15,11 @@ class Teacherperformance extends CI_Controller {
 	{
 		parent::__construct();
 		//if ( ! $this->input->is_cli_request()) exit('This controller is only meant to be called via the CLI in a cron job.');
+		//----- This page requires login-----
+		//$this->load->library('UserAccess');
+		//$this->useraccess->LoginRequired();
+		//if(!$this->useraccess->HasRole(array('system admin',))) redirect('/', 'refresh');
+		//-----------------------------------
 	}
 
 
@@ -43,7 +48,7 @@ class Teacherperformance extends CI_Controller {
 
 		foreach($teachers AS $teacher)
 		{
-			$file_list[] = $this->singleteacher($teacher['id'],$month_id,$skip_email);
+			$file_list[] = $this->singleteacher($teacher['id'],$skip_email);
 		}
 
 		$this->load->dbutil();
@@ -105,9 +110,9 @@ class Teacherperformance extends CI_Controller {
 		$filename = 'performance_'.$teacher_info[0]['email_address'].'_'.strftime('%Y-%m-%d',time()).'.xls';
 		$this->load->helper('report_helper');
 		write_file($this->report_Output_folder.$filename, $html);
-		$subject = 'Pay Review Report - '.$teacher_info[0]['display_name'];
+		$subject = 'Teacher Performance Checkup - '.$teacher_info[0]['display_name'];
 		$email = $teacher_info[0]['email_address'];
-		$email = 'cjohns@middil.com';//debug
+		//$email = 'cjohns@middil.com';//debug
 		if(!$skip_email) sendEmailReport($email, $subject, $html, array($this->report_Output_folder.$filename));
 		if($skip_email) echo $html;//debug
 		return $this->report_Output_folder.$filename;

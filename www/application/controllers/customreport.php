@@ -47,12 +47,14 @@
 			// Retrieve all the report variables	
 			$report_vars = $this->model->getReportVars($reportId);
 			
-			// Obtain the description seperately from the report variables in order to display
+			// Obtain the description and definition seperately from the report variables in order to display
 			$description = $this->model->getReportDescription($reportId);
+			$definition = $this->model->getReportDefinition($reportId);
 			
 			// Load the variables into the view data array
 			$view_data['report_vars'] = $report_vars;
 			$view_data['description'] = $description;
+			$view_data['definition'] = $definition;
 			
 			// Pass back the report id so it can be used when the form is submitted
 			// in order to target the correct report via a hidden input value where

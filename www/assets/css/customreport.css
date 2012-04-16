@@ -135,6 +135,26 @@
 		margin-bottom: 40px;
 	}
 
+/* ------ Definition Table Styles ------ */
+
+	div#reportDefinition thead>tr {
+		background-color: #000000;
+		color: #FFFFFF;
+	}
+
+	div#reportDefinition tbody>tr {
+		padding: 10px;
+	}
+
+	div#reportDefinition tbody>tr>td:first-child {
+		padding-right: 10px;
+		font-weight: bold;
+	}
+	
+	div#reportDefinition {
+		margin-bottom: 40px;
+	}
+
 /* ------ CLASSES ------ */
 	.example {
 		display: block;

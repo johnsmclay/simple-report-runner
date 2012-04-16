@@ -1,3 +1,6 @@
+<script type="text/javascript">
+	$("#reportDefinition").hide();
+</script>
 <form id="reportForm">
 	<div id="goBack">
 		<input id="backButton" type="button" value="< Back" />
@@ -5,7 +8,8 @@
 	<div id="notices"></div>
 	<fieldset>
 		<legend id='report'></legend>
-		<p id='reportDescription'>DESCRIPTION: <?=$description;?></p>
+		<p id='reportDescription'>DESCRIPTION: <?=$description;?> <a id="showdefs" href="#" onclick="$('#reportDefinition').show(); $(this).hide();">More...</a></p>
+		<div id='reportDefinition'><?=$definition;?></div>
 		<ul>
 			<input id="reportID" type="hidden" value="<?=$report_id;?>" name="reportID" />
 			<?

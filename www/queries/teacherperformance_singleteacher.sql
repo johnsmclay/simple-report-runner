@@ -14,7 +14,7 @@ Select
     if(u.last_login > enrollments.added,DATE_FORMAT(u.last_login,'%m/%d/%Y'),'') as 'Last Login',
     DATE_FORMAT(enrollments.added,'%m/%d/%Y') as 'Enrollment Date',
     concat(
-            if(coalesce(enrollments.expires,sec.expires,convert(sec.end_date,datetime),1)=1,'(est)',''),
+            if(coalesce(enrollments.expires,sec.expires,1)=1,'(est) ',''),
             DATE_FORMAT(
         coalesce(enrollments.expires,sec.expires,convert(sec.end_date,datetime), DATE_ADD(enrollments.added,INTERVAL floor(if(sch.id in (736,529,170,1258,1259,119,707,461,1203,487,488,778,783,779,784,1256,1257,428),365,sec.lessons * 1.5)) DAY))
             ,'%m/%d/%Y')
@@ -41,5 +41,6 @@ left join warehouse.student_enrollments wse on wse.section_user_id = enrollments
     and enrollments.added < now()
     AND sec.teacher IN (SELECT DISTINCT system_teacher_id FROM warehouse.mil_pglms_teacher_map WHERE system = 'PGLMS' AND mil_teacher_id = ~mil_teacher_id~)
     AND coalesce(enrollments.expires,IFNULL(sec.expires,'9999-12-31 00:00:00')) > NOW()
+    AND (if(u.last_login > enrollments.added,u.last_login,'9999-12-31 00:00:00') > DATE_SUB(NOW(),INTERVAL 1 YEAR))
 Group by enrollments.id
 ORDER BY sch.school_name,sec.section_name,u.first_name,u.last_name

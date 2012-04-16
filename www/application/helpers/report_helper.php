@@ -137,8 +137,7 @@ if (! function_exists('sendEmailReport'))
 		echo "Sending report email to $to_address"."<br/>\n";
 
 		$cc_list = array(
-			'cjohns@middil.com',
-			'bgaunce@middil.com',
+			
 		);
 
 		$CI->load->library('email');

@@ -18,6 +18,11 @@
 			<a href="<?=site_url("sysadmin");?>">System Admin</a>
 		</li>
 		<?php endif; ?>
+		<?php if ($this->useraccess->HasRole(array('mailer','system admin'))): ?>
+		<li>
+			<a href="<?=site_url("mass_emailer");?>">Notifications</a>
+		</li>
+		<?php endif; ?>
 		<?php if ($this->useraccess->HasRole(array('system admin','internal'))): ?>
 		<li>
 			<a href="<?=site_url("pglmsweeklies");?>">PGLMS Weekly Reports</a>
@@ -26,6 +31,10 @@
 		<li>
 			<a href="<?=site_url("schedulereport");?>">Schedule Report</a>
 		</li>
+		<?php if ($this->useraccess->HasRole(array('system admin'))): ?>
+		<!--<li>
+			<a href="<?=site_url("periodic_reports");?>">Teacher Stuff</a>
+		</li>-->
+		<?php endif; ?>
 	</ul>
 </div>
-
