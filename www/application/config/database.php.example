@@ -47,7 +47,7 @@ $active_record = TRUE;
 $db['application']['hostname'] = 'localhost';
 $db['application']['username'] = 'root';
 $db['application']['password'] = '';
-$db['application']['database'] = 'mil_bi';
+$db['application']['database'] = 'bi';
 $db['application']['dbdriver'] = 'mysql';
 $db['application']['dbprefix'] = '';
 $db['application']['pconnect'] = TRUE;
@@ -60,49 +60,6 @@ $db['application']['swap_pre'] = '';
 $db['application']['autoinit'] = TRUE;
 $db['application']['stricton'] = FALSE;
 $db['application']['port'] = 3306;
-
-/**
- * PGLMS DB2 @ EQ-VA
- *   Used by application for //TODO:explain
- */
-//$db['pglms']['hostname'] = '10.64.9.71';
-$db['pglms']['hostname'] = '10.5.0.126';
-$db['pglms']['username'] = 'reporter';
-$db['pglms']['password'] = 'pr8tREdUcez2wAyA8PA5';
-$db['pglms']['database'] = 'pglms2010';
-$db['pglms']['dbdriver'] = 'mysql';
-$db['pglms']['dbprefix'] = '';
-$db['pglms']['pconnect'] = TRUE;
-$db['pglms']['db_debug'] = TRUE;
-$db['pglms']['cache_on'] = FALSE;
-$db['pglms']['cachedir'] = '';
-$db['pglms']['char_set'] = 'utf8';
-$db['pglms']['dbcollat'] = 'utf8_general_ci';
-$db['pglms']['swap_pre'] = '';
-$db['pglms']['autoinit'] = TRUE;
-$db['pglms']['stricton'] = FALSE;
-$db['pglms']['port'] = 3306;
-
-/**
- * Gale DB2 @ EQ-VA
- *   Used by application for //TODO:explain
- */
-$db['gale']['hostname'] = '10.64.3.83';
-$db['gale']['username'] = 'reporter';
-$db['gale']['password'] = 'pr8tREdUcez2wAyA8PA5';
-$db['gale']['database'] = 'speakez';
-$db['gale']['dbdriver'] = 'mysql';
-$db['gale']['dbprefix'] = '';
-$db['gale']['pconnect'] = TRUE;
-$db['gale']['db_debug'] = TRUE;
-$db['gale']['cache_on'] = FALSE;
-$db['gale']['cachedir'] = '';
-$db['gale']['char_set'] = 'utf8';
-$db['gale']['dbcollat'] = 'utf8_general_ci';
-$db['gale']['swap_pre'] = '';
-$db['gale']['autoinit'] = TRUE;
-$db['gale']['stricton'] = FALSE;
-$db['gale']['port'] = 3306;
 
 /* End of file database.php */
 /* Location: ./application/config/database.php */
