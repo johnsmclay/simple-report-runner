@@ -4,7 +4,7 @@
 	'header2' => 'Edit Account',
 )); ?>
 						<p><?=validation_errors()?></p>
-						<?=form_open('useradmin/saveaccount','',$hidden_fields)?><br />
+						<?=form_open('useradmin/saveaccount',array('autocomplete' => 'off'),$hidden_fields)?><br />
 						<div id="table-container">
 							 <div id="table-row">
 								<div id="table-column-left"><?=form_label('First Name','fname')?></div>
@@ -45,7 +45,7 @@
 							 </div>
 						</div>
 						<?=form_close()?>
-						
+
 						<br />
 						<h2>Roles</h2>
 						<p><?=validation_errors()?></p>
@@ -59,6 +59,8 @@
 								'checked' => $checked,
 							);
 							if(!$this->useraccess->HasRole(array('system admin','user admin',))) $checkbox_properties['disabled'] = 'TRUE';
+							if(!$this->useraccess->HasRole(array('system admin')) && $role == 'system admin') $checkbox_properties['disabled'] = 'TRUE';
+							if(!$this->useraccess->HasRole(array('system admin')) && $role == 'report admin') $checkbox_properties['disabled'] = 'TRUE';
 							?>
 							<?=form_checkbox($checkbox_properties)?> <?=$role?><br />
 						<?php endforeach; ?>

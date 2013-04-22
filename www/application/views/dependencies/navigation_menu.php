@@ -13,7 +13,7 @@
 			<a href="<?=site_url("useradmin");?>">Account Admin</a>
 		</li>
 		<?php endif; ?>
-		<?php if ($this->useraccess->HasRole(array('system admin'))): ?>
+		<?php if ($this->useraccess->HasRole(array('system adminx'))): ?>
 		<li>
 			<a href="<?=site_url("sysadmin");?>">System Admin</a>
 		</li>
@@ -23,7 +23,7 @@
 			<a href="<?=site_url("mass_emailer");?>">Notifications</a>
 		</li>
 		<?php endif; ?>
-		<?php if ($this->useraccess->HasRole(array('system admin','internal'))): ?>
+		<?php if ($this->useraccess->HasRole(array('system adminx','internalx'))): ?>
 		<li>
 			<a href="<?=site_url("pglmsweeklies");?>">PGLMS Weekly Reports</a>
 		</li>
