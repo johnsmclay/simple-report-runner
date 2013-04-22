@@ -1,12 +1,12 @@
 <?php
 	class Custom_report_model extends CI_Model {
-		
+
 		/** CLASS VARS **/
 		private $db_table = 'report';
 		private $db1 = null; // Database connection 1
 		private $db2 = null; // Database connection 2
 		/****************/
-		
+
 		function __construct()
 		{
 			parent::__construct();
@@ -14,7 +14,7 @@
 			$this->db1 = $this->load->database('application',TRUE);
 			// $this->db2 = $this->load->database('pglms', TRUE);
 		}
-		
+
 		/**
 		 * GetByID method retreives a custom report object from the database by ID
 		 *
@@ -24,11 +24,11 @@
 		public function GetByID($object_id)
 		{
 			if(!isset($object_id)) return false;
-			
+
 			// read from database
 			$result = $this->db->get_where($this->db_table,array('id'=>$object_id,),1)->result();
 			log_message('debug', __METHOD__.' query result count '.count($result));
-			
+
 			// return object if there are any
 			if(count($result) >= 1)
 			{
@@ -38,12 +38,12 @@
 				return false;
 			}
 		}
-		
+
 		/**
 		 * getReportList
-		 * 
+		 *
 		 * Retrieves a list of all the reports of type MySQL and their categories
-		 * 
+		 *
 		 * @return array List of all reports available in the database of type MySQL
 		 */
 		public function getReportList()
@@ -58,7 +58,7 @@
 					r.display_name,
 					rc.title AS category,
 					r.description
-				FROM 
+				FROM
 					report r
 					LEFT JOIN report_category rc ON rc.id = r.category_id
 					LEFT JOIN report_permission rp ON rp.report_id=r.id AND rp.user_id=$user_id
@@ -77,26 +77,26 @@
 				);
 			}
 			$reportListResult->free_result();
-			
+
 			return $reportList;
 		}
-		
+
 		/**
 		 * getReportVars
-		 * 
+		 *
 		 * Retrieve the variables for the chosen report. Optionally to save processing
 		 * time, when the variables are needed but not the options, you can keep the options
 		 * query from being run by passing FALSE as the second parameter.
-		 * 
+		 *
 		 * @param int $reportId The report ID being requested
 		 * @param bool $runOptions Whether or not the options query (if not empty) should be run by the MySQL conneciton
 		 * @return array All report variables for the requested report id
 		 */
 		public function getReportVars($reportId,$runOptions=true)
 		{
-			// Load secondary database connection	
+			// Load secondary database connection
 			$this->_loadReportDB($reportId);
-			
+
 			$reportVarsQuery = "
 				SELECT
 					*
@@ -105,7 +105,7 @@
 				WHERE
 					report_id = {$reportId}
 				";
-	
+
 			$reportVarsResult = $this->db1->query($reportVarsQuery);
 			$report_vars = array();
 			foreach ($reportVarsResult->result_array() AS $row)
@@ -113,7 +113,7 @@
 				if (!empty($row['options_query']) && $runOptions == true)
 				{
 					$optionsResult = $this->db2->query($row['options_query']);
-					
+
 					foreach ($optionsResult->result_array() AS $optRow)
 					{
 						$options[$optRow['id']] = $optRow['description'];
@@ -134,30 +134,30 @@
 				);
 			}
 			$reportVarsResult->free_result();
-			
+
 			return $report_vars;
 		}
-		
+
 		public function getReportDescription($reportId)
 		{
-			
+
 
 			$this->db1->select('description');
 			$this->db1->where('id', $reportId);
 			$query = $this->db1->get('report');
 			$result = $query->result_array();
-			
+
 			// How Adam was trying to query it
 			//$reportQuery = "SELECT description FROM report	WHERE id = {$reportId}";
 			//$reportResult = $this->db1->query($reportQuery);
 			//$result = $reportResult->result_array();
-			
+
 			return $result[0]['description'];
 		}
 
 		/**
 		 * getReportDefinition
-		 * 
+		 *
 		 * @param int $reportId The id of the report being requested
 		 * @return string The pre-built query for the requested report
 		 */
@@ -169,14 +169,14 @@
 			$result = $query->result_array();
 			return $result[0]['definition'];
 		}
-		
+
 		/**
 		 * getReportData
-		 * 
+		 *
 		 * @param int $reportId The id of the report being requested
 		 * @return string The pre-built query for the requested report
 		 */
-		public function getReportData($reportId) 
+		public function getReportData($reportId)
 		{
 			$getReportDataQuery = "
 				SELECT
@@ -186,36 +186,36 @@
 					report
 				WHERE
 					id = " . $reportId;
-	
+
 			$getReportResult = $this->db1->query($getReportDataQuery);
 			$reportData = $getReportResult->row_array();
 			$getReportResult->free_result();
-			
+
 			return $reportData;
 		}
-		
+
 		/**
 		 * runReportQuery
-		 * 
+		 *
 		 * Runs the query that has been retrieved from the database and prepped by the controller
 		 * so that all variables needed in the query have been replaced by the values retrieved
 		 * from the UI form data
-		 * 
+		 *
 		 * @param int $reportId The ID number of the requested report
-		 * @param 
+		 * @param
 		 * @return array The data returned from the query after having the header row attached as a new array element
 		 */
 		public function runReport($reportId,$reportValues=array())
 		{
 			$this->_loadReportDB($reportId);
 			// $tempConnect = $this->load->database($connection,true);
-			
+
 			// Get the query to be run
 			$reportData = $this->getReportData($reportId);
-			
+
 			// Query to be prepped for running
 			$reportQuery = $reportData['report_data'];
-			
+
 			$reportVars = $this->getReportVars($reportId,false);
 
 			// Loop through the report variables and replace the matching
@@ -224,7 +224,7 @@
 			{
 				if ($var['text_identifier'] == 'date_range')
 				{
-					$reportQuery = preg_replace("/~date_range~/", '"' . date('Y-m-d H:i:s', strtotime($reportValues['start_date'])) . ' 00:00:00" AND "' . date('Y-m-d', strtotime($reportValues['end_date'])) . ' 23:59:59"', $reportQuery);
+					$reportQuery = preg_replace("/~date_range~/", '\'' . date('Y-m-d H:i:s', strtotime($reportValues['start_date'])) . '\' AND \'' . date('Y-m-d', strtotime($reportValues['end_date'])) . ' 23:59:59\'', $reportQuery);
 				}
 					elseif ($var['variable_type'] == 'string')
 					{
@@ -235,7 +235,7 @@
 							$reportQuery = preg_replace("/~" . $var['text_identifier'] . "~/i", $reportValues[$var['text_identifier']], $reportQuery);
 						}
 			}
-			
+
 			$result = $this->db2->query($reportQuery);
 			$resultsArray = $result->result_array();
 			$resultCheck = $result->result();
@@ -244,10 +244,10 @@
 				return false;
 			}
 			$result->free_result();
-			
+
 			return $resultsArray;
 		}
-		
+
 		private function _loadReportDB($reportId)
 		{
 			// Load the needed connection.
