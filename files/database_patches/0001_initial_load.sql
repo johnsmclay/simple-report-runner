@@ -53,6 +53,7 @@ CREATE TABLE `report` (
   `creator_user_id` int(10) unsigned NOT NULL,
   `report_data` blob NOT NULL,
   `description` varchar(128) NOT NULL DEFAULT '',
+  `definition`  varchar(512) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `FK_report_connection` (`connection_id`),
   CONSTRAINT `FK_report_connection` FOREIGN KEY (`connection_id`) REFERENCES `connection` (`id`)

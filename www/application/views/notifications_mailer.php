@@ -8,8 +8,8 @@
 
 <?=form_open_multipart('mass_emailer/send',array('accept-charset'=>'UTF-8',))?>
 
-From Name:<br/><?=form_input(array('size'=>50,'name'=>'message_from_name','value'=>set_value('message_from_name', 'Middlebury Interactive Support')))?><br/><br/>
-From address:<br/><?=form_input(array('size'=>50,'name'=>'message_from_address','value'=>set_value('message_from_address', 'services@powerspeak.com')))?><br/><br/>
+From Name:<br/><?=form_input(array('size'=>50,'name'=>'message_from_name','value'=>set_value('message_from_name', 'Support')))?><br/><br/>
+From address:<br/><?=form_input(array('size'=>50,'name'=>'message_from_address','value'=>set_value('message_from_address', 'services@temp.com')))?><br/><br/>
 Subject:<br/><?=form_input(array('size'=>100,'name'=>'message_subject','value'=>set_value('message_subject', 'Scheduled System Maintenance Notification')))?><br/><br/>
 Body:<br/><textarea rows="20" cols="100" name="message_body" /></textarea><br/>
 <input type="radio" name="message_encoding" value="plaintext" checked="checked" /> Plain

@@ -1,7 +1,7 @@
 <?php $this->load->view('dependencies/header', array(
 		'title' => 'Report Builder',
 		'header1' => 'The Reporting Dashboard',
-		'header2' => 'Middlebury Interactive Reporting',
+		'header2' => 'Reporting',
 ));
 // @TODO: add user id into form so it will submit with the data and insert into the DB
 ?>

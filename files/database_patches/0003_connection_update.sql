@@ -1,5 +1,5 @@
 ALTER TABLE `connection` 
-	ADD COLUMN `type` ENUM('MySQL','MSSQL','Brain Honey') NOT NULL DEFAULT 'MySQL' AFTER `hostname`, 
+	ADD COLUMN `type` ENUM('MySQL','MSSQL','Postgre') NOT NULL DEFAULT 'MySQL' AFTER `hostname`, 
 	ADD COLUMN `database` VARCHAR(60) NOT NULL  AFTER `type`, 
 	ADD COLUMN `dbprefix` VARCHAR(45) NULL  AFTER `database`,
 	ADD COLUMN `pconnect` VARCHAR(45) NULL DEFAULT 'FALSE'  AFTER `dbprefix`,

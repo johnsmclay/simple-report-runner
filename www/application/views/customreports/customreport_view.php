@@ -1,7 +1,7 @@
 <?php $this->load->view('dependencies/header',array(
 	'title' => 'Reporting Dashboard',
 	'header1' => 'The Reporting Dashboard',
-	'header2' => 'Middlebury Interactive Reporting',
+	'header2' => 'Reporting',
 )); ?>
 <ul id="reportList">
 	<?php
